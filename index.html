@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,81 +59,81 @@
     <form id="orderForm">
       <h3>🧾 বিলিং এড্রেস</h3>
       <label>Full Name *</label>
-      <input type="text" name="name" required>
+      <input type="text" name="name" required><label>Email *</label>
+  <input type="email" name="email" required>
 
-      <label>Email *</label>
-      <input type="email" name="email" required>
+  <label>Street Address *</label>
+  <input type="text" name="address" required>
 
-      <label>Street Address *</label>
-      <input type="text" name="address" required>
+  <label>Mobile Number *</label>
+  <input type="text" name="mobile" required>
 
-      <label>Mobile Number *</label>
-      <input type="text" name="mobile" required>
+  <h3>📦 প্যাকেজ সিলেকশন</h3>
+  <label>Crunchyroll Share Account ⚡</label>
+  <select name="package">
+    <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
+    <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
+    <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
+    <option value="6 Months Share – 600 TK">6 Months – 600 TK</option>
+    <option value="8 Months Share – 840 TK">8 Months – 840 TK</option>
+  </select>
 
-      <h3>📦 প্যাকেজ সিলেকশন</h3>
-      <label>Crunchyroll Share Account ⚡</label>
-      <select name="package">
-        <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
-        <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
-        <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
-        <option value="6 Months Share – 600 TK">6 Months – 600 TK</option>
-        <option value="8 Months Share – 840 TK">8 Months – 840 TK</option>
-      </select>
+  <label>Crunchyroll Personal Profile ⚡</label>
+  <select name="personal_package">
+    <option value="1 Month Personal – 240 TK">1 Month – 240 TK</option>
+    <option value="2 Months Personal – 480 TK">2 Months – 480 TK</option>
+    <option value="3 Months Personal – 720 TK">3 Months – 720 TK</option>
+    <option value="6 Months Personal – 1440 TK">6 Months – 1440 TK</option>
+    <option value="8 Months Personal – 1800 TK">8 Months – 1800 TK</option>
+    <option value="12 Months Personal – 2760 TK">12 Months – 2760 TK</option>
+  </select>
 
-      <label>Crunchyroll Personal Profile ⚡</label>
-      <select name="personal_package">
-        <option value="1 Month Personal – 240 TK">1 Month – 240 TK</option>
-        <option value="2 Months Personal – 480 TK">2 Months – 480 TK</option>
-        <option value="3 Months Personal – 720 TK">3 Months – 720 TK</option>
-        <option value="6 Months Personal – 1440 TK">6 Months – 1440 TK</option>
-        <option value="8 Months Personal – 1800 TK">8 Months – 1800 TK</option>
-        <option value="12 Months Personal – 2760 TK">12 Months – 2760 TK</option>
-      </select>
+  <label>Crunchyroll Primary Account ⚡</label>
+  <select name="primary_package">
+    <option value="1 Month Primary – 650 TK">1 Month – 650 TK</option>
+    <option value="2 Months Primary – 1300 TK">2 Months – 1300 TK</option>
+    <option value="3 Months Primary – 1950 TK">3 Months – 1950 TK</option>
+    <option value="6 Months Primary – 3600 TK">6 Months – 3600 TK</option>
+  </select>
 
-      <label>Crunchyroll Primary Account ⚡</label>
-      <select name="primary_package">
-        <option value="1 Month Primary – 650 TK">1 Month – 650 TK</option>
-        <option value="2 Months Primary – 1300 TK">2 Months – 1300 TK</option>
-        <option value="3 Months Primary – 1950 TK">3 Months – 1950 TK</option>
-        <option value="6 Months Primary – 3600 TK">6 Months – 3600 TK</option>
-      </select>
+  <h3>💳 পেমেন্ট তথ্য</h3>
+  <label>Payment Number *</label>
+  <input type="text" name="payment_number" required>
 
-      <h3>💳 পেমেন্ট তথ্য</h3>
-      <label>Payment Number *</label>
-      <input type="text" name="payment_number" required>
+  <label>Transaction ID *</label>
+  <input type="text" name="trans_id" required>
 
-      <label>Transaction ID *</label>
-      <input type="text" name="trans_id" required>
+  <label>Payment Method *</label>
+  <select name="payment_method" required>
+    <option value="Bkash">Bkash</option>
+    <option value="Nagad">Nagad</option>
+    <option value="Rocket">Rocket</option>
+  </select>
 
-      <label>Payment Method *</label>
-      <select name="payment_method" required>
-        <option value="Bkash">Bkash</option>
-        <option value="Nagad">Nagad</option>
-        <option value="Rocket">Rocket</option>
-      </select>
+  <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+</form>
 
-      <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
-    </form>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function() {
-      emailjs.init("SsUmUorUm-BZG8LBY");
-    })();
+  </div>  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>  <script>
+    emailjs.init("SsUmUorUm-BZG8LBY");
 
     document.getElementById("orderForm").addEventListener("submit", function(e) {
       e.preventDefault();
+
+      // Admin Email
       emailjs.sendForm("service_z1714kq", "template_hp66tqp", this)
+        .then(() => console.log("Admin email sent"))
+        .catch((error) => console.error("Admin Email Error:", error));
+
+      // Customer Email
+      emailjs.sendForm("service_z1714kq", "template_1z1lhlf", this)
         .then(function(response) {
-          alert("✅ অর্ডার সফলভাবে পাঠানো হয়েছে! ধন্যবাদ!");
+          alert("✅ অর্ডার সফলভাবে সাবমিট হয়েছে! কিছুক্ষণের মধ্যে আপনি একাউন্ট তথ্য পাবেন।");
           document.getElementById("orderForm").reset();
-          console.log("Success:", response);
+          console.log("Customer Email Sent:", response);
         }, function(error) {
-          alert("❌ অর্ডার ব্যর্থ হয়েছে! আবার চেষ্টা করুন বা Console দেখুন।");
-          console.error("EmailJS Error:", error);
+          alert("❌ অর্ডার ব্যর্থ হয়েছে! দয়া করে আবার চেষ্টা করুন।");
+          console.error("Customer Email Error:", error);
         });
     });
-  </script>
-</body>
+  </script></body>
 </html>
