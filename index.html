@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crunchyroll Premium BD Shop</title>
   <style>
     body {
@@ -57,7 +57,7 @@
 <body>
   <header>Crunchyroll Premium BD Shop</header>
   <div class="container">
-    <form action="https://tally.so/r/wANOy0" method="POST">
+    <form id="orderForm">
       <h3>🧾 বিলিং এড্রেস</h3>
       <label>Full Name *</label>
       <input type="text" name="name" required>
@@ -72,7 +72,6 @@
       <input type="text" name="mobile" required>
 
       <h3>📦 প্যাকেজ সিলেকশন</h3>
-
       <label>Crunchyroll Share Account ⚡</label>
       <select name="package">
         <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
@@ -117,5 +116,25 @@
       <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
     </form>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("SsUmUorUm-BZG8LBY");
+    })();
+
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      emailjs.sendForm("service_z1714kq", "template_hp66tqp", this)
+        .then(function(response) {
+          alert("✅ অর্ডার সফলভাবে পাঠানো হয়েছে! ধন্যবাদ!");
+          document.getElementById("orderForm").reset();
+          console.log("Success:", response);
+        }, function(error) {
+          alert("❌ অর্ডার ব্যর্থ হয়েছে! আবার চেষ্টা করুন বা Console দেখুন।");
+          console.error("EmailJS Error:", error);
+        });
+    });
+  </script>
 </body>
 </html>
