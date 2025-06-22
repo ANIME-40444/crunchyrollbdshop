@@ -1,1 +1,144 @@
-hh
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crunchyroll Premium BD Shop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfcfb;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ff6600;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h3 {
+      color: #ff6600;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #ff6600;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+    }
+    .success {
+      background-color: #e0ffe0;
+      color: green;
+      padding: 10px;
+      margin-top: 10px;
+      text-align: center;
+      border: 1px solid green;
+      border-radius: 6px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>Crunchyroll Premium BD Shop</header>
+  <div class="container">
+    <form action="https://usebasin.com/f/85ebacebeb56" method="POST" id="orderForm">
+      <h3>🧾 বিলিং এড্রেস</h3>
+      <label>Full Name *</label>
+      <input type="text" name="name" required>
+
+      <label>Email *</label>
+      <input type="email" name="email" required>
+
+      <label>Street Address *</label>
+      <input type="text" name="address" required>
+
+      <label>Mobile Number *</label>
+      <input type="text" name="mobile" required>
+
+      <h3>📦 প্যাকেজ সিলেকশন</h3>
+      <label>Crunchyroll Share Account ⚡</label>
+      <select name="package">
+        <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
+        <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
+      </select>
+
+      <label>Crunchyroll Personal Profile ⚡</label>
+      <select name="personal_package">
+        <option value="1 Month Personal – 240 TK">1 Month – 240 TK</option>
+        <option value="2 Months Personal – 480 TK">2 Months – 480 TK</option>
+      </select>
+
+      <label>Crunchyroll Primary Account ⚡</label>
+      <select name="primary_package">
+        <option value="1 Month Primary – 650 TK">1 Month – 650 TK</option>
+        <option value="2 Months Primary – 1300 TK">2 Months – 1300 TK</option>
+      </select>
+
+      <h3>💳 পেমেন্ট তথ্য</h3>
+      <label>Payment Number *</label>
+      <input type="text" name="payment_number" required>
+
+      <label>Transaction ID *</label>
+      <input type="text" name="trans_id" required>
+
+      <label>Payment Method *</label>
+      <select name="payment_method" required>
+        <option value="Bkash">Bkash</option>
+        <option value="Nagad">Nagad</option>
+        <option value="Rocket">Rocket</option>
+      </select>
+
+      <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+      <div class="success" id="successMessage">✅ অর্ডার সফলভাবে পাঠানো হয়েছে!</div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('orderForm');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          successMessage.style.display = 'block';
+          form.reset();
+        } else {
+          alert('❌ দুঃখিত, অর্ডার পাঠানো যায়নি। আবার চেষ্টা করুন।');
+        }
+      }).catch(error => {
+        alert('❌ সিস্টেম এরর হয়েছে।');
+      });
+    });
+  </script>
+</body>
+</html>
