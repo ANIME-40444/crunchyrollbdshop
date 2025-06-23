@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>এডমিন প্যানেল - Crunchyroll Premium BD Shop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+    .box {
+      max-width: 600px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #ff6600;
+    }
+    input[type="email"], input[type="password"], button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #ff6600;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .error {
+      color: red;
+      text-align: center;
+    }
+    .logout-btn {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Box -->
+  <div class="box" id="loginBox">
+    <h2>🔐 এডমিন লগইন</h2>
+    <input type="email" id="email" placeholder="ইমেইল লিখুন" required>
+    <input type="password" id="password" placeholder="পাসওয়ার্ড দিন" required>
+    <button onclick="login()">লগইন করুন</button>
+    <p class="error" id="errorMessage"></p>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="box" id="adminPanel" style="display:none;">
+    <h2>📦 অর্ডার ম্যানেজমেন্ট প্যানেল</h2>
+
+    <p style="text-align: center; color: green;">✅ এখানে আপনি সকল কাস্টমারের অর্ডার দেখতে পারবেন।</p>
+
+    <iframe src="https://docs.google.com/spreadsheets/d/1y4yhgoUlcqnFj0K_kNuoR0lfaaDZB8jaTJzNLuULdiY/edit?usp=sharing"></iframe>
+
+    <div class="logout-btn">
+      <button onclick="logout()">🚪 লগআউট করুন</button>
+    </div>
+  </div>
+
+  <script>
+    const correctEmail = "anime43377@gmail.com";
+    const correctPassword = "Jisan1234@@@";
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (email === correctEmail && password === correctPassword) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+      } else {
+        document.getElementById("errorMessage").innerText = "❌ ইমেইল অথবা পাসওয়ার্ড ভুল!";
+      }
+    }
+
+    function logout() {
+      document.getElementById("adminPanel").style.display = "none";
+      document.getElementById("loginBox").style.display = "block";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("errorMessage").innerText = "";
+    }
+  </script>
+
+</body>
+</html>
