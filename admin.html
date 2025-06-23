@@ -2,80 +2,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crunchyroll Admin Panel</title>
+  <title>Admin Panel - Crunchyroll BD Shop</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f2f2f2;
+      background: #f4f4f4;
       margin: 0;
       padding: 0;
     }
-    header {
-      background-color: #ff6600;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-    }
     .panel {
-      max-width: 800px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
+      max-width: 700px;
+      margin: 50px auto;
+      background: white;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
     h2 {
       color: #ff6600;
-    }
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-    }
-    .box {
-      flex: 1;
-      margin: 0 10px;
-      background: #fafafa;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 20px;
       text-align: center;
     }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
+    .stat-box {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0;
+    }
+    .stat {
+      flex: 1;
+      background: #ff6600;
+      color: white;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .footer {
+      text-align: center;
+      color: #999;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-  <header>Crunchyroll Premium BD - এডমিন প্যানেল</header>
   <div class="panel">
-    <div class="stats">
-      <div class="box">
-        <h3>মোট অর্ডার</h3>
-        <div id="totalOrders">লোড হচ্ছে...</div>
+    <h2>Crunchyroll BD Shop Admin Panel</h2>
+    <div class="stat-box">
+      <div class="stat">
+        <div id="totalOrders">0</div>
+        <p>মোট অর্ডার</p>
       </div>
-      <div class="box">
-        <h3>মোট ইউজার</h3>
-        <div id="totalUsers">লোড হচ্ছে...</div>
+      <div class="stat">
+        <div id="totalUsers">0</div>
+        <p>মোট ইউজার</p>
       </div>
-    </div><h2>📄 অর্ডার তালিকা</h2>
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pubhtml?widget=true&amp;headers=false"></iframe>
-
+    </div>
+    <div class="footer">আপডেটেড ডেটা দেখার জন্য পেইজটি Reload করুন</div>
   </div>  <script>
-    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pub?output=csv')
-      .then(res => res.text())
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pub?output=csv";
+
+    fetch(sheetUrl)
+      .then(response => response.text())
       .then(data => {
         const rows = data.trim().split('\n');
-        const totalOrders = rows.length - 1;
-        document.getElementById('totalOrders').textContent = totalOrders + ' টি';
-        document.getElementById('totalUsers').textContent = totalOrders + ' জন';
+        const totalOrders = rows.length - 1; // exclude header
+        const uniqueUsers = new Set();
+
+        for (let i = 1; i < rows.length; i++) {
+          const columns = rows[i].split(',');
+          const email = columns[1]; // Assuming column 1 is Email
+          uniqueUsers.add(email);
+        }
+
+        document.getElementById('totalOrders').innerText = totalOrders;
+        document.getElementById('totalUsers').innerText = uniqueUsers.size;
       })
       .catch(error => {
-        document.getElementById('totalOrders').textContent = 'ডেটা লোড হয়নি';
-        document.getElementById('totalUsers').textContent = 'ডেটা লোড হয়নি';
+        console.error('Error fetching data:', error);
       });
   </script></body>
 </html>
