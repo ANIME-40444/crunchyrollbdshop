@@ -1,88 +1,132 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>এডমিন প্যানেল | Crunchyroll Premium BD Shop</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>এডমিন প্যানেল - Crunchyroll Premium BD</title>
   <style>
-    body { font-family: sans-serif; background: #f9f9f9; padding: 20px; }
-    .panel { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h2 { color: #ff6600; text-align: center; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; font-size: 14px; }
-    th { background: #ff6600; color: white; }
-    .stats { margin-top: 20px; text-align: center; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ff6600;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .stat-box {
+      background: #ff6600;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 45%;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    table th {
+      background-color: #f2f2f2;
+    }
   </style>
-</head>
-<body>
-  <div class="panel">
-    <h2>Crunchyroll BD Admin Panel</h2>
-    <div class="stats">
-      মোট অর্ডার: <span id="orderCount">লোড হচ্ছে...</span>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>নাম</th>
-          <th>ইমেইল</th>
-          <th>মোবাইল</th>
-          <th>প্যাকেজ</th>
-          <th>পেমেন্ট</th>
-          <th>ট্রান্স. আইডি</th>
-        </tr>
-      </thead>
-      <tbody id="ordersTable">
-        <!-- Firebase Order Data -->
-      </tbody>
-    </table>
-  </div>
-
   <!-- Firebase SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";const firebaseConfig = {
+  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+  authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+  projectId: "crunchyrollpremiumbd-shop",
+  storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+  messagingSenderId: "790961397898",
+  appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
+  measurementId: "G-PSSPTLC6MJ"
+};
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-      projectId: "crunchyrollpremiumbd-shop",
-      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
-      messagingSenderId: "790961397898",
-      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
-      measurementId: "G-PSSPTLC6MJ"
-    };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+async function loadOrders() {
+  const ordersRef = collection(db, "orders");
+  const snapshot = await getDocs(ordersRef);
 
-    const fetchOrders = async () => {
-      const querySnapshot = await getDocs(collection(db, "orders"));
-      const table = document.getElementById("ordersTable");
-      const orderCount = document.getElementById("orderCount");
+  let totalOrders = snapshot.size;
+  let totalUsers = new Set();
+  let tbody = "";
 
-      let count = 0;
-      table.innerHTML = "";
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    totalUsers.add(data.email);
+    tbody += `
+      <tr>
+        <td>${data.name}</td>
+        <td>${data.email}</td>
+        <td>${data.mobile}</td>
+        <td>${data.package || ''}</td>
+        <td>${data.payment_method}</td>
+        <td>${data.trans_id}</td>
+      </tr>
+    `;
+  });
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        count++;
-        const row = `
-          <tr>
-            <td>${data.name || ""}</td>
-            <td>${data.email || ""}</td>
-            <td>${data.mobile || ""}</td>
-            <td>${data.package || ""}</td>
-            <td>${data.payment_method || ""}</td>
-            <td>${data.trans_id || ""}</td>
-          </tr>
-        `;
-        table.innerHTML += row;
-      });
+  document.getElementById("totalOrders").innerText = totalOrders;
+  document.getElementById("totalUsers").innerText = totalUsers.size;
+  document.getElementById("orderTableBody").innerHTML = tbody;
+}
 
-      orderCount.innerText = count;
-    };
+loadOrders();
 
-    fetchOrders();
   </script>
+</head>
+<body>
+  <header>📊 এডমিন প্যানেল - Crunchyroll Premium BD</header>
+  <div class="container">
+    <div class="stats">
+      <div class="stat-box">
+        মোট অর্ডার <br>
+        <strong id="totalOrders">0</strong>
+      </div>
+      <div class="stat-box">
+        মোট ইউজার <br>
+        <strong id="totalUsers">0</strong>
+      </div>
+    </div><h3>🧾 অর্ডার তালিকা</h3>
+<table>
+  <thead>
+    <tr>
+      <th>নাম</th>
+      <th>ইমেইল</th>
+      <th>মোবাইল</th>
+      <th>প্যাকেজ</th>
+      <th>পেমেন্ট</th>
+      <th>ট্রাঞ্জেকশন</th>
+    </tr>
+  </thead>
+  <tbody id="orderTableBody">
+    <!-- Data will be inserted here -->
+  </tbody>
+</table>
+
+  </div>
 </body>
 </html>
