@@ -1,118 +1,88 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crunchyroll Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>এডমিন প্যানেল | Crunchyroll Premium BD Shop</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #ff6600;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      font-size: 24px;
-    }
-    .login-box, .dashboard {
-      max-width: 400px;
-      margin: 30px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-    input[type="email"], input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #ff6600;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:hover {
-      background-color: #e65c00;
-    }
-    .data-box {
-      background: #fff;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    .data-box h3 {
-      color: #ff6600;
-      font-size: 20px;
-    }
-    .data-box p {
-      font-size: 28px;
-      margin: 10px 0 0;
-      font-weight: bold;
-    }
+    body { font-family: sans-serif; background: #f9f9f9; padding: 20px; }
+    .panel { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { color: #ff6600; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; font-size: 14px; }
+    th { background: #ff6600; color: white; }
+    .stats { margin-top: 20px; text-align: center; }
   </style>
 </head>
 <body>
-  <header>এডমিন প্যানেল - Crunchyroll Premium BD Shop</header>  <div class="login-box" id="loginBox">
-    <h3>লগইন করুন</h3>
-    <input type="email" id="adminEmail" placeholder="ইমেইল দিন" required />
-    <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন" required />
-    <button onclick="loginAdmin()">লগইন</button>
-    <p id="loginError" style="color: red; text-align: center;"></p>
-  </div>  <div class="dashboard" id="adminPanel" style="display: none;">
-    <h2 style="text-align:center">👨‍💼 এডমিন ড্যাশবোর্ড</h2>
-    <div class="data-box">
-      <h3>মোট অর্ডার</h3>
-      <p id="totalOrders">লোড হচ্ছে...</p>
+  <div class="panel">
+    <h2>Crunchyroll BD Admin Panel</h2>
+    <div class="stats">
+      মোট অর্ডার: <span id="orderCount">লোড হচ্ছে...</span>
     </div>
-    <div class="data-box">
-      <h3>মোট ইউজার</h3>
-      <p id="totalUsers">লোড হচ্ছে...</p>
-    </div>
-  </div>  <script>
-    const adminEmail = "anime43377@gmail.com";
-    const adminPassword = "Jisan1234@@@";
+    <table>
+      <thead>
+        <tr>
+          <th>নাম</th>
+          <th>ইমেইল</th>
+          <th>মোবাইল</th>
+          <th>প্যাকেজ</th>
+          <th>পেমেন্ট</th>
+          <th>ট্রান্স. আইডি</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable">
+        <!-- Firebase Order Data -->
+      </tbody>
+    </table>
+  </div>
 
-    function loginAdmin() {
-      const email = document.getElementById("adminEmail").value;
-      const pass = document.getElementById("adminPass").value;
-      if (email === adminEmail && pass === adminPassword) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-        loadData();
-      } else {
-        document.getElementById("loginError").innerText = "❌ ভুল ইমেইল অথবা পাসওয়ার্ড!";
-      }
-    }
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    async function loadData() {
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pub?gid=0&single=true&output=csv";
-      try {
-        const response = await fetch(csvUrl);
-        const csvText = await response.text();
-        const rows = csvText.trim().split("\n");
-        const totalOrders = rows.length - 1;
-        const totalUsers = new Set(rows.slice(1).map(row => row.split(",")[1])).size;
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
+      measurementId: "G-PSSPTLC6MJ"
+    };
 
-        document.getElementById("totalOrders").innerText = totalOrders + " টি";
-        document.getElementById("totalUsers").innerText = totalUsers + " জন";
-      } catch (error) {
-        document.getElementById("totalOrders").innerText = "লোড হয়নি";
-        document.getElementById("totalUsers").innerText = "লোড হয়নি";
-        console.error("Data Load Error:", error);
-      }
-    }
-  </script></body>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const fetchOrders = async () => {
+      const querySnapshot = await getDocs(collection(db, "orders"));
+      const table = document.getElementById("ordersTable");
+      const orderCount = document.getElementById("orderCount");
+
+      let count = 0;
+      table.innerHTML = "";
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        count++;
+        const row = `
+          <tr>
+            <td>${data.name || ""}</td>
+            <td>${data.email || ""}</td>
+            <td>${data.mobile || ""}</td>
+            <td>${data.package || ""}</td>
+            <td>${data.payment_method || ""}</td>
+            <td>${data.trans_id || ""}</td>
+          </tr>
+        `;
+        table.innerHTML += row;
+      });
+
+      orderCount.innerText = count;
+    };
+
+    fetchOrders();
+  </script>
+</body>
 </html>
