@@ -2,102 +2,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>এডমিন প্যানেল - Crunchyroll BD</title>
+  <title>এডমিন প্যানেল - Crunchyroll Premium BD</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f2f2f2;
+      background-color: #f9f9f9;
       margin: 0;
       padding: 0;
     }
-    .login-container, .dashboard {
-      max-width: 400px;
-      margin: 80px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #ff6600;
-    }
-    input[type="email"], input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
+    header {
       background-color: #ff6600;
-      border: none;
       color: white;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 26px;
     }
-    button:hover {
-      background-color: #e65c00;
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     .stats {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #333;
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .stat-box {
+      background-color: #ffe3cc;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      flex: 1;
+      margin: 0 10px;
+    }
+    .stat-box h2 {
+      margin: 0;
+      font-size: 40px;
+      color: #ff6600;
+    }
+    .stat-box p {
+      margin: 5px 0 0;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #ff6600;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="login-container" id="loginPanel">
-    <h2>🔐 এডমিন লগইন</h2>
-    <input type="email" id="adminEmail" placeholder="ইমেইল লিখুন" required>
-    <input type="password" id="adminPassword" placeholder="পাসওয়ার্ড লিখুন" required>
-    <button onclick="login()">লগইন করুন</button>
-  </div>  <div class="dashboard" id="dashboardPanel" style="display:none;">
-    <h2>📊 Crunchyroll BD Admin Panel</h2>
+  <header>Crunchyroll Premium BD - এডমিন প্যানেল</header>
+  <div class="container">
     <div class="stats">
-      <p>🧾 মোট অর্ডার: <span id="orderCount">লোড হচ্ছে...</span></p>
-      <p>👥 মোট ইউজার: <span id="userCount">লোড হচ্ছে...</span></p>
-    </div>
+      <div class="stat-box">
+        <h2 id="totalOrders">0</h2>
+        <p>মোট অর্ডার</p>
+      </div>
+      <div class="stat-box">
+        <h2 id="totalUsers">0</h2>
+        <p>মোট ইউজার</p>
+      </div>
+    </div><h3 style="color:#ff6600">সর্বশেষ অর্ডার সমূহ</h3>
+<table>
+  <thead>
+    <tr>
+      <th>নাম</th>
+      <th>ইমেইল</th>
+      <th>মোবাইল</th>
+      <th>প্যাকেজ</th>
+      <th>ট্রাঞ্জেকশন আইডি</th>
+    </tr>
+  </thead>
+  <tbody id="orderData"></tbody>
+</table>
+
   </div>  <script>
-    const adminEmail = "anime43377@gmail.com";
-    const adminPassword = "Jisan1234@@@";
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pub?output=csv";
 
-    function login() {
-      const email = document.getElementById('adminEmail').value;
-      const pass = document.getElementById('adminPassword').value;
+    fetch(sheetURL)
+      .then(res => res.text())
+      .then(data => {
+        const rows = data.split("\n").slice(1);
+        let totalOrders = 0;
+        const users = new Set();
+        const tbody = document.getElementById("orderData");
 
-      if (email === adminEmail && pass === adminPassword) {
-        document.getElementById('loginPanel').style.display = 'none';
-        document.getElementById('dashboardPanel').style.display = 'block';
-        loadSheetData();
-      } else {
-        alert("❌ ভুল ইমেইল বা পাসওয়ার্ড!");
-      }
-    }
-
-    async function loadSheetData() {
-      const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQw.../pub?output=csv";
-      try {
-        const res = await fetch(sheetURL);
-        const text = await res.text();
-        const rows = text.split("\n");
-
-        const totalOrders = rows.length - 1; // Header বাদে
-        const uniqueUsers = new Set();
-        rows.slice(1).forEach(row => {
+        rows.forEach(row => {
+          if (row.trim() === "") return;
           const cols = row.split(",");
-          uniqueUsers.add(cols[1]); // ধরেছি Email is 2nd column
+          const [name, email, mobile, address, packageSel, personalSel, primarySel, paymentNum, transID, method] = cols;
+          users.add(email);
+          totalOrders++;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${name}</td>
+            <td>${email}</td>
+            <td>${mobile}</td>
+            <td>${packageSel || personalSel || primarySel}</td>
+            <td>${transID}</td>
+          `;
+          tbody.appendChild(tr);
         });
 
-        document.getElementById("orderCount").textContent = totalOrders;
-        document.getElementById("userCount").textContent = uniqueUsers.size;
-      } catch (e) {
-        document.getElementById("orderCount").textContent = "লোড করা যায়নি";
-        document.getElementById("userCount").textContent = "লোড করা যায়নি";
-      }
-    }
+        document.getElementById("totalOrders").textContent = totalOrders;
+        document.getElementById("totalUsers").textContent = users.size;
+      })
+      .catch(err => {
+        console.error("ডেটা লোড করতে সমস্যা হয়েছে:", err);
+      });
   </script></body>
 </html>
