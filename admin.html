@@ -3,108 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>এডমিন প্যানেল - Crunchyroll Premium BD Shop</title>
+  <title>এডমিন প্যানেল | Crunchyroll Premium BD Shop</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
       margin: 0;
       padding: 0;
-      background: #f2f2f2;
     }
-    .box {
-      max-width: 600px;
-      margin: 60px auto;
-      background: #fff;
-      padding: 30px;
+    header {
+      background-color: #ff6600;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
       color: #ff6600;
     }
-    input[type="email"], input[type="password"], button {
+    table {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    button {
-      background-color: #ff6600;
-      color: white;
-      cursor: pointer;
-      border: none;
-    }
-    button:hover {
-      background-color: #e65c00;
-    }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      border-radius: 8px;
+      border-collapse: collapse;
       margin-top: 20px;
     }
-    .error {
-      color: red;
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 12px;
       text-align: center;
     }
-    .logout-btn {
+    th {
+      background-color: #ff6600;
+      color: white;
+    }
+    .total-orders {
+      font-size: 18px;
+      margin-bottom: 15px;
       text-align: center;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-
-  <!-- Login Box -->
-  <div class="box" id="loginBox">
-    <h2>🔐 এডমিন লগইন</h2>
-    <input type="email" id="email" placeholder="ইমেইল লিখুন" required>
-    <input type="password" id="password" placeholder="পাসওয়ার্ড দিন" required>
-    <button onclick="login()">লগইন করুন</button>
-    <p class="error" id="errorMessage"></p>
-  </div>
-
-  <!-- Admin Panel -->
-  <div class="box" id="adminPanel" style="display:none;">
-    <h2>📦 অর্ডার ম্যানেজমেন্ট প্যানেল</h2>
-
-    <p style="text-align: center; color: green;">✅ এখানে আপনি সকল কাস্টমারের অর্ডার দেখতে পারবেন।</p>
-
-    <iframe src="https://docs.google.com/spreadsheets/d/1y4yhgoUlcqnFj0K_kNuoR0lfaaDZB8jaTJzNLuULdiY/edit?usp=sharing"></iframe>
-
-    <div class="logout-btn">
-      <button onclick="logout()">🚪 লগআউট করুন</button>
-    </div>
+  <header>📊 এডমিন প্যানেল</header>
+  <div class="container">
+    <h2>ক্রাঞ্চিরল অর্ডার তথ্য</h2>
+    <div class="total-orders" id="totalOrders">মোট অর্ডার: গণনা হচ্ছে...</div>
+    <table id="orderTable">
+      <thead>
+        <tr>
+          <th>নাম</th>
+          <th>ইমেইল</th>
+          <th>মোবাইল</th>
+          <th>ঠিকানা</th>
+          <th>Share</th>
+          <th>Personal</th>
+          <th>Primary</th>
+          <th>পেমেন্ট নম্বর</th>
+          <th>ট্রানজেকশন আইডি</th>
+          <th>মেথড</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <script>
-    const correctEmail = "anime43377@gmail.com";
-    const correctPassword = "Jisan1234@@@";
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9FVW5UM__w8Vxe7vwlSeP9avz16xP5USJgu4EFynOobdx1GpFwY_g27fXLtKjyPjkqV7INUMBL2v9/pub?output=csv";
 
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    fetch(sheetURL)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.trim().split("\n").slice(1);
+        const tableBody = document.querySelector("#orderTable tbody");
+        document.getElementById("totalOrders").textContent = `মোট অর্ডার: ${rows.length}`;
 
-      if (email === correctEmail && password === correctPassword) {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-      } else {
-        document.getElementById("errorMessage").innerText = "❌ ইমেইল অথবা পাসওয়ার্ড ভুল!";
-      }
-    }
-
-    function logout() {
-      document.getElementById("adminPanel").style.display = "none";
-      document.getElementById("loginBox").style.display = "block";
-      document.getElementById("email").value = "";
-      document.getElementById("password").value = "";
-      document.getElementById("errorMessage").innerText = "";
-    }
+        rows.forEach(row => {
+          const cols = row.split(",");
+          const tr = document.createElement("tr");
+          cols.forEach(col => {
+            const td = document.createElement("td");
+            td.textContent = col;
+            tr.appendChild(td);
+          });
+          tableBody.appendChild(tr);
+        });
+      })
+      .catch(error => {
+        document.getElementById("totalOrders").textContent = "⚠️ ডেটা লোড করা যায়নি!";
+        console.error("Error:", error);
+      });
   </script>
-
 </body>
-</html>
+  </html>
