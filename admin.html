@@ -2,126 +2,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>এডমিন প্যানেল - Crunchyroll Premium BD</title>
+  <title>Crunchyroll Admin Panel</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
+      background-color: #f2f2f2;
       margin: 0;
       padding: 0;
     }
     header {
       background-color: #ff6600;
       color: white;
+      padding: 20px;
       text-align: center;
-      padding: 20px 0;
-      font-size: 26px;
+      font-size: 24px;
     }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
+    .panel {
+      max-width: 800px;
+      margin: 40px auto;
       background: #fff;
-      padding: 25px;
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #ff6600;
     }
     .stats {
       display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      margin-bottom: 30px;
     }
-    .stat-box {
-      background-color: #ffe3cc;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
+    .box {
       flex: 1;
       margin: 0 10px;
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
     }
-    .stat-box h2 {
-      margin: 0;
-      font-size: 40px;
-      color: #ff6600;
-    }
-    .stat-box p {
-      margin: 5px 0 0;
-      font-weight: bold;
-    }
-    table {
+    iframe {
       width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-    th {
-      background-color: #ff6600;
-      color: white;
+      height: 600px;
+      border: none;
     }
   </style>
 </head>
 <body>
   <header>Crunchyroll Premium BD - এডমিন প্যানেল</header>
-  <div class="container">
+  <div class="panel">
     <div class="stats">
-      <div class="stat-box">
-        <h2 id="totalOrders">0</h2>
-        <p>মোট অর্ডার</p>
+      <div class="box">
+        <h3>মোট অর্ডার</h3>
+        <div id="totalOrders">লোড হচ্ছে...</div>
       </div>
-      <div class="stat-box">
-        <h2 id="totalUsers">0</h2>
-        <p>মোট ইউজার</p>
+      <div class="box">
+        <h3>মোট ইউজার</h3>
+        <div id="totalUsers">লোড হচ্ছে...</div>
       </div>
-    </div><h3 style="color:#ff6600">সর্বশেষ অর্ডার সমূহ</h3>
-<table>
-  <thead>
-    <tr>
-      <th>নাম</th>
-      <th>ইমেইল</th>
-      <th>মোবাইল</th>
-      <th>প্যাকেজ</th>
-      <th>ট্রাঞ্জেকশন আইডি</th>
-    </tr>
-  </thead>
-  <tbody id="orderData"></tbody>
-</table>
+    </div><h2>📄 অর্ডার তালিকা</h2>
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pubhtml?widget=true&amp;headers=false"></iframe>
 
   </div>  <script>
-    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pub?output=csv";
-
-    fetch(sheetURL)
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSszsZGoe0lXBXOWGktlJ6pYIU6YSIM_SZgLKnsifoa9jAN_jit55vIcOOdXi8yILI5-9i8P-hfIrsv/pub?output=csv')
       .then(res => res.text())
       .then(data => {
-        const rows = data.split("\n").slice(1);
-        let totalOrders = 0;
-        const users = new Set();
-        const tbody = document.getElementById("orderData");
-
-        rows.forEach(row => {
-          if (row.trim() === "") return;
-          const cols = row.split(",");
-          const [name, email, mobile, address, packageSel, personalSel, primarySel, paymentNum, transID, method] = cols;
-          users.add(email);
-          totalOrders++;
-
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${name}</td>
-            <td>${email}</td>
-            <td>${mobile}</td>
-            <td>${packageSel || personalSel || primarySel}</td>
-            <td>${transID}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById("totalOrders").textContent = totalOrders;
-        document.getElementById("totalUsers").textContent = users.size;
+        const rows = data.trim().split('\n');
+        const totalOrders = rows.length - 1;
+        document.getElementById('totalOrders').textContent = totalOrders + ' টি';
+        document.getElementById('totalUsers').textContent = totalOrders + ' জন';
       })
-      .catch(err => {
-        console.error("ডেটা লোড করতে সমস্যা হয়েছে:", err);
+      .catch(error => {
+        document.getElementById('totalOrders').textContent = 'ডেটা লোড হয়নি';
+        document.getElementById('totalUsers').textContent = 'ডেটা লোড হয়নি';
       });
   </script></body>
 </html>
