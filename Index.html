@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -55,19 +54,11 @@
   </style>
 </head>
 <body>
-  <header><h1>Crunchyroll Premium</h1></header>
-
-  <img src="https://i.ibb.co/WWR5XwRz/anime-banner.jpg" alt="Banner" class="hero" />
-
-  <!-- Add to Cart Section -->
-  <div class="section" id="cartPage">
+  <header><h1>Crunchyroll Premium</h1></header>  <img src="https://i.ibb.co/WWR5XwRz/anime-banner.jpg" alt="Banner" class="hero" />  <!-- Add to Cart Section -->  <div class="section" id="cartPage">
     <h2>📦 আপনার পছন্দের প্যাকেজ</h2>
     <input type="number" id="amount" placeholder="যে এমাউন্টটি দিতে চান তা লিখুন">
     <button onclick="showPaymentPage()">🛒 Add to Cart</button>
-  </div>
-
-  <!-- Payment Form -->
-  <div class="container hidden" id="paymentPage">
+  </div>  <!-- Payment Form -->  <div class="container hidden" id="paymentPage">
     <h2>✅ অর্ডার কনফার্ম ফর্ম</h2>
     <form id="orderForm">
       <input type="text" name="name" placeholder="Full Name" required />
@@ -91,9 +82,7 @@
       </select>
       <button type="submit">📩 অর্ডার কনফার্ম করুন</button>
     </form>
-  </div>
-
-  <script>
+  </div>  <script>
     // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
@@ -125,21 +114,18 @@
       formData.forEach((v, k) => order[k] = v);
       order.timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-      // Store to Firebase
-      db.collection("orders").add(order).then(() => {
-        alert("✅ অর্ডার কনফার্ম হয়েছে!");
-        document.getElementById("orderForm").reset();
-      });
+      // Store order to Firestore
+      db.collection("orders").add(order);
 
-      // Store user to 'visitors' if email exists
+      // Count user
       db.collection("visitors").add({ email: order.email, time: firebase.firestore.FieldValue.serverTimestamp() });
 
-      // Send Email via EmailJS
+      // Customer pending email
       emailjs.send("service_fv6uzig", "template_jh7bcfi", {
         to_name: order.name,
         to_email: order.email,
         from_name: "Crunchyroll BD",
-        message: `আপনার অর্ডার পেন্ডিং রয়েছে। পেমেন্ট নম্বর: ${order.payment_number}, ট্রান্স. আইডি: ${order.trans_id}`
+        message: `আপনার অর্ডার পেন্ডিং রয়েছে। পেমেন্ট নম্বর: ${order.payment_number}, ট্রান্স. আইডি: ${order.trans_id}`
       });
 
       // Admin email
@@ -149,7 +135,9 @@
         from_name: order.name,
         message: `নতুন অর্ডার এসেছে\nEmail: ${order.email}\nMobile: ${order.mobile}\nPackage: ${order.package}`
       });
+
+      alert("✅ অর্ডার কনফার্ম হয়েছে!");
+      document.getElementById("orderForm").reset();
     });
-  </script>
-</body>
+  </script></body>
 </html>
