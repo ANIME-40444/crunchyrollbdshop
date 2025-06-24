@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Crunchyroll Premium BD Shop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #ff6600;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e65c00;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container" id="authSection">
+    <h2>🔐 লগইন করুন</h2>
+    <input type="email" id="email" placeholder="ইমেইল" required />
+    <input type="password" id="password" placeholder="পাসওয়ার্ড" required />
+    <button onclick="loginUser()">Sign In</button>
+    <p>কোন একাউন্ট নেই? <a href="#" onclick="showSignup()">Sign Up</a></p>
+  </div>  <div class="container hidden" id="signupSection">
+    <h2>📝 একাউন্ট তৈরি করুন</h2>
+    <input type="email" id="newEmail" placeholder="ইমেইল" required />
+    <input type="text" id="mobile" placeholder="মোবাইল নম্বর" required />
+    <input type="password" id="newPassword" placeholder="পাসওয়ার্ড" required />
+    <input type="password" id="confirmPassword" placeholder="পাসওয়ার্ড নিশ্চিত করুন" required />
+    <input type="text" id="city" placeholder="শহর" required />
+    <button onclick="signupUser()">Sign Up</button>
+    <p>ইতোমধ্যে একাউন্ট আছে? <a href="#" onclick="showLogin()">Sign In</a></p>
+  </div>  <div class="container hidden" id="mainSection">
+    <h2>🎉 Crunchyroll Premium BD Shop</h2>
+    <form id="orderForm" onsubmit="submitOrder(event)">
+      <input type="text" name="name" placeholder="Full Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="address" placeholder="Address" required />
+      <input type="text" name="mobile" placeholder="Mobile Number" required />
+      <select name="package">
+        <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
+        <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
+        <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
+      </select>
+      <input type="text" name="payment_number" placeholder="Payment Number" required />
+      <input type="text" name="trans_id" placeholder="Transaction ID" required />
+      <select name="payment_method">
+        <option value="Bkash">Bkash</option>
+        <option value="Nagad">Nagad</option>
+        <option value="Rocket">Rocket</option>
+      </select>
+      <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+    </form>
+  </div>  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>  <script>
+    emailjs.init("SsUmUorUm-BZG8LBY");
+
+    function showSignup() {
+      document.getElementById('authSection').classList.add('hidden');
+      document.getElementById('signupSection').classList.remove('hidden');
+    }
+
+    function showLogin() {
+      document.getElementById('signupSection').classList.add('hidden');
+      document.getElementById('authSection').classList.remove('hidden');
+    }
+
+    function loginUser() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+
+      if (email === localStorage.getItem("user_email") && pass === localStorage.getItem("user_pass")) {
+        document.getElementById('authSection').classList.add('hidden');
+        document.getElementById('mainSection').classList.remove('hidden');
+      } else {
+        alert("ইমেইল বা পাসওয়ার্ড ভুল!");
+      }
+    }
+
+    function signupUser() {
+      const email = document.getElementById('newEmail').value;
+      const pass = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if (pass !== confirm) {
+        alert("পাসওয়ার্ড মিলছে না");
+        return;
+      }
+      localStorage.setItem("user_email", email);
+      localStorage.setItem("user_pass", pass);
+      showLogin();
+    }
+
+    function submitOrder(e) {
+      e.preventDefault();
+      const form = document.getElementById("orderForm");
+      emailjs.sendForm("service_z1714kq", "template_hp66tqp", form)
+        .then(() => {
+          alert("✅ অর্ডার সফলভাবে সাবমিট হয়েছে! আপনি শীঘ্রই ইমেইল পাবেন।");
+          form.reset();
+        })
+        .catch(error => {
+          alert("❌ অর্ডার ব্যর্থ হয়েছে, পরে আবার চেষ্টা করুন।");
+          console.error(error);
+        });
+    }
+  </script></body>
+</html>
