@@ -1,141 +1,75 @@
-<!-- index.html (main website file) -->
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crunchyroll Premium BD Shop</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fdfcfb;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #ff6600;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-      font-size: 28px;
-    }
-    .container {
-      max-width: 700px;
-      margin: 30px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-  </style>
-</head>
-<body>
-  <header>Crunchyroll Premium BD Shop</header>
-  <div class="container">
-    <p>এই ওয়েবসাইটে আসার জন্য ধন্যবাদ।</p>
-  </div>
-
-  <!-- Firebase Visitor Tracker Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-      projectId: "crunchyrollpremiumbd-shop",
-      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
-      messagingSenderId: "790961397898",
-      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function recordVisitor() {
-      try {
-        await addDoc(collection(db, "visitors"), {
-          timestamp: serverTimestamp()
-        });
-        console.log("✅ Visitor logged successfully");
-      } catch (error) {
-        console.error("❌ Error logging visitor:", error);
-      }
-    }
-
-    recordVisitor();
-  </script>
-</body>
-</html>
-
-<!-- admin.html (admin panel file) -->
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Crunchyroll BD</title>
+  <title>এডমিন প্যানেল | Crunchyroll Premium BD</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
+      background: #f9f9f9;
       padding: 20px;
+      color: #333;
     }
-    .dashboard {
-      background: white;
+    .panel {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
       padding: 30px;
       border-radius: 12px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+      text-align: center;
     }
     h1 {
       color: #ff6600;
-      text-align: center;
     }
-    .stat {
-      font-size: 20px;
-      margin: 15px 0;
-    }
-    .stat span {
-      color: #222;
-      font-weight: bold;
+    .info-box {
+      margin-top: 20px;
+      font-size: 22px;
+      padding: 15px;
+      background: #f1f1f1;
+      border-radius: 10px;
     }
   </style>
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="dashboard">
+  <div class="panel">
     <h1>📊 এডমিন প্যানেল</h1>
-    <div class="stat">মোট অর্ডার: <span id="totalOrders">0</span></div>
-    <div class="stat">মোট ইউজার (Visitors): <span id="totalVisitors">0</span></div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+    <div class="info-box">মোট অর্ডার: <span id="orderCount">লোড হচ্ছে...</span></div>
+    <div class="info-box">মোট ইউজার (ভিজিটর): <span id="visitorCount">লোড হচ্ছে...</span></div>
+  </div>  <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
       authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
       projectId: "crunchyrollpremiumbd-shop",
       storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
       messagingSenderId: "790961397898",
-      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73"
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
+      measurementId: "G-PSSPTLC6MJ"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    async function updateStats() {
-      const orderSnap = await getDocs(collection(db, "orders"));
-      const visitorSnap = await getDocs(collection(db, "visitors"));
+    async function updateCounts() {
+      try {
+        const ordersSnap = await db.collection('orders').get();
+        document.getElementById('orderCount').textContent = ordersSnap.size;
 
-      document.getElementById("totalOrders").textContent = orderSnap.size;
-      document.getElementById("totalVisitors").textContent = visitorSnap.size;
+        const visitorsSnap = await db.collection('visitors').get();
+        const uniqueIps = new Set();
+        visitorsSnap.forEach(doc => uniqueIps.add(doc.data().ip));
+        document.getElementById('visitorCount').textContent = uniqueIps.size;
+      } catch (err) {
+        document.getElementById('orderCount').textContent = 'ত্রুটি';
+        document.getElementById('visitorCount').textContent = 'ত্রুটি';
+        console.error("🔥 Firebase Error:", err);
+      }
     }
 
-    updateStats();
-  </script>
-</body>
+    updateCounts();
+  </script></body>
 </html>
