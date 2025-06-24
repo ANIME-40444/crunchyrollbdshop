@@ -2,152 +2,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crunchyroll Premium BD Shop</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <title>Crunchyroll Premium Offer</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
+      background-color: #fff9f5;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
     }
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: 30px auto;
-      background: white;
       padding: 20px;
-      border-radius: 10px;
+      background: #ffffff;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
     }
-    h2 {
-      text-align: center;
-      color: #ff6600;
-    }
-    input, select, button {
+    .product-img {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      border-radius: 12px;
     }
-    button {
+    .title {
+      color: #ff6600;
+      font-size: 26px;
+      margin-top: 20px;
+    }
+    .description {
+      font-size: 16px;
+      color: #444;
+      margin-top: 10px;
+    }
+    .price {
+      font-size: 20px;
+      color: #009933;
+      margin: 15px 0;
+    }
+    .button {
+      display: inline-block;
       background-color: #ff6600;
-      color: white;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
+      text-decoration: none;
     }
-    button:hover {
+    .button:hover {
       background-color: #e65c00;
     }
-    .package-info {
-      margin: 10px 0;
-      padding: 10px;
-      background: #fff0e6;
-      border-radius: 8px;
+    .note {
+      font-size: 14px;
+      color: #777;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
-<div class="container" id="signup">
-  <h2>🔐 সাইন আপ</h2>
-  <input type="email" id="signupEmail" placeholder="ইমেইল" required>
-  <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর" required>
-  <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
-  <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড" required>
-  <input type="text" id="signupCity" placeholder="শহর" required>
-  <button onclick="handleSignup()">সাইন আপ করুন</button>
-</div>
-<div class="container" id="login" style="display: none">
-  <h2>🔓 সাইন ইন</h2>
-  <input type="email" id="loginEmail" placeholder="ইমেইল" required>
-  <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
-  <button onclick="handleLogin()">সাইন ইন করুন</button>
-</div>
-<section id="mainWebsite" class="container" style="display: none">
-  <h2>🎉 Crunchyroll Premium BD Shop</h2>  <div class="package-info" id="dynamicContent">
-    🔄 ওয়েবসাইট তথ্য লোড হচ্ছে...
-  </div>  <form id="orderForm">
-    <input type="text" name="name" placeholder="Full Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="address" placeholder="Street Address" required>
-    <input type="text" name="mobile" placeholder="Mobile Number" required>
-    <select name="package">
-      <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
-      <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
-    </select>
-    <input type="text" name="payment_number" placeholder="Payment Number" required>
-    <input type="text" name="trans_id" placeholder="Transaction ID" required>
-    <select name="payment_method" required>
-      <option value="Bkash">Bkash</option>
-      <option value="Nagad">Nagad</option>
-    </select>
-    <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
-  </form>
-</section><script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-    projectId: "crunchyrollpremiumbd-shop"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  <div class="container">
+    <img src="https://static.crunchyroll.com/fms/landscape_poster/960x540/100/image.png" alt="Anime Image" class="product-img"><h1 class="title">Crunchyroll Premium BD Offer</h1>
 
-  // Load siteSettings
-  db.collection("siteSettings").doc("main").get().then(doc => {
-    if (doc.exists) {
-      const data = doc.data();
-      document.getElementById("dynamicContent").innerHTML = `
-        📦 <strong>প্যাকেজ:</strong> ${data.package || 'নেই'}<br>
-        💳 <strong>পেমেন্ট নাম্বার:</strong> ${data.payment_number || 'নেই'}<br>
-        🧾 <strong>পেমেন্ট মেথড:</strong> ${data.payment_method || 'নেই'}
-      `;
-    } else {
-      document.getElementById("dynamicContent").innerText = "কোন তথ্য পাওয়া যায়নি";
-    }
-  });
+<p class="description">
+  🔸 আনলিমিটেড HD+ Anime স্ট্রিমিং <br>
+  🔸 No Ads – সম্পূর্ণ বিজ্ঞাপনমুক্ত অভিজ্ঞতা <br>
+  🔸 Simultaneous Streaming – একাধিক ডিভাইসে একসাথে<br>
+  🔸 Weekly নতুন এপিসোড!<br>
+  🔸 Premium Personal & Share Account বিকল্প
+</p>
 
-  function handleSignup() {
-    const email = document.getElementById("signupEmail").value;
-    const phone = document.getElementById("signupPhone").value;
-    const pass = document.getElementById("signupPassword").value;
-    const confirm = document.getElementById("signupConfirm").value;
-    const city = document.getElementById("signupCity").value;
-    if (pass !== confirm) return alert("Password মিলছে না");
+<p class="price">শুরু মাত্র 100 টাকা/মাস!</p>
 
-    db.collection("users").add({
-      email, phone, city,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      alert("সাইন আপ সফল! এখন লগইন করুন।");
-      document.getElementById("signup").style.display = "none";
-      document.getElementById("login").style.display = "block";
-    });
-  }
+<a href="https://crunchyrollbdshop.neocities.org/order.html" class="button">🛒 এখনই অর্ডার করুন</a>
 
-  function handleLogin() {
-    const email = document.getElementById("loginEmail").value;
-    const pass = document.getElementById("loginPassword").value;
+<p class="note">
+  📌 নোট: এটি একটি ডিজিটাল সাবস্ক্রিপশন পরিষেবা। আপনার ইমেইলে ক্রেডেনশিয়াল পাঠানো হবে। পেমেন্ট করার আগে নিশ্চিত হয়ে অর্ডার করুন।
+</p>
 
-    db.collection("users").where("email", "==", email).get().then(snapshot => {
-      if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
-      document.getElementById("login").style.display = "none";
-      document.getElementById("mainWebsite").style.display = "block";
-    });
-  }
-
-  document.getElementById("orderForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const order = {};
-    formData.forEach((v, k) => order[k] = v);
-    order.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-
-    db.collection("orders").add(order).then(() => {
-      alert("✅ অর্ডার কনফার্ম হয়েছে!");
-      document.getElementById("orderForm").reset();
-    }).catch(err => {
-      alert("❌ অর্ডার ব্যর্থ হয়েছে");
-    });
-  });
-</script></body>
+  </div>
+</body>
 </html>
