@@ -2,91 +2,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crunchyroll Premium BD</title>
+  <title>Crunchyroll Premium BD Shop</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
   <style>
     body {
+      font-family: 'Noto Sans Bengali', sans-serif;
       margin: 0;
-      font-family: sans-serif;
-      background-color: #18c06f;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe4e1, #fff5ee);
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .container {
-      max-width: 600px;
-      background: #fff;
-      padding: 20px;
-      margin: 50px auto;
-      border-radius: 8px;
-    }
-    h2, h3 {
-      border-bottom: 2px solid red;
-      padding-bottom: 5px;
-      color: #333;
-    }
-    input, select, textarea {
       width: 100%;
-      padding: 8px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      margin: 20px;
     }
-    .price-box {
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    .btn {
-      width: 100%;
-      background: #28a745;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #218838;
-    }
-    .center {
+    h2 {
       text-align: center;
-      margin-top: 20px;
+      color: #ff6600;
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #ff6600;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
+    .section {
+      display: none;
+    }
+    .visible {
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Billing Address</h2>
-    <input type="text" placeholder="আপনার নাম" required>
-    <input type="email" placeholder="আপনার ইমেইল" required>
-    <input type="text" placeholder="আপনার ঠিকানা" required>
-    <input type="text" placeholder="মোবাইল নাম্বার" required><h2>Payment</h2>
-<p>এই নাম্বারে Send Money করুন:<br>
-<strong>01603599843</strong></p>
-<p>Send করার পর যে নাম্বার থেকে পাঠিয়েছেন এবং TrxID দিন।</p>
-<input type="text" placeholder="Payment Number" required>
-<input type="text" placeholder="Trx ID" required>
-<select>
-  <option value="Bkash">Bkash</option>
-  <option value="Nagad">Nagad</option>
-  <option value="Rocket">Rocket</option>
-</select>
+<div class="container visible" id="signup">
+  <h2>🔐 সাইন আপ</h2>
+  <input type="email" id="signupEmail" placeholder="ইমেইল" required>
+  <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর" required>
+  <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
+  <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড" required>
+  <input type="text" id="signupCity" placeholder="শহর" required>
+  <button onclick="handleSignup()">সাইন আপ করুন</button>
+</div><div class="container section" id="login">
+  <h2>🔓 সাইন ইন</h2>
+  <input type="email" id="loginEmail" placeholder="ইমেইল" required>
+  <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
+  <button onclick="handleLogin()">সাইন ইন করুন</button>
+</div><div class="container section" id="mainWebsite">
+  <h2>🎉 Crunchyroll Premium BD Shop</h2>
+  <form id="orderForm">
+    <input type="text" name="name" placeholder="নাম" required>
+    <input type="email" name="email" placeholder="ইমেইল" required>
+    <input type="text" name="address" placeholder="ঠিকানা" required>
+    <input type="text" name="mobile" placeholder="মোবাইল নম্বর" required>
+    <select name="package">
+      <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
+      <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
+    </select>
+    <input type="text" name="payment_number" placeholder="পেমেন্ট নাম্বার" required>
+    <input type="text" name="trans_id" placeholder="ট্রান্সেকশন আইডি" required>
+    <select name="payment_method" required>
+      <option value="Bkash">Bkash</option>
+      <option value="Nagad">Nagad</option>
+    </select>
+    <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+  </form>
+</div><script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+    projectId: "crunchyrollpremiumbd-shop",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-<h3>Your Order</h3>
-<div class="price-box">
-  <input type="radio" name="plan" checked> 1 Month Share – 100৳
-</div>
-<div class="price-box">
-  <input type="radio" name="plan"> 1 Month Personal – 240৳
-</div>
-<div class="price-box">
-  <input type="radio" name="plan"> 1 Year Personal – 2499৳
-</div>
+  function handleSignup() {
+    const email = document.getElementById("signupEmail").value;
+    const phone = document.getElementById("signupPhone").value;
+    const pass = document.getElementById("signupPassword").value;
+    const confirm = document.getElementById("signupConfirm").value;
+    const city = document.getElementById("signupCity").value;
+    if (pass !== confirm) return alert("Password মিলছে না");
 
-<button class="btn">Confirm Buy</button>
-<div class="center">
-  <p>ধন্যবাদ! অর্ডার সাবমিট করার পর আমাদের সাথে WhatsApp/Facebook-এ যোগাযোগ করুন।</p>
-</div>
+    db.collection("users").add({
+      email, phone, city,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      alert("সাইন আপ সফল! এখন লগইন করুন।");
+      showSection("login");
+    });
+  }
 
-  </div>
-</body>
+  function handleLogin() {
+    const email = document.getElementById("loginEmail").value;
+    const pass = document.getElementById("loginPassword").value;
+
+    db.collection("users").where("email", "==", email).get().then(snapshot => {
+      if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
+      showSection("mainWebsite");
+    });
+  }
+
+  function showSection(id) {
+    document.querySelectorAll('.container').forEach(c => c.classList.remove('visible'));
+    document.getElementById(id).classList.add('visible');
+  }
+
+  document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const order = {};
+    formData.forEach((v, k) => order[k] = v);
+    order.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+    db.collection("orders").add(order).then(() => {
+      alert("✅ অর্ডার কনফার্ম হয়েছে!");
+      document.getElementById("orderForm").reset();
+    }).catch(err => {
+      alert("❌ অর্ডার ব্যর্থ হয়েছে");
+    });
+  });
+</script></body>
 </html>
