@@ -1,97 +1,94 @@
 <!DOCTYPE html><html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crunchyroll Premium BD Shop</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Noto Sans Bengali', sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #ffe4e1, #fff5ee);
-      background-size: cover;
-      background-position: center;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #222;
+    }
+    header {
+      background: #000;
+      text-align: center;
+    }
+    header img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-bottom: 5px solid #ff6600;
     }
     .container {
-      width: 100%;
-      max-width: 700px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      margin: 20px;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
       color: #ff6600;
-      margin-bottom: 20px;
     }
     input, select, button {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 16px;
     }
     button {
-      background-color: #ff6600;
+      background: #ff6600;
       color: white;
-      font-weight: bold;
-      transition: 0.3s;
+      border: none;
+      cursor: pointer;
     }
     button:hover {
-      background-color: #e65c00;
+      background: #e65c00;
     }
-    .section {
-      display: none;
-    }
-    .visible {
-      display: block;
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 18px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
   </style>
 </head>
-<body>
-<div class="container visible" id="signup">
-  <h2>🔐 সাইন আপ</h2>
-  <input type="email" id="signupEmail" placeholder="ইমেইল" required>
-  <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর" required>
-  <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
-  <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড" required>
-  <input type="text" id="signupCity" placeholder="শহর" required>
-  <button onclick="handleSignup()">সাইন আপ করুন</button>
-</div><div class="container section" id="login">
-  <h2>🔓 সাইন ইন</h2>
-  <input type="email" id="loginEmail" placeholder="ইমেইল" required>
-  <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
-  <button onclick="handleLogin()">সাইন ইন করুন</button>
-</div><div class="container section" id="mainWebsite">
-  <h2>🎉 Crunchyroll Premium BD Shop</h2>
+<body><header>
+  <img src="https://i.ibb.co/WWR5XwRz/banner.jpg" alt="Anime Banner" />
+</header><div class="container">
+  <h2>🎉 অর্ডার ফর্ম</h2>
   <form id="orderForm">
-    <input type="text" name="name" placeholder="নাম" required>
-    <input type="email" name="email" placeholder="ইমেইল" required>
-    <input type="text" name="address" placeholder="ঠিকানা" required>
-    <input type="text" name="mobile" placeholder="মোবাইল নম্বর" required>
-    <select name="package">
+    <input type="text" name="name" placeholder="আপনার নাম" required />
+    <input type="email" name="email" placeholder="ইমেইল" required />
+    <input type="text" name="address" placeholder="ঠিকানা" required />
+    <input type="text" name="mobile" placeholder="মোবাইল নাম্বার" required />
+    <select name="package" required>
+      <option value="">প্যাকেজ সিলেক্ট করুন</option>
       <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
       <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
     </select>
-    <input type="text" name="payment_number" placeholder="পেমেন্ট নাম্বার" required>
-    <input type="text" name="trans_id" placeholder="ট্রান্সেকশন আইডি" required>
+    <input type="text" name="payment_number" placeholder="পেমেন্ট নাম্বার" required />
+    <input type="text" name="trans_id" placeholder="লেনদেন নম্বর" required />
     <select name="payment_method" required>
       <option value="Bkash">Bkash</option>
       <option value="Nagad">Nagad</option>
     </select>
     <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
   </form>
-</div><script>
+</div><a class="whatsapp-btn" href="https://wa.me/8801305736690?text=হ্যালো%20আমি%20Crunchyroll%20সাবস্ক্রিপশন%20নিতে%20চাই" target="_blank">
+  🛋 WhatsApp সাপোর্ট
+</a><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script><script>
   const firebaseConfig = {
     apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
     authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
@@ -99,38 +96,6 @@
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-
-  function handleSignup() {
-    const email = document.getElementById("signupEmail").value;
-    const phone = document.getElementById("signupPhone").value;
-    const pass = document.getElementById("signupPassword").value;
-    const confirm = document.getElementById("signupConfirm").value;
-    const city = document.getElementById("signupCity").value;
-    if (pass !== confirm) return alert("Password মিলছে না");
-
-    db.collection("users").add({
-      email, phone, city,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      alert("সাইন আপ সফল! এখন লগইন করুন।");
-      showSection("login");
-    });
-  }
-
-  function handleLogin() {
-    const email = document.getElementById("loginEmail").value;
-    const pass = document.getElementById("loginPassword").value;
-
-    db.collection("users").where("email", "==", email).get().then(snapshot => {
-      if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
-      showSection("mainWebsite");
-    });
-  }
-
-  function showSection(id) {
-    document.querySelectorAll('.container').forEach(c => c.classList.remove('visible'));
-    document.getElementById(id).classList.add('visible');
-  }
 
   document.getElementById("orderForm").addEventListener("submit", function(e) {
     e.preventDefault();
