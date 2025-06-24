@@ -1,86 +1,141 @@
-<!DOCTYPE html><html lang="bn">
+<!-- index.html (main website file) -->
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>এডমিন প্যানেল | Crunchyroll Premium BD</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crunchyroll Premium BD Shop</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f4f4;
+      background-color: #fdfcfb;
       margin: 0;
       padding: 0;
     }
-    .panel {
-      max-width: 600px;
-      margin: 50px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h1 {
+    header {
+      background-color: #ff6600;
+      color: white;
       text-align: center;
-      color: #ff6600;
+      padding: 20px 0;
+      font-size: 28px;
     }
-    .card {
-      margin-top: 20px;
-      background: #fafafa;
-      padding: 20px;
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
       border-radius: 10px;
-      border: 1px solid #ddd;
-    }
-    .card h2 {
-      font-size: 22px;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .card p {
-      font-size: 18px;
-      color: #555;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
   </style>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";const firebaseConfig = {
-  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-  authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-  projectId: "crunchyrollpremiumbd-shop",
-  storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
-  messagingSenderId: "790961397898",
-  appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
-  measurementId: "G-PSSPTLC6MJ"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-async function fetchStats() {
-  const orderSnap = await getDocs(collection(db, "orders"));
-  const orders = orderSnap.docs.map(doc => doc.data());
-
-  const totalOrders = orders.length;
-  const uniqueUsers = new Set(orders.map(o => o.email)).size;
-
-  document.getElementById("totalOrders").textContent = totalOrders;
-  document.getElementById("totalUsers").textContent = uniqueUsers;
-}
-
-fetchStats();
-
-  </script>
 </head>
 <body>
-  <div class="panel">
-    <h1>📊 Crunchyroll এডমিন প্যানেল</h1><div class="card">
-  <h2>মোট অর্ডার</h2>
-  <p id="totalOrders">লোড হচ্ছে...</p>
-</div>
-
-<div class="card">
-  <h2>মোট ইউজার</h2>
-  <p id="totalUsers">লোড হচ্ছে...</p>
-</div>
-
+  <header>Crunchyroll Premium BD Shop</header>
+  <div class="container">
+    <p>এই ওয়েবসাইটে আসার জন্য ধন্যবাদ।</p>
   </div>
+
+  <!-- Firebase Visitor Tracker Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function recordVisitor() {
+      try {
+        await addDoc(collection(db, "visitors"), {
+          timestamp: serverTimestamp()
+        });
+        console.log("✅ Visitor logged successfully");
+      } catch (error) {
+        console.error("❌ Error logging visitor:", error);
+      }
+    }
+
+    recordVisitor();
+  </script>
+</body>
+</html>
+
+<!-- admin.html (admin panel file) -->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Crunchyroll BD</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .dashboard {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #ff6600;
+      text-align: center;
+    }
+    .stat {
+      font-size: 20px;
+      margin: 15px 0;
+    }
+    .stat span {
+      color: #222;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>📊 এডমিন প্যানেল</h1>
+    <div class="stat">মোট অর্ডার: <span id="totalOrders">0</span></div>
+    <div class="stat">মোট ইউজার (Visitors): <span id="totalVisitors">0</span></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function updateStats() {
+      const orderSnap = await getDocs(collection(db, "orders"));
+      const visitorSnap = await getDocs(collection(db, "visitors"));
+
+      document.getElementById("totalOrders").textContent = orderSnap.size;
+      document.getElementById("totalVisitors").textContent = visitorSnap.size;
+    }
+
+    updateStats();
+  </script>
 </body>
 </html>
