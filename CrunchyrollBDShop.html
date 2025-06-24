@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crunchyroll Premium BD Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #131c2b, #202f45);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #0a0f1c;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    header h1 {
+      margin: 0;
+      color: #ff9f1c;
+    }
+    .container, .section, .hero {
+      max-width: 700px;
+      margin: 20px auto;
+      background: #1c2a3a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    .container input, .container select, .container button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    .container button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+    }
+    .container button:hover {
+      background-color: #e23370;
+    }
+    .hero img {
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Crunchyroll Premium BD Shop</h1>
+  </header>
+
+  <div class="container" id="signup">
+    <h2>🔐 সাইন আপ</h2>
+    <input type="email" id="signupEmail" placeholder="ইমেইল" required>
+    <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর" required>
+    <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
+    <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড" required>
+    <input type="text" id="signupCity" placeholder="শহর" required>
+    <button onclick="handleSignup()">সাইন আপ করুন</button>
+  </div>
+
+  <div class="container" id="login" style="display:none;">
+    <h2>🔓 সাইন ইন</h2>
+    <input type="email" id="loginEmail" placeholder="ইমেইল" required>
+    <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
+    <button onclick="handleLogin()">সাইন ইন করুন</button>
+  </div>
+
+  <div class="container" id="amountPage" style="display:none;">
+    <h2>📦 আপনার পছন্দের প্যাকেজ</h2>
+    <input type="number" id="amount" placeholder="যে এমাউন্টটি দিতে চান তা লিখুন">
+    <button onclick="goToPayment()">🛒 Add to Cart</button>
+  </div>
+
+  <div class="container" id="paymentPage" style="display:none;">
+    <h2>💳 পেমেন্ট এবং প্যাকেজ সিলেকশন</h2>
+    <form id="orderForm">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="address" placeholder="Street Address" required>
+      <input type="text" name="mobile" placeholder="Mobile Number" required>
+      <select name="package">
+        <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
+        <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
+        <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
+        <option value="6 Months Share – 600 TK">6 Months – 600 TK</option>
+        <option value="1 Month Profile – 240 TK">1 Month Personal – 240 TK</option>
+        <option value="1 Month Primary – 650 TK">1 Month Primary – 650 TK</option>
+      </select>
+      <input type="text" name="payment_number" placeholder="Payment Number" required>
+      <input type="text" name="trans_id" placeholder="Transaction ID" required>
+      <select name="payment_method" required>
+        <option value="Bkash">Bkash</option>
+        <option value="Nagad">Nagad</option>
+        <option value="Rocket">Rocket</option>
+      </select>
+      <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+    </form>
+  </div>
+
+  <script>
+    emailjs.init("gvo6GrSzBqBeIavKO"); // Your EmailJS public key
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function handleSignup() {
+      const email = document.getElementById("signupEmail").value;
+      const phone = document.getElementById("signupPhone").value;
+      const pass = document.getElementById("signupPassword").value;
+      const confirm = document.getElementById("signupConfirm").value;
+      const city = document.getElementById("signupCity").value;
+      if (pass !== confirm) return alert("Password মিলছে না");
+
+      db.collection("users").add({email, phone, city, timestamp: firebase.firestore.FieldValue.serverTimestamp()})
+      .then(() => {
+        alert("সাইন আপ সফল! এখন লগইন করুন।");
+        document.getElementById("signup").style.display = "none";
+        document.getElementById("login").style.display = "block";
+      });
+    }
+
+    function handleLogin() {
+      const email = document.getElementById("loginEmail").value;
+      db.collection("users").where("email", "==", email).get().then(snapshot => {
+        if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
+        document.getElementById("login").style.display = "none";
+        document.getElementById("amountPage").style.display = "block";
+      });
+    }
+
+    function goToPayment() {
+      const amount = document.getElementById("amount").value;
+      if (!amount || amount <= 0) return alert("সঠিক এমাউন্ট লিখুন!");
+      document.getElementById("amountPage").style.display = "none";
+      document.getElementById("paymentPage").style.display = "block";
+    }
+
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const order = {};
+      formData.forEach((v, k) => order[k] = v);
+      order.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+      db.collection("orders").add(order).then(() => {
+        emailjs.send("service_d5lf3uo", "template_1vv3owh", order)
+        .then(() => {
+          alert("✅ অর্ডার কনফার্ম হয়েছে এবং ইমেইল পাঠানো হয়েছে!");
+          document.getElementById("orderForm").reset();
+        });
+      }).catch(() => {
+        alert("❌ অর্ডার ব্যর্থ হয়েছে");
+      });
+    });
+  </script>
+</body>
+</html>
