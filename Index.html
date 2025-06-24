@@ -7,38 +7,51 @@
   <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background: #f8f8f8;
+      background: #f5f5f5;
       margin: 0;
       padding: 0;
     }
-    .container {
-      max-width: 800px;
+    .product-container {
+      max-width: 1000px;
       margin: auto;
-      padding: 20px;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background: #fff;
       border-radius: 10px;
-      margin-top: 40px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-top: 30px;
     }
-    h1 {
-      color: orange;
-      text-align: center;
+    .product-img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product-title {
+      font-size: 28px;
+      color: #ff6600;
+      margin: 20px 0 10px;
+    }
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #111;
     }
     .form-group {
       margin-bottom: 15px;
     }
     label {
       display: block;
+      margin-bottom: 5px;
       font-weight: bold;
     }
-    input, select, textarea {
+    input, select {
       width: 100%;
       padding: 10px;
-      border-radius: 5px;
       border: 1px solid #ccc;
+      border-radius: 5px;
     }
     button {
-      background: orange;
+      background: #ff6600;
       color: white;
       padding: 12px 25px;
       border: none;
@@ -47,62 +60,52 @@
       cursor: pointer;
     }
     button:hover {
-      background: darkorange;
+      background: #e65c00;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Crunchyroll Premium Subscription</h1>
-    <form id="contact-form">
-      <div class="form-group">
-        <label>নাম *</label>
-        <input type="text" name="name" required />
-      </div>
-      <div class="form-group">
-        <label>ইমেইল *</label>
-        <input type="email" name="email" required />
-      </div>
-      <div class="form-group">
-        <label>মোবাইল *</label>
-        <input type="text" name="mobile" required />
-      </div>
-      <div class="form-group">
-        <label>ঠিকানা</label>
-        <input type="text" name="address" />
-      </div>
-      <div class="form-group">
-        <label>প্যাকেজ</label>
-        <select name="package">
-          <option value="1 Month Share">1 Month Share – 100 TK</option>
-          <option value="1 Month Personal">1 Month Personal – 240 TK</option>
-          <option value="1 Month Primary">1 Month Primary – 650 TK</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Payment Number</label>
-        <input type="text" name="payment_number" required />
-      </div>
-      <div class="form-group">
-        <label>Transaction ID</label>
-        <input type="text" name="trans_id" required />
-      </div>
-      <div class="form-group">
-        <label>পেমেন্ট মেথড</label>
-        <select name="payment_method">
-          <option value="Bkash">Bkash</option>
-          <option value="Nagad">Nagad</option>
-          <option value="Rocket">Rocket</option>
-        </select>
-      </div>
-      <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
-    </form>
+  <div class="product-container">
+    <img class="product-img" src="https://i.imgur.com/VbdEzQe.png" alt="Crunchyroll Premium">
+    <h1 class="product-title">Crunchyroll Premium BD – 1 Month Share Account</h1>
+    <p class="price">মূল্য: ১০০ টাকা</p><form id="order-form">
+  <div class="form-group">
+    <label>নাম *</label>
+    <input type="text" name="name" required />
+  </div>
+  <div class="form-group">
+    <label>ইমেইল *</label>
+    <input type="email" name="email" required />
+  </div>
+  <div class="form-group">
+    <label>মোবাইল নাম্বার *</label>
+    <input type="text" name="mobile" required />
+  </div>
+  <div class="form-group">
+    <label>পেমেন্ট নাম্বার *</label>
+    <input type="text" name="payment_number" required />
+  </div>
+  <div class="form-group">
+    <label>লেনদেন নম্বর (Transaction ID) *</label>
+    <input type="text" name="trans_id" required />
+  </div>
+  <div class="form-group">
+    <label>পেমেন্ট মেথড *</label>
+    <select name="payment_method">
+      <option value="Bkash">Bkash</option>
+      <option value="Nagad">Nagad</option>
+      <option value="Rocket">Rocket</option>
+    </select>
+  </div>
+  <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+</form>
+
   </div>  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>  <script>
-    (function(){
+    (function() {
       emailjs.init("SsUmUorUm-BZG8LBY"); // আপনার PUBLIC KEY
     })();
 
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
+    document.getElementById('order-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
       emailjs.sendForm('service_z1714kq', 'template_hp66tqp', this)
@@ -110,7 +113,7 @@
           alert('✅ অর্ডার সফলভাবে পাঠানো হয়েছে!');
         }, function(error) {
           console.log(error);
-          alert('❌ একটি সমস্যা হয়েছে। Console দেখে ঠিক করুন।');
+          alert('❌ সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।');
         });
     });
   </script></body>
