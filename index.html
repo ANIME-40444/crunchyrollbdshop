@@ -1,93 +1,155 @@
 <!DOCTYPE html><html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crunchyroll Premium BD Shop - Order</title>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script type="module">
-    // Firebase SDK
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";const firebaseConfig = {
-  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-  authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-  projectId: "crunchyrollpremiumbd-shop",
-  storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
-  messagingSenderId: "790961397898",
-  appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
-  measurementId: "G-PSSPTLC6MJ"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// EmailJS init
-emailjs.init("SsUmUorUm-BZG8LBY");
-
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("orderForm");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      // Send email to admin
-      await emailjs.send("service_z1714kq", "template_hp66tqp", data);
-
-      // Send email to customer
-      await emailjs.send("service_z1714kq", "template_1z1lhlf", data);
-
-      // Save to Firestore
-      await addDoc(collection(db, "orders"), {
-        ...data,
-        timestamp: serverTimestamp()
-      });
-
-      alert("✅ অর্ডার সফলভাবে পাঠানো হয়েছে! আপনি শীঘ্রই ইমেইল পাবেন।");
-      form.reset();
-    } catch (error) {
-      console.error("Error:", error);
-      alert("❌ অর্ডার ব্যর্থ হয়েছে! আবার চেষ্টা করুন।");
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crunchyroll Premium BD Shop</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff9f5;
+      margin: 0;
+      padding: 0;
     }
-  });
-});
-
-  </script>
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+    }
+    h3 {
+      color: #ff6600;
+      margin-bottom: 10px;
+    }
+    label {
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    button {
+      background-color: #ff6600;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      width: 100%;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
+    .success, .error {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
 </head>
 <body>
-  <h2>Crunchyroll Premium BD Shop - অর্ডার ফর্ম</h2>
-  <form id="orderForm">
-    <label>Full Name:</label>
-    <input type="text" name="name" required><label>Email:</label>
-<input type="email" name="email" required>
+  <header>🔥 Crunchyroll Premium BD Shop 🔥</header>
+  <div class="container">
+    <form id="orderForm">
+      <h3>🧾 বিলিং এড্রেস</h3>
+      <label>👤 পূর্ণ নাম *</label>
+      <input type="text" name="name" required /><label>📧 ইমেইল *</label>
+  <input type="email" name="email" required />
 
-<label>Mobile Number:</label>
-<input type="text" name="mobile" required>
+  <label>📍 ঠিকানা *</label>
+  <input type="text" name="address" required />
 
-<label>Package:</label>
-<select name="package">
-  <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
-  <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
-  <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
-</select>
+  <label>📱 মোবাইল নাম্বার *</label>
+  <input type="text" name="mobile" required />
 
-<label>Payment Number:</label>
-<input type="text" name="payment_number" required>
+  <h3>📦 প্যাকেজ সিলেকশন</h3>
+  <label>🎁 শেয়ার একাউন্ট</label>
+  <select name="package">
+    <option value="1 Month Share – 100 TK">1 মাস – 100 টাকা</option>
+    <option value="3 Months Share – 300 TK">3 মাস – 300 টাকা</option>
+  </select>
 
-<label>Transaction ID:</label>
-<input type="text" name="trans_id" required>
+  <label>👨‍💼 পার্সোনাল প্রোফাইল</label>
+  <select name="personal_package">
+    <option value="1 Month Personal – 240 TK">1 মাস – 240 টাকা</option>
+    <option value="6 Months Personal – 1440 TK">6 মাস – 1440 টাকা</option>
+  </select>
 
-<label>Payment Method:</label>
-<select name="payment_method">
-  <option value="Bkash">Bkash</option>
-  <option value="Nagad">Nagad</option>
-  <option value="Rocket">Rocket</option>
-</select>
+  <label>💼 প্রাইমারি একাউন্ট</label>
+  <select name="primary_package">
+    <option value="1 Month Primary – 650 TK">1 মাস – 650 টাকা</option>
+    <option value="6 Months Primary – 3600 TK">6 মাস – 3600 টাকা</option>
+  </select>
 
-<button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+  <h3>💳 পেমেন্ট তথ্য</h3>
+  <label>📞 পেমেন্ট নাম্বার *</label>
+  <input type="text" name="payment_number" required />
 
-  </form>
-</body>
+  <label>🔐 ট্রানজেকশন নাম্বার *</label>
+  <input type="text" name="trans_id" required />
+
+  <label>💰 পেমেন্ট মেথড *</label>
+  <select name="payment_method" required>
+    <option value="Bkash">Bkash</option>
+    <option value="Nagad">Nagad</option>
+    <option value="Rocket">Rocket</option>
+  </select>
+
+  <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+  <div id="responseMessage"></div>
+</form>
+
+  </div>  <!-- Firebase & EmailJS Scripts -->  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    emailjs.init("SsUmUorUm-BZG8LBY");
+
+    document.getElementById("orderForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = this;
+
+      // Send to EmailJS (Admin & Customer)
+      emailjs.sendForm("service_z1714kq", "template_hp66tqp", form)
+        .then(() => emailjs.sendForm("service_z1714kq", "template_1z1lhlf", form))
+        .then(() => {
+          // Save to Firebase
+          const formData = Object.fromEntries(new FormData(form));
+          formData.timestamp = new Date();
+          db.collection("orders").add(formData).then(() => {
+            document.getElementById("responseMessage").innerHTML = '<p class="success">✅ অর্ডার সফলভাবে পাঠানো হয়েছে! আপনি ইমেইল চেক করুন।</p>';
+            form.reset();
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          document.getElementById("responseMessage").innerHTML = '<p class="error">❌ অর্ডার ব্যর্থ হয়েছে! দয়া করে পরে আবার চেষ্টা করুন।</p>';
+        });
+    });
+  </script></body>
 </html>
