@@ -1,75 +1,12 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>এডমিন প্যানেল | Crunchyroll Premium BD</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #ff6600;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      font-size: 28px;
-    }
-    .container {
-      max-width: 700px;
-      margin: 30px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 30px;
-    }
-    .card {
-      background-color: #ff6600;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      flex: 1;
-      margin: 10px;
-    }
-    .card h3 {
-      font-size: 20px;
-      margin: 10px 0;
-    }
-    .card span {
-      font-size: 28px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <header>এডমিন প্যানেল</header>
-  <div class="container">
-    <h2>সাম্প্রতিক তথ্যা প্রদর্শক</h2>
-    <div class="stats">
-      <div class="card">
-        <h3>🏠 মোট ইউজার</h3>
-        <span id="totalUsers">0</span>
-      </div>
-      <div class="card">
-        <h3>📅 মোট অর্ডার</h3>
-        <span id="totalOrders">0</span>
-      </div>
-    </div>
-  </div>  <!-- Firebase SDK -->  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊 এডমিন প্যানেল - Crunchyroll Premium BD Shop</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
@@ -84,14 +21,62 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    async function loadStats() {
-      const visitorsSnapshot = await getDocs(collection(db, "visitors"));
-      const ordersSnapshot = await getDocs(collection(db, "orders"));
+    async function loadDashboard() {
+      try {
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        const usersSnapshot = await getDocs(collection(db, "users"));
 
-      document.getElementById("totalUsers").textContent = visitorsSnapshot.size;
-      document.getElementById("totalOrders").textContent = ordersSnapshot.size;
+        document.getElementById("orderCount").textContent = ordersSnapshot.size;
+        document.getElementById("userCount").textContent = usersSnapshot.size;
+      } catch (error) {
+        document.getElementById("orderCount").textContent = "ত্রুটি";
+        document.getElementById("userCount").textContent = "ত্রুটি";
+        console.error("ডেটা লোড করতে সমস্যা:", error);
+      }
     }
 
-    loadStats();
-  </script></body>
+    loadDashboard();
+  </script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fa;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .panel {
+      background: white;
+      padding: 30px;
+      margin: 60px auto;
+      max-width: 600px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #ff6600;
+      margin-bottom: 20px;
+    }
+    .info {
+      font-size: 22px;
+      margin: 15px 0;
+    }
+    .info strong {
+      color: #009688;
+    }
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h2>🛠️ Crunchyroll Premium BD Shop এডমিন প্যানেল</h2>
+    <div class="info">✅ মোট অর্ডার: <strong id="orderCount">লোড হচ্ছে...</strong></div>
+    <div class="info">👥 মোট ইউজার: <strong id="userCount">লোড হচ্ছে...</strong></div>
+  </div>
+  <footer>© 2025 Crunchyroll Premium BD Shop</footer>
+</body>
 </html>
