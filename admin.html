@@ -2,58 +2,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>এডমিন প্যানেল - Crunchyroll Premium BD</title>
+  <title>এডমিন প্যানেল | Crunchyroll Premium BD</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
+      background: #f4f4f4;
       margin: 0;
       padding: 0;
     }
-    header {
-      background-color: #ff6600;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      font-size: 28px;
-    }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
+    .panel {
+      max-width: 600px;
+      margin: 50px auto;
       background: #fff;
-      padding: 25px;
-      border-radius: 10px;
+      padding: 30px;
+      border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
+    h1 {
+      text-align: center;
+      color: #ff6600;
     }
-    .stat-box {
-      background: #ff6600;
-      color: white;
+    .card {
+      margin-top: 20px;
+      background: #fafafa;
       padding: 20px;
       border-radius: 10px;
-      width: 45%;
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table th, table td {
       border: 1px solid #ddd;
-      padding: 10px;
     }
-    table th {
-      background-color: #f2f2f2;
+    .card h2 {
+      font-size: 22px;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .card p {
+      font-size: 18px;
+      color: #555;
     }
   </style>
-  <!-- Firebase SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";const firebaseConfig = {
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";const firebaseConfig = {
   apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
   authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
   projectId: "crunchyrollpremiumbd-shop",
@@ -66,66 +54,32 @@
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function loadOrders() {
-  const ordersRef = collection(db, "orders");
-  const snapshot = await getDocs(ordersRef);
+async function fetchStats() {
+  const orderSnap = await getDocs(collection(db, "orders"));
+  const orders = orderSnap.docs.map(doc => doc.data());
 
-  let totalOrders = snapshot.size;
-  let totalUsers = new Set();
-  let tbody = "";
+  const totalOrders = orders.length;
+  const uniqueUsers = new Set(orders.map(o => o.email)).size;
 
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    totalUsers.add(data.email);
-    tbody += `
-      <tr>
-        <td>${data.name}</td>
-        <td>${data.email}</td>
-        <td>${data.mobile}</td>
-        <td>${data.package || ''}</td>
-        <td>${data.payment_method}</td>
-        <td>${data.trans_id}</td>
-      </tr>
-    `;
-  });
-
-  document.getElementById("totalOrders").innerText = totalOrders;
-  document.getElementById("totalUsers").innerText = totalUsers.size;
-  document.getElementById("orderTableBody").innerHTML = tbody;
+  document.getElementById("totalOrders").textContent = totalOrders;
+  document.getElementById("totalUsers").textContent = uniqueUsers;
 }
 
-loadOrders();
+fetchStats();
 
   </script>
 </head>
 <body>
-  <header>📊 এডমিন প্যানেল - Crunchyroll Premium BD</header>
-  <div class="container">
-    <div class="stats">
-      <div class="stat-box">
-        মোট অর্ডার <br>
-        <strong id="totalOrders">0</strong>
-      </div>
-      <div class="stat-box">
-        মোট ইউজার <br>
-        <strong id="totalUsers">0</strong>
-      </div>
-    </div><h3>🧾 অর্ডার তালিকা</h3>
-<table>
-  <thead>
-    <tr>
-      <th>নাম</th>
-      <th>ইমেইল</th>
-      <th>মোবাইল</th>
-      <th>প্যাকেজ</th>
-      <th>পেমেন্ট</th>
-      <th>ট্রাঞ্জেকশন</th>
-    </tr>
-  </thead>
-  <tbody id="orderTableBody">
-    <!-- Data will be inserted here -->
-  </tbody>
-</table>
+  <div class="panel">
+    <h1>📊 Crunchyroll এডমিন প্যানেল</h1><div class="card">
+  <h2>মোট অর্ডার</h2>
+  <p id="totalOrders">লোড হচ্ছে...</p>
+</div>
+
+<div class="card">
+  <h2>মোট ইউজার</h2>
+  <p id="totalUsers">লোড হচ্ছে...</p>
+</div>
 
   </div>
 </body>
