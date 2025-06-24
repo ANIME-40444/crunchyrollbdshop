@@ -1,39 +1,92 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crunchyroll Premium BD · পণ্য পেজ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crunchyroll Premium BD</title>
   <style>
-    body { background:#f4f4f8; font-family:'Segoe UI',sans-serif; margin:0; padding:0; display:flex; justify-content:center; }
-    .card { max-width:480px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); margin:30px; }
-    .card img { width:100%; display:block; }
-    .info { padding:20px; }
-    .info h1 { margin:0;font-size:24px;color:#ff6600; }
-    .info p.desc { margin:10px 0;color:#555;font-size:15px; }
-    .info .price { color:#009933;font-size:22px;font-weight:bold; margin:15px 0; }
-    .info ul { padding-left:20px; margin:10px 0;color:#444; }
-    .info ul li { margin:6px 0; font-size:14px; }
-    .info .btn { display:block; background:#ff6600; color:white; text-align:center; padding:14px; border-radius:8px; font-size:16px; text-decoration:none; margin-top:20px; }
-    .info .btn:hover { background:#e65c00; }
-    .info .note { margin-top:15px;color:#888;font-size:13px; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #18c06f;
+    }
+    .container {
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      margin: 50px auto;
+      border-radius: 8px;
+    }
+    h2, h3 {
+      border-bottom: 2px solid red;
+      padding-bottom: 5px;
+      color: #333;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .price-box {
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .btn {
+      width: 100%;
+      background: #28a745;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #218838;
+    }
+    .center {
+      text-align: center;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="https://static.crunchyroll.com/fms/landscape_poster/960x540/100/image.png" alt="Crunchyroll Premium">
-    <div class="info">
-      <h1>Crunchyroll Premium BD</h1>
-      <p class="desc">নো অ্যাড, HD স্ট্রিমিং, একাধিক ডিভাইসে ব্যবহার। তুমি খুশি, অনলাইনে এনিমে কখনোই বন্ধ না!</p>
-      <p class="price">Shared – 100 TK / মাস</p>
-      <ul>
-        <li>🎥 Ad‑free streaming</li>
-        <li>📶 HD & Simultaneous Streams</li>
-        <li>📀 Weekly new episodes</li>
-      </ul>
-      <a href="https://crunchyrollbdshop.neocities.org/crunchyroll_proxy_form.html" class="btn">🛒 এখনই অর্ডার করুন</a>
-      <p class="note">* পেমেন্ট: বিকাশ / নগদ / রকেট (নম্বর: 01603599843)</p>
-    </div>
+  <div class="container">
+    <h2>Billing Address</h2>
+    <input type="text" placeholder="আপনার নাম" required>
+    <input type="email" placeholder="আপনার ইমেইল" required>
+    <input type="text" placeholder="আপনার ঠিকানা" required>
+    <input type="text" placeholder="মোবাইল নাম্বার" required><h2>Payment</h2>
+<p>এই নাম্বারে Send Money করুন:<br>
+<strong>01603599843</strong></p>
+<p>Send করার পর যে নাম্বার থেকে পাঠিয়েছেন এবং TrxID দিন।</p>
+<input type="text" placeholder="Payment Number" required>
+<input type="text" placeholder="Trx ID" required>
+<select>
+  <option value="Bkash">Bkash</option>
+  <option value="Nagad">Nagad</option>
+  <option value="Rocket">Rocket</option>
+</select>
+
+<h3>Your Order</h3>
+<div class="price-box">
+  <input type="radio" name="plan" checked> 1 Month Share – 100৳
+</div>
+<div class="price-box">
+  <input type="radio" name="plan"> 1 Month Personal – 240৳
+</div>
+<div class="price-box">
+  <input type="radio" name="plan"> 1 Year Personal – 2499৳
+</div>
+
+<button class="btn">Confirm Buy</button>
+<div class="center">
+  <p>ধন্যবাদ! অর্ডার সাবমিট করার পর আমাদের সাথে WhatsApp/Facebook-এ যোগাযোগ করুন।</p>
+</div>
+
   </div>
 </body>
 </html>
