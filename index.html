@@ -1,130 +1,162 @@
 <!DOCTYPE html><html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crunchyroll Premium BD Shop</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
+      background-color: #fefefe;
+    }
+    header {
+      background-color: #ff6600;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .hero {
+      background: url('https://i.imgur.com/9UjKdYH.jpg') center/cover no-repeat;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
     .container {
-      max-width: 600px;
-      margin: 30px auto;
-      background: white;
       padding: 20px;
-      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h2 {
-      text-align: center;
-      color: #ff6600;
+    label {
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+      font-weight: 600;
     }
-    input, select, button {
+    input, select {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      margin-top: 5px;
       border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 16px;
     }
     button {
+      margin-top: 20px;
+      width: 100%;
       background-color: #ff6600;
       color: white;
+      padding: 12px;
+      border: none;
+      font-size: 18px;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
     }
-    button:hover {
-      background-color: #e65c00;
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #999;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-<div class="container" id="signup">
-  <h2>🔐 সাইন আপ</h2>
-  <input type="email" id="signupEmail" placeholder="ইমেইল" required>
-  <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর" required>
-  <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
-  <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড" required>
-  <input type="text" id="signupCity" placeholder="শহর" required>
-  <button onclick="handleSignup()">সাইন আপ করুন</button>
-</div><div class="container" id="login" style="display: none">
-  <h2>🔓 সাইন ইন</h2>
-  <input type="email" id="loginEmail" placeholder="ইমেইল" required>
-  <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
-  <button onclick="handleLogin()">সাইন ইন করুন</button>
-</div><section id="mainWebsite" class="container" style="display: none">
-  <h2>🎉 Crunchyroll Premium BD Shop</h2>
-  <form id="orderForm">
-    <input type="text" name="name" placeholder="Full Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="address" placeholder="Street Address" required>
-    <input type="text" name="mobile" placeholder="Mobile Number" required>
-    <select name="package">
-      <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
-      <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
-    </select>
-    <input type="text" name="payment_number" placeholder="Payment Number" required>
-    <input type="text" name="trans_id" placeholder="Transaction ID" required>
-    <select name="payment_method" required>
-      <option value="Bkash">Bkash</option>
-      <option value="Nagad">Nagad</option>
-    </select>
-    <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
-  </form>
-</section><script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-    projectId: "crunchyrollpremiumbd-shop",
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  <header>🥇 Crunchyroll Premium BD Shop</header>
+  <div class="hero">প্রিমিয়াম সাবস্ক্রিপশন এখন খুব সহজে</div>  <div class="container">
+    <form id="orderForm">
+      <label for="name">👤 আপনার নাম</label>
+      <input type="text" id="name" name="name" required /><label for="email">📧 ইমেইল</label>
+  <input type="email" id="email" name="email" required />
 
-  function handleSignup() {
-    const email = document.getElementById("signupEmail").value;
-    const phone = document.getElementById("signupPhone").value;
-    const pass = document.getElementById("signupPassword").value;
-    const confirm = document.getElementById("signupConfirm").value;
-    const city = document.getElementById("signupCity").value;
-    if (pass !== confirm) return alert("Password মিলছে না");
+  <label for="mobile">📱 মোবাইল নাম্বার</label>
+  <input type="text" id="mobile" name="mobile" required />
 
-    db.collection("users").add({
-      email, phone, city,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      alert("সাইন আপ সফল! এখন লগইন করুন।");
-      document.getElementById("signup").style.display = "none";
-      document.getElementById("login").style.display = "block";
+  <label for="package">📦 প্যাকেজ বেছে নিন</label>
+  <select id="package" name="package" required>
+    <option value="">-- প্যাকেজ সিলেক্ট করুন --</option>
+    <option value="1 Month - ৳240">1 Month Personal – ৳240</option>
+    <option value="3 Months - ৳300">3 Months Share – ৳300</option>
+    <option value="1 Month Primary - ৳650">1 Month Primary – ৳650</option>
+  </select>
+
+  <label for="payment_number">💳 পেমেন্ট নাম্বার</label>
+  <input type="text" id="payment_number" name="payment_number" required />
+
+  <label for="trans_id">🔁 ট্রানজেকশন আইডি</label>
+  <input type="text" id="trans_id" name="trans_id" required />
+
+  <label for="payment_method">🧾 পেমেন্ট পদ্ধতি</label>
+  <select id="payment_method" name="payment_method" required>
+    <option value="">-- সিলেক্ট করুন --</option>
+    <option value="Bkash">Bkash</option>
+    <option value="Nagad">Nagad</option>
+    <option value="Rocket">Rocket</option>
+  </select>
+
+  <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+</form>
+
+<div class="footer">📞 WhatsApp: <a href="https://wa.me/8801305736690">+8801305736690</a> | 📍 Facebook: <a href="https://facebook.com/share/19YLiSyET5/">Crunchyroll BD</a></div>
+
+  </div>  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    emailjs.init("SsUmUorUm-BZG8LBY");
+
+    document.getElementById("orderForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        mobile: form.mobile.value,
+        package: form.package.value,
+        payment_number: form.payment_number.value,
+        trans_id: form.trans_id.value,
+        payment_method: form.payment_method.value,
+        timestamp: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "orders"), formData);
+
+        await emailjs.send("service_z1714kq", "template_1z1lhlf", formData);
+        await emailjs.send("service_z1714kq", "template_hp66tqp", formData);
+
+        alert("✅ অর্ডার সফলভাবে কনফার্ম হয়েছে! আপনার ইমেইল চেক করুন।");
+        form.reset();
+      } catch (error) {
+        console.error("Error:", error);
+        alert("❌ দুঃখিত, অর্ডার কনফার্ম করা যায়নি। দয়া করে আবার চেষ্টা করুন।");
+      }
     });
-  }
-
-  function handleLogin() {
-    const email = document.getElementById("loginEmail").value;
-    const pass = document.getElementById("loginPassword").value;
-
-    db.collection("users").where("email", "==", email).get().then(snapshot => {
-      if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
-      document.getElementById("login").style.display = "none";
-      document.getElementById("mainWebsite").style.display = "block";
-    });
-  }
-
-  document.getElementById("orderForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const order = {};
-    formData.forEach((v, k) => order[k] = v);
-    order.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-
-    db.collection("orders").add(order).then(() => {
-      alert("✅ অর্ডার কনফার্ম হয়েছে!");
-      document.getElementById("orderForm").reset();
-    }).catch(err => {
-      alert("❌ অর্ডার ব্যর্থ হয়েছে");
-    });
-  });
-</script></body>
+  </script></body>
 </html>
