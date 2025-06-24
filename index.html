@@ -8,97 +8,109 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #e0f7ea;
-    }
-    .container {
-      max-width: 700px;
-      margin: 30px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    }
-    h2 {
-      text-align: center;
-      color: #00695c;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    button {
-      background-color: #009688;
+      background: linear-gradient(to right, #1f1f2e, #2c3e50);
       color: white;
+    }
+    header {
+      background-color: #ff6600;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .hero img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+    }
+    .price-card {
+      background: #fff;
+      color: #000;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .price-card input[type="number"] {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .price-card button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #00796b;
+    .price-card button:hover {
+      background-color: #e65c00;
     }
-    .section-title {
-      font-weight: bold;
-      margin-top: 30px;
-      font-size: 18px;
-      color: #004d40;
+    .package-details {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #222c3b;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 16px;
+      line-height: 1.6;
     }
-    .plan-list {
-      background-color: #f1f8e9;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    .plan-list p {
-      margin: 5px 0;
+    .package-details h3 {
+      color: #ff6600;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h2>💳 পেমেন্ট তথ্য</h2>
-  <form>
-    <input type="text" placeholder="Full Name" required>
-    <input type="email" placeholder="Email" required>
-    <input type="text" placeholder="Street Address" required>
-    <input type="text" placeholder="Mobile Number" required><p class="section-title">আপনাকে নিচের নাম্বারে Send Money করতে হবে:</p>
-<div class="plan-list">
-  <p><strong>Number:</strong> 01603599843</p>
-  <p><strong>Note:</strong> Send Money করার সময় অবশ্যই Send Money অপশন বেছে নিন।</p>
-</div>
+  <header>Crunchyroll Premium Subscription</header>
+  <div class="hero">
+    <img src="https://i.ibb.co/WWR5XwRz/anime-banner.jpg" alt="Crunchyroll Anime">
+  </div>  <div class="price-card">
+    <h2>কার্ড 💳</h2>
+    <p>আপনি যেকোনো এমাউন্ট দিন এবং Add to Card ক্লিক করুন</p>
+    <input type="number" id="amount" placeholder="৳ টাকার পরিমাণ লিখুন">
+    <button onclick="goToPayment()">🛒 Add to Card</button>
+  </div>  <div class="package-details">
+    <h3>Crunchyroll Share Account ⚡</h3>
+    📅 1 Month – Only 100 TK<br>
+    📅 2 Months – Only 200 TK<br>
+    📅 3 Months – Only 300 TK<br>
+    📅 6 Months – Only 600 TK<br>
+    📅 8 Months – Only 840 TK<br><h3>Crunchyroll Personal Profile ⚡</h3>
+📅 1 Month – Only 240 TK<br>
+📅 2 Months – Only 480 TK<br>
+📅 3 Months – Only 720 TK<br>
+📅 6 Months – Only 1440 TK<br>
+📅 8 Months – Only 1800 TK<br>
+📅 12 Months – Only 2760 TK<br>
 
-<select required>
-  <option value="Bkash">Bkash</option>
-  <option value="Nagad">Nagad</option>
-  <option value="Rocket">Rocket</option>
-</select>
-<input type="text" placeholder="Payment Number" required>
-<input type="text" placeholder="Transaction ID" required>
-<button type="submit">✅ Confirm Buy</button>
+<h3>Crunchyroll Primary Account ⚡</h3>
+📅 1 Month – Only 650 TK<br>
+📅 2 Months – Only 1300 TK<br>
+📅 3 Months – Only 1950 TK<br>
+📅 6 Months – Only 3600 TK
 
-  </form>  <div class="section-title">Crunchyroll Share Account ⚡</div>
-  <div class="plan-list">
-    <p>📅 1 Month – Only 100 TK</p>
-    <p>📅 2 Months – Only 200 TK</p>
-    <p>📅 3 Months – Only 300 TK</p>
-    <p>📅 6 Months – Only 600 TK</p>
-    <p>📅 8 Months – Only 840 TK</p>
-  </div>  <div class="section-title">Crunchyroll Personal Profile ⚡</div>
-  <div class="plan-list">
-    <p>📅 1 Month – Only 240 TK</p>
-    <p>📅 2 Months – Only 480 TK</p>
-    <p>📅 3 Months – Only 720 TK</p>
-    <p>📅 6 Months – Only 1440 TK</p>
-    <p>📅 8 Months – Only 1800 TK</p>
-    <p>📅 12 Months – Only 2760 TK</p>
-  </div>  <div class="section-title">Crunchyroll Primary Account ⚡</div>
-  <div class="plan-list">
-    <p>📅 1 Month – Only 650 TK</p>
-    <p>📅 2 Months – Only 1300 TK</p>
-    <p>📅 3 Months – Only 1950 TK</p>
-    <p>📅 6 Months – Only 3600 TK</p>
-  </div>
-</div>
-</body>
+  </div>  <script>
+    function goToPayment() {
+      const amount = document.getElementById("amount").value;
+      if (!amount || amount <= 0) {
+        alert("দয়া করে একটি সঠিক এমাউন্ট লিখুন।");
+        return;
+      }
+      window.location.href = "payment.html?amount=" + encodeURIComponent(amount);
+    }
+  </script></body>
 </html>
