@@ -1,120 +1,82 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊 এডমিন প্যানেল - Crunchyroll Premium BD Shop</title>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      doc,
-      getDoc,
-      updateDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";const firebaseConfig = {
-  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-  authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-  projectId: "crunchyrollpremiumbd-shop",
-  storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
-  messagingSenderId: "790961397898",
-  appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
-  measurementId: "G-PSSPTLC6MJ"
-};
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
+      measurementId: "G-PSSPTLC6MJ"
+    };
 
-async function countDocuments() {
-  const ordersSnapshot = await getDocs(collection(db, "orders"));
-  const usersSnapshot = await getDocs(collection(db, "users"));
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  document.getElementById("orderCount").textContent = ordersSnapshot.size;
-  document.getElementById("userCount").textContent = usersSnapshot.size;
-}
+    async function loadDashboard() {
+      try {
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        const usersSnapshot = await getDocs(collection(db, "users"));
 
-async function loadSiteSettings() {
-  const docRef = doc(db, "siteSettings", "main");
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    document.getElementById("package").value = data.package;
-    document.getElementById("payment_number").value = data.payment_number;
-    document.getElementById("payment_method").value = data.payment_method;
-  }
-}
+        document.getElementById("orderCount").textContent = ordersSnapshot.size;
+        document.getElementById("userCount").textContent = usersSnapshot.size;
+      } catch (error) {
+        document.getElementById("orderCount").textContent = "ত্রুটি";
+        document.getElementById("userCount").textContent = "ত্রুটি";
+        console.error("ডেটা লোড করতে সমস্যা:", error);
+      }
+    }
 
-async function updateSiteSettings() {
-  const newData = {
-    package: document.getElementById("package").value,
-    payment_number: document.getElementById("payment_number").value,
-    payment_method: document.getElementById("payment_method").value
-  };
-  const docRef = doc(db, "siteSettings", "main");
-  await updateDoc(docRef, newData);
-  alert("✅ ওয়েবসাইট তথ্য আপডেট হয়েছে");
-}
-
-countDocuments();
-loadSiteSettings();
-window.updateSiteSettings = updateSiteSettings;
-
+    loadDashboard();
   </script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f5f5f5;
+      background: #f4f7fa;
       margin: 0;
       padding: 0;
       text-align: center;
     }
     .panel {
       background: white;
-      padding: 20px;
-      margin: 40px auto;
+      padding: 30px;
+      margin: 60px auto;
       max-width: 600px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
     h2 {
       color: #ff6600;
+      margin-bottom: 20px;
     }
     .info {
+      font-size: 22px;
       margin: 15px 0;
-      font-size: 20px;
     }
-    input {
-      padding: 10px;
-      margin: 10px 0;
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .info strong {
+      color: #009688;
     }
-    button {
-      background-color: #ff6600;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #e65c00;
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #888;
     }
   </style>
 </head>
 <body>
   <div class="panel">
-    <h2>📊 এডমিন প্যানেল</h2>
-    <div class="info">মোট অর্ডার: <strong id="orderCount">লোড হচ্ছে...</strong></div>
-    <div class="info">মোট ইউজার: <strong id="userCount">লোড হচ্ছে...</strong></div><hr>
-<h2>🛠️ ওয়েবসাইট তথ্য এডিট করুন</h2>
-<input type="text" id="package" placeholder="Package">
-<input type="text" id="payment_number" placeholder="Payment Number">
-<input type="text" id="payment_method" placeholder="Payment Method">
-<button onclick="updateSiteSettings()">💾 সেভ করুন</button>
-
+    <h2>🛠️ Crunchyroll Premium BD Shop এডমিন প্যানেল</h2>
+    <div class="info">✅ মোট অর্ডার: <strong id="orderCount">লোড হচ্ছে...</strong></div>
+    <div class="info">👥 মোট ইউজার: <strong id="userCount">লোড হচ্ছে...</strong></div>
   </div>
+  <footer>© 2025 Crunchyroll Premium BD Shop</footer>
 </body>
 </html>
