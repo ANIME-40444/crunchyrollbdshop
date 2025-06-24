@@ -1,11 +1,14 @@
-<!DOCTYPE html><html lang="bn">
+
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crunchyroll Premium BD Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -52,50 +55,38 @@
       width: 100%;
       border-radius: 10px;
     }
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      border-radius: 50%;
-      padding: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      cursor: pointer;
-    }
-    .whatsapp-button img {
-      width: 30px;
-      height: 30px;
-    }
-    #paymentPage {
-      background-color: #3a2a2a;
-      display: none;
-    }
   </style>
 </head>
 <body>
   <header>
     <h1>Crunchyroll Premium BD Shop</h1>
-  </header>  <div class="hero">
-    <img src="https://i.ibb.co/WWR5XwRz/anime-banner.jpg" alt="Anime Banner">
-  </div>  <!-- Signup Section -->  <div class="container" id="signup">
+  </header>
+
+  <div class="container" id="signup">
     <h2>🔐 সাইন আপ</h2>
-    <input type="email" id="signupEmail" placeholder="ইমেইল">
-    <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর">
-    <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড">
-    <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড">
-    <input type="text" id="signupCity" placeholder="শহর">
+    <input type="email" id="signupEmail" placeholder="ইমেইল" required>
+    <input type="text" id="signupPhone" placeholder="মোবাইল নম্বর" required>
+    <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
+    <input type="password" id="signupConfirm" placeholder="কনফার্ম পাসওয়ার্ড" required>
+    <input type="text" id="signupCity" placeholder="শহর" required>
     <button onclick="handleSignup()">সাইন আপ করুন</button>
-  </div>  <!-- Login Section -->  <div class="container" id="login" style="display:none">
+  </div>
+
+  <div class="container" id="login" style="display:none;">
     <h2>🔓 সাইন ইন</h2>
-    <input type="email" id="loginEmail" placeholder="ইমেইল">
-    <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড">
+    <input type="email" id="loginEmail" placeholder="ইমেইল" required>
+    <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
     <button onclick="handleLogin()">সাইন ইন করুন</button>
-  </div>  <!-- Main Page -->  <div class="container" id="mainPage" style="display:none">
+  </div>
+
+  <div class="container" id="amountPage" style="display:none;">
     <h2>📦 আপনার পছন্দের প্যাকেজ</h2>
     <input type="number" id="amount" placeholder="যে এমাউন্টটি দিতে চান তা লিখুন">
     <button onclick="goToPayment()">🛒 Add to Cart</button>
-  </div>  <!-- Payment Page -->  <div class="container" id="paymentPage">
-    <h2>✅ পেমেন্ট ইনফরমেশন দিন</h2>
+  </div>
+
+  <div class="container" id="paymentPage" style="display:none;">
+    <h2>💳 পেমেন্ট এবং প্যাকেজ সিলেকশন</h2>
     <form id="orderForm">
       <input type="text" name="name" placeholder="Full Name" required>
       <input type="email" name="email" placeholder="Email" required>
@@ -103,19 +94,26 @@
       <input type="text" name="mobile" placeholder="Mobile Number" required>
       <select name="package">
         <option value="1 Month Share – 100 TK">1 Month – 100 TK</option>
+        <option value="2 Months Share – 200 TK">2 Months – 200 TK</option>
         <option value="3 Months Share – 300 TK">3 Months – 300 TK</option>
+        <option value="6 Months Share – 600 TK">6 Months – 600 TK</option>
+        <option value="1 Month Profile – 240 TK">1 Month Personal – 240 TK</option>
+        <option value="1 Month Primary – 650 TK">1 Month Primary – 650 TK</option>
       </select>
       <input type="text" name="payment_number" placeholder="Payment Number" required>
       <input type="text" name="trans_id" placeholder="Transaction ID" required>
       <select name="payment_method" required>
         <option value="Bkash">Bkash</option>
         <option value="Nagad">Nagad</option>
+        <option value="Rocket">Rocket</option>
       </select>
       <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
     </form>
-  </div>  <a class="whatsapp-button" href="https://wa.me/8801305736690" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-  </a>  <script>
+  </div>
+
+  <script>
+    emailjs.init("gvo6GrSzBqBeIavKO"); // Your EmailJS public key
+
     const firebaseConfig = {
       apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
       authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
@@ -132,29 +130,27 @@
       const city = document.getElementById("signupCity").value;
       if (pass !== confirm) return alert("Password মিলছে না");
 
-      db.collection("users").add({ email, phone, city, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
-        .then(() => {
-          alert("সাইন আপ সফল! এখন লগইন করুন।");
-          document.getElementById("signup").style.display = "none";
-          document.getElementById("login").style.display = "block";
-        });
+      db.collection("users").add({email, phone, city, timestamp: firebase.firestore.FieldValue.serverTimestamp()})
+      .then(() => {
+        alert("সাইন আপ সফল! এখন লগইন করুন।");
+        document.getElementById("signup").style.display = "none";
+        document.getElementById("login").style.display = "block";
+      });
     }
 
     function handleLogin() {
       const email = document.getElementById("loginEmail").value;
-      const pass = document.getElementById("loginPassword").value;
-      db.collection("users").where("email", "==", email).get()
-        .then(snapshot => {
-          if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
-          document.getElementById("login").style.display = "none";
-          document.getElementById("mainPage").style.display = "block";
-        });
+      db.collection("users").where("email", "==", email).get().then(snapshot => {
+        if (snapshot.empty) return alert("ইউজার পাওয়া যায়নি!");
+        document.getElementById("login").style.display = "none";
+        document.getElementById("amountPage").style.display = "block";
+      });
     }
 
     function goToPayment() {
       const amount = document.getElementById("amount").value;
-      if (!amount || amount <= 0) return alert("বৈধ এমাউন্ট লিখুন।");
-      document.getElementById("mainPage").style.display = "none";
+      if (!amount || amount <= 0) return alert("সঠিক এমাউন্ট লিখুন!");
+      document.getElementById("amountPage").style.display = "none";
       document.getElementById("paymentPage").style.display = "block";
     }
 
@@ -166,11 +162,15 @@
       order.timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
       db.collection("orders").add(order).then(() => {
-        alert("✅ অর্ডার কনফার্ম হয়েছে!");
-        document.getElementById("orderForm").reset();
-      }).catch(err => {
+        emailjs.send("service_d5lf3uo", "template_1vv3owh", order)
+        .then(() => {
+          alert("✅ অর্ডার কনফার্ম হয়েছে এবং ইমেইল পাঠানো হয়েছে!");
+          document.getElementById("orderForm").reset();
+        });
+      }).catch(() => {
         alert("❌ অর্ডার ব্যর্থ হয়েছে");
       });
     });
-  </script></body>
+  </script>
+</body>
 </html>
