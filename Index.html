@@ -7,144 +7,120 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #131c2b, #202f45);
+      color: white;
       margin: 0;
       padding: 0;
-      background-color: #131c2b;
-      color: white;
     }
     header {
       background-color: #0a0f1c;
-      text-align: center;
       padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
     header h1 {
+      margin: 0;
       color: #ff9f1c;
     }
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: 20px auto;
+      background: #1c2a3a;
       padding: 20px;
-      background-color: #1c2a3a;
       border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    h2 {
-      color: #ffcc00;
-      border-bottom: 1px solid #444;
-      padding-bottom: 5px;
+    .hidden {
+      display: none;
     }
-    .package-buttons button {
+    button {
       width: 100%;
-      background-color: #222f3e;
-      color: #00ff99;
-      border: 1px solid #00ff99;
-      margin: 8px 0;
-      padding: 12px;
-      font-size: 16px;
+      padding: 10px;
+      margin: 10px 0;
       border-radius: 8px;
-      cursor: pointer;
-    }
-    .package-buttons button:hover {
-      background-color: #00ff99;
-      color: #1c2a3a;
-    }
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    .actions button {
-      width: 48%;
+      border: none;
+      font-size: 16px;
       background-color: #28a745;
       color: white;
-      border: none;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
       cursor: pointer;
     }
-    .actions button.back {
-      background-color: #007bff;
+    button:hover {
+      background-color: #218838;
     }
-    .image-section {
-      text-align: center;
-      margin: 20px 0;
+    .package-section {
+      margin-top: 30px;
     }
-    .image-section img.main-img {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
+    .package-section h3 {
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
     }
-    .image-section img.small-img {
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #eee;
+      background-color: #0a0f1c;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .img-small {
       width: 100px;
       height: 100px;
       object-fit: cover;
       border-radius: 50%;
-      margin-top: 15px;
-    }
-    .text-note {
-      margin-top: 30px;
-      font-size: 15px;
-      color: white;
-      line-height: 1.6;
-      background: rgba(255,255,255,0.05);
-      padding: 15px;
-      border-radius: 10px;
+      display: block;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Crunchyroll Premium BD Shop</h1>
-  </header>
-  <div class="container"><div class="image-section">
-  <img class="main-img" src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Main Package Image">
-  <img class="small-img" src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" alt="Round Icon">
+  </header>  <div class="container" id="homePage">
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" style="width: 100%; border-radius: 10px;">
+    <br>
+    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="img-small">
+    <button onclick="openPackagesPage()">🌟 MEGA PACKAGES</button>
+  </div>  <div class="container hidden" id="packagesPage">
+    <div class="package-section">
+      <h3>Shared Profile</h3>
+      <button>📅 1 Month – Only 100 TK</button>
+      <button>📅 2 Months – Only 200 TK</button>
+      <button>📅 3 Months – Only 300 TK</button>
+      <button>📅 6 Months – Only 600 TK</button>
+      <button>📅 8 Months – Only 840 TK</button>
+    </div><div class="package-section">
+  <h3>Personal Profile</h3>
+  <button>📅 1 Month – Only 240 TK</button>
+  <button>📅 2 Months – Only 480 TK</button>
+  <button>📅 3 Months – Only 720 TK</button>
+  <button>📅 6 Months – Only 1440 TK</button>
+  <button>📅 8 Months – Only 1800 TK</button>
+  <button>📅 12 Months – Only 2760 TK</button>
 </div>
 
-<button onclick="scrollToPackages()" style="width:100%;background:#28a745;color:#fff;font-size:18px;padding:12px;border:none;border-radius:8px;cursor:pointer;margin-bottom:20px;">MEGA PACKAGES</button>
-
-<div id="packages">
-  <h2>📺 Shared Profile</h2>
-  <div class="package-buttons">
-    <button>📅 1 Month – Only 100 TK</button>
-    <button>📅 2 Months – Only 200 TK</button>
-    <button>📅 3 Months – Only 300 TK</button>
-    <button>📅 6 Months – Only 600 TK</button>
-    <button>📅 8 Months – Only 840 TK</button>
-  </div>
-
-  <h2>👤 Personal Profile</h2>
-  <div class="package-buttons">
-    <button>📅 1 Month – Only 240 TK</button>
-    <button>📅 2 Months – Only 480 TK</button>
-    <button>📅 3 Months – Only 720 TK</button>
-    <button>📅 6 Months – Only 1440 TK</button>
-    <button>📅 8 Months – Only 1800 TK</button>
-    <button>📅 12 Months – Only 2760 TK</button>
-  </div>
-
-  <h2>🔐 Primary Account</h2>
-  <div class="package-buttons">
-    <button>📅 1 Month – Only 650 TK</button>
-    <button>📅 2 Months – Only 1300 TK</button>
-    <button>📅 3 Months – Only 1950 TK</button>
-    <button>📅 6 Months – Only 3600 TK</button>
-  </div>
-
-  <div class="actions">
-    <button class="add">🛒 Add to Cart</button>
-    <button class="back" onclick="window.location.href='index.html'">🔙 Back to Home</button>
-  </div>
-
-  <div class="text-note">
-    শেয়ার অ্যাকাউন্টে একটি প্রোফাইল ২-৪ জন ইউজ করে থাকে। পার্সোনাল প্রোফাইলে আপনাকে পুরোপুরি আলাদা একটি প্রোফাইল দেওয়া হবে যেখানে কেউ প্রবেশ করতে পারবে না। আর প্রাইমারি একাউন্ট মানে পুরো একাউন্টটি একমাত্র আপনার জন্য থাকবে ⚠️।
-  </div>
+<div class="package-section">
+  <h3>Primary Account</h3>
+  <button>📅 1 Month – Only 650 TK</button>
+  <button>📅 2 Months – Only 1300 TK</button>
+  <button>📅 3 Months – Only 1950 TK</button>
+  <button>📅 6 Months – Only 3600 TK</button>
 </div>
 
-  </div>  <script>
-    function scrollToPackages() {
-      document.getElementById("packages").scrollIntoView({ behavior: 'smooth' });
-    }
-  </script></body>
+<div class="note">
+  শেয়ার অ্যাকাউন্টে একটা প্রোফাইল ২-৪ জন ইউজ করে, পার্সোনাল প্রোফাইল আপনাকে ফুল একটা প্রোফাইল দেওয়া হবে যেখানে কেউ প্রবেশ করবে না আপনি ছাড়া, আর প্রাইমারি একাউন্ট আপনাকে ফুল একাউন্ট দেওয়া হবে। ⚠️
+</div>
+
+<button style="background:#ffc107;color:black;" onclick="goBackHome()">⬅️ Back To Home</button>
+<button>✅ Add to Cart</button>
+
+  </div><script>
+  function openPackagesPage() {
+    document.getElementById("homePage").classList.add("hidden");
+    document.getElementById("packagesPage").classList.remove("hidden");
+  }
+  function goBackHome() {
+    document.getElementById("packagesPage").classList.add("hidden");
+    document.getElementById("homePage").classList.remove("hidden");
+  }
+</script></body>
 </html>
