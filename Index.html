@@ -54,12 +54,50 @@
       color: #ffd700;
     }
 
+    .mini-image-section {
+      text-align: center;
+      margin: 40px auto 10px;
+    }
+
+    .mini-image-section img {
+      width: 160px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .green-button {
+      margin-top: 15px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .green-button:hover {
+      background-color: #218838;
+    }
+
+    .three-stars {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 10px;
+      color: #ffd700;
+    }
+
     @media screen and (max-width: 600px) {
       .section-title {
         font-size: 20px;
       }
-      .stars {
+      .stars, .three-stars {
         font-size: 22px;
+      }
+      .green-button {
+        width: 80%;
       }
     }
   </style>
@@ -70,13 +108,22 @@
     <h1>Crunchyroll Premium BD Shop</h1>
   </header>
 
+  <!-- Main Image -->
   <div class="image-section">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Mega Package Image" />
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Mega Package Banner">
   </div>
 
   <div class="section-title">🌟 MEGA PACKAGES 🌟</div>
-
   <div class="stars">★ ★ ★ ★ ★</div>
+
+  <!-- Second Image & Button -->
+  <div class="mini-image-section">
+    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" alt="Small Mega Image">
+    <div>
+      <button class="green-button">MEGA PACKAGES</button>
+    </div>
+    <div class="three-stars">★ ★ ★</div>
+  </div>
 
 </body>
 </html>
