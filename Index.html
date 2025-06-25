@@ -48,15 +48,21 @@
       color: gold; font-size: 20px;
     }
 
-    .package-page {
-      display: none;
+    .package-page { display: none; }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 30px;
+      border-bottom: 1px solid #ff9f1c;
+      padding-bottom: 5px;
     }
 
     .package-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 15px;
-      margin: 20px 0;
+      gap: 12px;
+      margin: 15px 0;
     }
 
     .package-btn {
@@ -78,7 +84,7 @@
     }
 
     .back-btn {
-      margin-top: 20px;
+      margin-top: 10px;
       background-color: #444;
     }
   </style>
@@ -100,28 +106,39 @@
   <div class="container package-page" id="packagePage">
     <h2 style="text-align:center;">📦 প্যাকেজ সিলেক্ট করুন</h2>
 
+    <!-- Shared Profile -->
+    <div class="section-title">🔹 Shared Profile</div>
     <div class="package-grid">
-      <button class="package-btn">Share ⚡ - 1 Month – 100 TK</button>
-      <button class="package-btn">Share ⚡ - 2 Months – 200 TK</button>
-      <button class="package-btn">Share ⚡ - 3 Months – 300 TK</button>
-      <button class="package-btn">Share ⚡ - 6 Months – 600 TK</button>
-      <button class="package-btn">Share ⚡ - 8 Months – 840 TK</button>
-
-      <button class="package-btn">Personal ⚡ - 1 Month – 240 TK</button>
-      <button class="package-btn">Personal ⚡ - 2 Months – 480 TK</button>
-      <button class="package-btn">Personal ⚡ - 3 Months – 720 TK</button>
-      <button class="package-btn">Personal ⚡ - 6 Months – 1440 TK</button>
-      <button class="package-btn">Personal ⚡ - 8 Months – 1800 TK</button>
-      <button class="package-btn">Personal ⚡ - 12 Months – 2760 TK</button>
-
-      <button class="package-btn">Primary ⚡ - 1 Month – 650 TK</button>
-      <button class="package-btn">Primary ⚡ - 2 Months – 1300 TK</button>
-      <button class="package-btn">Primary ⚡ - 3 Months – 1950 TK</button>
-      <button class="package-btn">Primary ⚡ - 6 Months – 3600 TK</button>
+      <button class="package-btn">📅 1 Month – 100 TK</button>
+      <button class="package-btn">📅 2 Months – 200 TK</button>
+      <button class="package-btn">📅 3 Months – 300 TK</button>
+      <button class="package-btn">📅 6 Months – 600 TK</button>
+      <button class="package-btn">📅 8 Months – 840 TK</button>
     </div>
 
+    <!-- Personal Profile -->
+    <div class="section-title">🔹 Personal Profile</div>
+    <div class="package-grid">
+      <button class="package-btn">📅 1 Month – 240 TK</button>
+      <button class="package-btn">📅 2 Months – 480 TK</button>
+      <button class="package-btn">📅 3 Months – 720 TK</button>
+      <button class="package-btn">📅 6 Months – 1440 TK</button>
+      <button class="package-btn">📅 8 Months – 1800 TK</button>
+      <button class="package-btn">📅 12 Months – 2760 TK</button>
+    </div>
+
+    <!-- Primary Account -->
+    <div class="section-title">🔹 Primary Account</div>
+    <div class="package-grid">
+      <button class="package-btn">📅 1 Month – 650 TK</button>
+      <button class="package-btn">📅 2 Months – 1300 TK</button>
+      <button class="package-btn">📅 3 Months – 1950 TK</button>
+      <button class="package-btn">📅 6 Months – 3600 TK</button>
+    </div>
+
+    <!-- Buttons -->
     <button class="green-btn">🛒 Add to Cart</button>
-    <button class="green-btn back-btn" onclick="goBack()">🔙 পিছনে যান</button>
+    <button class="green-btn back-btn" onclick="goBack()">🔙 Back to Home</button>
   </div>
 
   <script>
