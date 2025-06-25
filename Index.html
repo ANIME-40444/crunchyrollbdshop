@@ -4,129 +4,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crunchyroll Premium BD Shop</title>
   <style>
-    body { background:#131c2b; color:white; font-family:sans-serif; margin:0; padding:0; }
-    .page { display:none; max-width:600px; margin:0 auto; padding:20px; }
-    .active { display:block; }
-    .section { background:#1c2a3a; padding:20px; border-radius:10px; margin-top:20px; }
-    button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-size:16px; }
-    .pkg-btn { display:block; margin:10px 0; background:#0f7dc8; color:white; width:100%; }
-    .pkg-btn:hover { background:#095e9f; }
-    .orange { background:orange; color:black; }
-    .green { background:green; color:white; }
-    .pay-box { background:#0a0f1c; padding:10px; border-radius:6px; margin:10px 0; text-align:center; font-weight:bold; }
-    .copy-btn { margin-top:5px; background:#ffcc00; color:black; padding:6px 10px; border:none; border-radius:4px; cursor:pointer; }
-    input, select { width:100%; padding:10px; margin:10px 0; border:none; border-radius:6px; font-size:16px; }
-    h2, h3 { text-align:center; color:#ffcc00; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #131c2b;
+      color: white;
+    }
+    .page {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    .banner {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: block;
+      margin: 20px auto;
+      border: 3px solid white;
+    }
+    .section {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #1c2a3a;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    h2 {
+      color: #00ffd5;
+    }
+    .package-group h3 {
+      color: #ffcc00;
+    }
+    .package-group button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      background: #0f7dc8;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .package-group button:hover {
+      background: #095e9f;
+    }
+    .action-buttons button, .checkout-form button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .add-to-cart { background: orange; color: black; }
+    .back-home { background: green; color: white; }
+    .info-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: white;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: none;
+    }
+    .copy-box {
+      background: #fff;
+      color: #000;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
   </style>
 </head>
-<body><div id="mainPage" class="page active">
+<body><!-- Page 1 - Main --><div id="mainPage" class="page active">
   <div class="section">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" style="width:100%; border-radius:10px;">
-    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" style="width:80px; border-radius:50%; display:block; margin:20px auto;">
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner">
+    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" alt="Profile">
     <h2>Welcome to Crunchyroll Premium BD Shop</h2>
-    <button class="green" onclick="gotoPackages()">💥 MEGA PACKAGES</button>
+    <button onclick="showPackages()" style="background: green; color: white; font-size: 18px; padding: 12px 20px; border-radius: 8px;">💥 MEGA PACKAGES</button>
   </div>
-</div><div id="packagesPage" class="page">
+</div><!-- Page 2 - Packages --><div id="packagesPage" class="page">
   <div class="section">
     <h2>📦 MEGA PACKAGES</h2>
-    <h3>📤 Shared Profile</h3>
-    <button class="pkg-btn" onclick="selectPackage('Shared Profile - 1 Month', 100)">1 Month – 100 TK</button>
-    <button class="pkg-btn" onclick="selectPackage('Shared Profile - 2 Months', 200)">2 Months – 200 TK</button>
-    <button class="pkg-btn" onclick="selectPackage('Shared Profile - 3 Months', 300)">3 Months – 300 TK</button>
-    <button class="pkg-btn" onclick="selectPackage('Shared Profile - 6 Months', 600)">6 Months – 600 TK</button>
-    <button class="pkg-btn" onclick="selectPackage('Shared Profile - 8 Months', 840)">8 Months – 840 TK</button><h3>👤 Personal Profile</h3>
-<button class="pkg-btn" onclick="selectPackage('Personal Profile - 1 Month', 240)">1 Month – 240 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Personal Profile - 2 Months', 480)">2 Months – 480 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Personal Profile - 3 Months', 720)">3 Months – 720 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Personal Profile - 6 Months', 1440)">6 Months – 1440 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Personal Profile - 8 Months', 1800)">8 Months – 1800 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Personal Profile - 12 Months', 2760)">12 Months – 2760 TK</button>
-
-<h3>👑 Primary Account</h3>
-<button class="pkg-btn" onclick="selectPackage('Primary Account - 1 Month', 650)">1 Month – 650 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Primary Account - 2 Months', 1300)">2 Months – 1300 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Primary Account - 3 Months', 1950)">3 Months – 1950 TK</button>
-<button class="pkg-btn" onclick="selectPackage('Primary Account - 6 Months', 3600)">6 Months – 3600 TK</button>
-
-<button class="orange" style="margin-top:20px;" onclick="gotoCheckout()">🛒 Add To Cart</button>
-<button class="green" onclick="gotoHome()">🏠 Back To Home</button>
-<p style="margin-top:20px; font-size:14px;">
-  শেয়ার অ্যাকাউন্টে একটা প্রোফাইল ২-৪ জন ইউজ করে।<br>
-  পার্সোনাল প্রোফাইল আপনাকে ফুল একটা প্রোফাইল দেওয়া হবে যেখানে কেউ প্রবেশ করবে না আপনি ছাড়া।<br>
-  আর প্রাইমারি একাউন্ট আপনাকে ফুল একাউন্ট দেওয়া হবে, শুধুমাত্র আপনার ⚠️
-</p>
-
+    <div class="package-group">
+      <h3>📤 Shared Profile</h3>
+      <button onclick="selectPackage('1 Month – 100 TK')">1 Month – 100 TK</button>
+      <button onclick="selectPackage('2 Months – 200 TK')">2 Months – 200 TK</button>
+      <button onclick="selectPackage('3 Months – 300 TK')">3 Months – 300 TK</button>
+      <button onclick="selectPackage('6 Months – 600 TK')">6 Months – 600 TK</button>
+      <button onclick="selectPackage('8 Months – 840 TK')">8 Months – 840 TK</button>
+    </div>
+    <div class="package-group">
+      <h3>👤 Personal Profile</h3>
+      <button onclick="selectPackage('1 Month – 240 TK')">1 Month – 240 TK</button>
+      <button onclick="selectPackage('2 Months – 480 TK')">2 Months – 480 TK</button>
+      <button onclick="selectPackage('3 Months – 720 TK')">3 Months – 720 TK</button>
+      <button onclick="selectPackage('6 Months – 1440 TK')">6 Months – 1440 TK</button>
+      <button onclick="selectPackage('8 Months – 1800 TK')">8 Months – 1800 TK</button>
+      <button onclick="selectPackage('12 Months – 2760 TK')">12 Months – 2760 TK</button>
+    </div>
+    <div class="package-group">
+      <h3>👑 Primary Account</h3>
+      <button onclick="selectPackage('1 Month – 650 TK')">1 Month – 650 TK</button>
+      <button onclick="selectPackage('2 Months – 1300 TK')">2 Months – 1300 TK</button>
+      <button onclick="selectPackage('3 Months – 1950 TK')">3 Months – 1950 TK</button>
+      <button onclick="selectPackage('6 Months – 3600 TK')">6 Months – 3600 TK</button>
+    </div>
+    <div class="action-buttons">
+      <button class="back-home" onclick="goBackHome()">🏠 Back To Home</button>
+    </div>
+    <div class="info-text">
+      শেয়ার অ্যাকাউন্টে একটা প্রোফাইল ২-৪ জন ইউজ করে।<br>
+      পার্সোনাল প্রোফাইল আপনাকে ফুল একটা প্রোফাইল দেওয়া হবে যেখানে কেউ প্রবেশ করবে না আপনি ছাড়া।<br>
+      আর প্রাইমারি একাউন্ট আপনাকে ফুল একাউন্ট দেওয়া হবে, শুধুমাত্র আপনার ⚠️
+    </div>
   </div>
-</div><div id="checkoutPage" class="page">
+</div><!-- Page 3 - Checkout --><div id="checkoutPage" class="page">
   <div class="section">
-    <h2>🧾 Checkout Page</h2>
-    <p><strong>আপনি প্যাকেজ সিলেক্ট করেছেন:</strong> <span id="selectedPkg"></span></p>
-    <p><strong>প্রাইস:</strong> <span id="selectedPrice"></span> TK</p><input type="email" placeholder="আপনার ইমেইল লিখুন">
-<select id="paymentMethod" onchange="updatePaymentNumber()">
-  <option value="">-- পেমেন্ট মেথড সিলেক্ট করুন --</option>
-  <option value="Bkash">Bkash</option>
-  <option value="Nagad">Nagad</option>
-  <option value="Rocket">Rocket</option>
-</select>
-<div id="payNumberBox" class="pay-box" style="display:none;">
-  <span id="payNumberText"></span><br>
-  <button class="copy-btn" onclick="copyNumber()">📋 কপি করুন</button>
-</div>
-<p style="font-size:14px; margin-top:10px;">
-  অবশ্যই সেন্ড মানি করতে হবে এবং নির্দিষ্ট পরিমাণের অ্যামাউন্ট পাঠাবেন।<br>
-  কম পাঠালে টাকা রিফান্ড করে দেওয়া হবে। যেকোনো সমস্যা হলে সাপোর্টে কথা বলুন।<br>
-  ধন্যবাদ ❤️
-</p>
-
+    <h2>✅ Checkout Page</h2>
+    <p id="selectedPackage">প্যাকেজ: </p>
+    <p id="selectedAmount">পেমেন্ট করতে হবে: </p>
+    <div class="checkout-form">
+      <input type="text" placeholder="Full Name">
+      <input type="email" placeholder="Email">
+      <input type="text" placeholder="Street Address">
+      <input type="text" placeholder="Mobile Number">
+      <input type="text" placeholder="Payment Number">
+      <input type="text" placeholder="Transaction ID">
+      <select onchange="showPaymentNumber(this.value)">
+        <option value="">Select Payment Method</option>
+        <option value="Bkash">Bkash</option>
+        <option value="Nagad">Nagad</option>
+        <option value="Rocket">Rocket</option>
+      </select>
+      <div class="copy-box" id="paymentNumberBox" style="display:none;"></div>
+      <button style="background:orange; color:black;">📨 Confirm Order</button>
+    </div>
+    <div class="info-text">
+      অবশ্যই সেন্ড মানি করতে হবে এবং নির্দিষ্ট পরিমাণের অ্যামাউন্ট পাঠাবেন কম পাঠালে টাকা রিফান্ড করে দেওয়া হবে এবং যেকোনো সমস্যা হলে সাপোর্টে কথা বলুন ধন্যবাদ ❤️
+    </div>
   </div>
 </div><script>
-  let selectedPackage = "";
-  let selectedPrice = 0;
-
-  function gotoPackages() {
-    showPage("packagesPage");
+  let currentPackage = "";
+  function showPackages() {
+    document.getElementById('mainPage').classList.remove('active');
+    document.getElementById('packagesPage').classList.add('active');
   }
-
-  function gotoHome() {
-    showPage("mainPage");
+  function goBackHome() {
+    document.getElementById('packagesPage').classList.remove('active');
+    document.getElementById('mainPage').classList.add('active');
   }
-
-  function gotoCheckout() {
-    if (!selectedPackage) return alert("⚠️ আপনি কোনো প্যাকেজ সিলেক্ট করেননি!");
-    document.getElementById("selectedPkg").innerText = selectedPackage;
-    document.getElementById("selectedPrice").innerText = selectedPrice;
-    showPage("checkoutPage");
+  function selectPackage(pkg) {
+    currentPackage = pkg;
+    const amount = pkg.split('–')[1].trim();
+    document.getElementById('packagesPage').classList.remove('active');
+    document.getElementById('checkoutPage').classList.add('active');
+    document.getElementById('selectedPackage').innerText = "প্যাকেজ: " + pkg;
+    document.getElementById('selectedAmount').innerText = "পেমেন্ট করতে হবে: ৳" + amount;
   }
-
-  function selectPackage(pkg, price) {
-    selectedPackage = pkg;
-    selectedPrice = price;
-    alert(`✅ আপনি সিলেক্ট করেছেন: ${pkg}`);
-  }
-
-  function showPage(id) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-  }
-
-  function updatePaymentNumber() {
-    const method = document.getElementById("paymentMethod").value;
-    const numberMap = {
-      "Bkash": "01740433733",
-      "Nagad": "01603599843",
-      "Rocket": "01603599843"
-    };
-    if (numberMap[method]) {
-      document.getElementById("payNumberBox").style.display = "block";
-      document.getElementById("payNumberText").innerText = numberMap[method];
+  function showPaymentNumber(method) {
+    const box = document.getElementById('paymentNumberBox');
+    let number = "";
+    if(method === 'Bkash') number = "01740433733";
+    else if(method === 'Nagad') number = "01603599843";
+    else if(method === 'Rocket') number = "01603599843";
+    if(number) {
+      box.innerHTML = `নাম্বার: <b>${number}</b> <button onclick="navigator.clipboard.writeText('${number}')">📋 কপি</button>`;
+      box.style.display = "block";
     } else {
-      document.getElementById("payNumberBox").style.display = "none";
+      box.style.display = "none";
     }
-  }
-
-  function copyNumber() {
-    const text = document.getElementById("payNumberText").innerText;
-    navigator.clipboard.writeText(text).then(() => alert("✅ নাম্বার কপি হয়েছে!"));
   }
 </script></body>
 </html>
