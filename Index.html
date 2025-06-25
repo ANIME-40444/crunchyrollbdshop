@@ -34,7 +34,7 @@
 <div id="signupPage" class="page active">
   <h2>🔐 সাইন আপ</h2>
   <input id="suEmail" type="email" placeholder="📧 ইমেইল">
-  <input id="suPhone" type="text" placeholder="🎀 মোবাইল নম্বর">
+  <input id="suPhone" type="text" placeholder="📱 মোবাইল নম্বর">
   <input id="suPass" type="password" placeholder="🔑 পাসওয়ার্ড (৬ সংখ্যার)">
   <input id="suConfirm" type="password" placeholder="🔑 কনফার্ম পাসওয়ার্ড">
   <input id="suCity" type="text" placeholder="🏙️ শহর">
@@ -121,29 +121,30 @@
 </div>
 
 <script>
-// Firebase config
+// --- Configurations ---
 const firebaseConfig = {
-  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-  authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-  projectId: "crunchyrollpremiumbd-shop",
-  storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
-  messagingSenderId: "790961397898",
-  appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
-  measurementId: "G-PSSPTLC6MJ"
+  apiKey: "...", authDomain: "...", projectId: "...",
 };
-
+const emailjsConfig = {
+  service: "service_z1714kq",
+  adminTpl: "template_hp66tqp",
+  custTpl: "template_1z1lhlf",
+  publicKey: "SsUmUorUm-BZG8LBY"
+};
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-emailjs.init("SsUmUorUm-BZG8LBY");
+emailjs.init(emailjsConfig.publicKey);
 
-// Helper functions
+// --- Helpers ---
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+function validPhone(p){ return /^\d{11}$/.test(p) }
+function validPass(p){ return /^\d{6}$/.test(p) }
 
-// SignUp Function
+// --- SignUp ---
 async function handleSignup(){
   const e = document.getElementById('suEmail').value.trim();
   const p = document.getElementById('suPhone').value.trim();
@@ -168,7 +169,7 @@ async function handleSignup(){
   } catch(err){err.textContent = err.message;}
 }
 
-// Login Function
+// --- Login ---
 async function handleLogin(){
   const e = document.getElementById('liEmail').value.trim();
   const pw = document.getElementById('liPass').value;
@@ -181,13 +182,13 @@ async function handleLogin(){
   } catch(err){err.textContent = err.message;}
 }
 
-// Counts for Admin Panel
+// --- Counts ---
 function startListeners(){
   db.collection('users').onSnapshot(s=>document.getElementById('userCount').textContent = s.size);
   db.collection('orders').onSnapshot(s=>document.getElementById('orderCount').textContent = s.size);
 }
 
-// Package Selection
+// --- Package Selection ---
 let selectedPkg = null;
 function selectPackage(profile,duration,price){
   selectedPkg = {profile,duration,price};
@@ -195,7 +196,7 @@ function selectPackage(profile,duration,price){
   alert(`✅ '${profile}' (${duration}) – ${price} TK সিলেক্ট হয়েছে`);
 }
 
-// Update Payment Number
+// --- Update Payment Number ---
 function updatePayNumber(){
   const m = document.getElementById('paymentMethod').value;
   let num="";
@@ -205,7 +206,17 @@ function updatePayNumber(){
     `${m} নম্বর: <strong>${num}</strong> <button onclick="navigator.clipboard.writeText('${num}')">📋 কপি</button>` : "";
 }
 
-// Checkout Function
+// --- Show Checkout Info ---
+function goToCheckout(){
+  if (!selectedPkg){ document.getElementById('pkgError').textContent="⚠️ প্যাকেজ সিলেক্ট করুন"; return; }
+  document.getElementById('selectedInfo').innerHTML =
+    `<p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
+     <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
+     <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>`;
+  showPage('checkoutPage');
+}
+
+// --- Confirm Order ---
 async function confirmOrder(){
   const name = document.getElementById('coName').value.trim();
   const email = document.getElementById('coEmail').value.trim();
@@ -219,8 +230,9 @@ async function confirmOrder(){
   try {
     const data = {...selectedPkg,name,email,addr,mobile,payNo,trans,pm, timestamp: firebase.firestore.FieldValue.serverTimestamp()};
     await db.collection('orders').add(data);
-    emailjs.send("service_z1714kq", "template_1z1lhlf", data);
-    emailjs.send("service_z1714kq", "template_hp66tqp", data);
+    // Emails
+    emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
+    emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
     alert("✅ অর্ডার সফল হয়েছে। কাস্টমার ও অ্যাডমিনে ইমেইল পাঠানো হয়েছে।");
     showPage('mainPage');
   } catch(err){
@@ -228,6 +240,10 @@ async function confirmOrder(){
   }
 }
 
+// handle Add to Cart button
+document.querySelector('#packagePage .orange').addEventListener('click', function(){
+  goToCheckout();
+});
 </script>
 
 </body>
