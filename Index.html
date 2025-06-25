@@ -121,7 +121,7 @@
 </div>
 
 <script>
-// --- Configurations ---
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
   authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
@@ -132,28 +132,18 @@ const firebaseConfig = {
   measurementId: "G-PSSPTLC6MJ"
 };
 
-const emailjsConfig = {
-  service: "service_z1714kq",
-  adminTpl: "template_hp66tqp",
-  custTpl: "template_1z1lhlf",
-  publicKey: "SsUmUorUm-BZG8LBY"
-};
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-emailjs.init(emailjsConfig.publicKey);
+emailjs.init("SsUmUorUm-BZG8LBY");
 
-
-// --- Helpers ---
+// Helper functions
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-function validPhone(p){ return /^\d{11}$/.test(p) }
-function validPass(p){ return /^\d{6}$/.test(p) }
 
-// --- SignUp ---
+// SignUp Function
 async function handleSignup(){
   const e = document.getElementById('suEmail').value.trim();
   const p = document.getElementById('suPhone').value.trim();
@@ -178,7 +168,7 @@ async function handleSignup(){
   } catch(err){err.textContent = err.message;}
 }
 
-// --- Login ---
+// Login Function
 async function handleLogin(){
   const e = document.getElementById('liEmail').value.trim();
   const pw = document.getElementById('liPass').value;
@@ -191,13 +181,13 @@ async function handleLogin(){
   } catch(err){err.textContent = err.message;}
 }
 
-// --- Counts ---
+// Counts for Admin Panel
 function startListeners(){
   db.collection('users').onSnapshot(s=>document.getElementById('userCount').textContent = s.size);
   db.collection('orders').onSnapshot(s=>document.getElementById('orderCount').textContent = s.size);
 }
 
-// --- Package Selection ---
+// Package Selection
 let selectedPkg = null;
 function selectPackage(profile,duration,price){
   selectedPkg = {profile,duration,price};
@@ -205,7 +195,7 @@ function selectPackage(profile,duration,price){
   alert(`✅ '${profile}' (${duration}) – ${price} TK সিলেক্ট হয়েছে`);
 }
 
-// --- Update Payment Number ---
+// Update Payment Number
 function updatePayNumber(){
   const m = document.getElementById('paymentMethod').value;
   let num="";
@@ -215,17 +205,7 @@ function updatePayNumber(){
     `${m} নম্বর: <strong>${num}</strong> <button onclick="navigator.clipboard.writeText('${num}')">📋 কপি</button>` : "";
 }
 
-// --- Show Checkout Info ---
-function goToCheckout(){
-  if (!selectedPkg){ document.getElementById('pkgError').textContent="⚠️ প্যাকেজ সিলেক্ট করুন"; return; }
-  document.getElementById('selectedInfo').innerHTML =
-    `<p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
-     <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
-     <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>`;
-  showPage('checkoutPage');
-}
-
-// --- Confirm Order ---
+// Checkout Function
 async function confirmOrder(){
   const name = document.getElementById('coName').value.trim();
   const email = document.getElementById('coEmail').value.trim();
@@ -239,9 +219,8 @@ async function confirmOrder(){
   try {
     const data = {...selectedPkg,name,email,addr,mobile,payNo,trans,pm, timestamp: firebase.firestore.FieldValue.serverTimestamp()};
     await db.collection('orders').add(data);
-    // Emails
-    emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
-    emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
+    emailjs.send("service_z1714kq", "template_1z1lhlf", data);
+    emailjs.send("service_z1714kq", "template_hp66tqp", data);
     alert("✅ অর্ডার সফল হয়েছে। কাস্টমার ও অ্যাডমিনে ইমেইল পাঠানো হয়েছে।");
     showPage('mainPage');
   } catch(err){
@@ -249,10 +228,6 @@ async function confirmOrder(){
   }
 }
 
-// handle Add to Cart button
-document.querySelector('#packagePage .orange').addEventListener('click', function(){
-  goToCheckout();
-});
 </script>
 
 </body>
