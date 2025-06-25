@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crunchyroll Premium BD Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -35,13 +32,15 @@
 
     .green-btn {
       background: green; color: white;
-      padding: 10px 20px; border: none;
+      padding: 12px 20px; border: none;
       border-radius: 8px; font-size: 18px;
       cursor: pointer; display: block;
       margin: 10px auto;
+      transition: 0.3s ease;
     }
     .green-btn:hover {
       background: #0f9d58;
+      transform: scale(1.05);
     }
 
     .stars {
@@ -49,22 +48,37 @@
       color: gold; font-size: 20px;
     }
 
-    .package-page, #packageSelect {
+    .package-page {
       display: none;
     }
 
+    .package-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
     .package-btn {
-      background-color: #333;
+      background: #222e44;
       color: white;
-      padding: 12px;
-      border: 1px solid #555;
+      border: 1px solid #ff9f1c;
+      border-left: 5px solid #ff9f1c;
+      padding: 14px;
       border-radius: 8px;
-      margin: 10px 0;
+      font-size: 16px;
       cursor: pointer;
-      width: 100%;
+      transition: all 0.3s ease;
+      text-align: left;
     }
 
     .package-btn:hover {
+      background-color: #2d3e59;
+      transform: scale(1.02);
+    }
+
+    .back-btn {
+      margin-top: 20px;
       background-color: #444;
     }
   </style>
@@ -74,42 +88,52 @@
     <h1>Crunchyroll Premium BD Shop</h1>
   </header>
 
-  <div class="container">
+  <!-- 🖼️ Home Section -->
+  <div class="container" id="homePage">
     <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Main Banner" />
     <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="small-pic" alt="Small Profile" />
     <button class="green-btn" onclick="showPackagePage()">MEGA PACKAGES</button>
     <div class="stars">★ ★ ★</div>
   </div>
 
-  <!-- 👉 MEGA PACKAGES PAGE -->
+  <!-- 📦 Package Selection Page -->
   <div class="container package-page" id="packagePage">
-    <h2>📦 প্যাকেজ সিলেক্ট করুন</h2>
+    <h2 style="text-align:center;">📦 প্যাকেজ সিলেক্ট করুন</h2>
 
-    <button class="package-btn">Share ⚡ - 1 Month – 100 TK</button>
-    <button class="package-btn">Share ⚡ - 2 Months – 200 TK</button>
-    <button class="package-btn">Share ⚡ - 3 Months – 300 TK</button>
-    <button class="package-btn">Share ⚡ - 6 Months – 600 TK</button>
-    <button class="package-btn">Share ⚡ - 8 Months – 840 TK</button>
+    <div class="package-grid">
+      <button class="package-btn">Share ⚡ - 1 Month – 100 TK</button>
+      <button class="package-btn">Share ⚡ - 2 Months – 200 TK</button>
+      <button class="package-btn">Share ⚡ - 3 Months – 300 TK</button>
+      <button class="package-btn">Share ⚡ - 6 Months – 600 TK</button>
+      <button class="package-btn">Share ⚡ - 8 Months – 840 TK</button>
 
-    <button class="package-btn">Personal ⚡ - 1 Month – 240 TK</button>
-    <button class="package-btn">Personal ⚡ - 2 Months – 480 TK</button>
-    <button class="package-btn">Personal ⚡ - 3 Months – 720 TK</button>
-    <button class="package-btn">Personal ⚡ - 6 Months – 1440 TK</button>
-    <button class="package-btn">Personal ⚡ - 8 Months – 1800 TK</button>
-    <button class="package-btn">Personal ⚡ - 12 Months – 2760 TK</button>
+      <button class="package-btn">Personal ⚡ - 1 Month – 240 TK</button>
+      <button class="package-btn">Personal ⚡ - 2 Months – 480 TK</button>
+      <button class="package-btn">Personal ⚡ - 3 Months – 720 TK</button>
+      <button class="package-btn">Personal ⚡ - 6 Months – 1440 TK</button>
+      <button class="package-btn">Personal ⚡ - 8 Months – 1800 TK</button>
+      <button class="package-btn">Personal ⚡ - 12 Months – 2760 TK</button>
 
-    <button class="package-btn">Primary ⚡ - 1 Month – 650 TK</button>
-    <button class="package-btn">Primary ⚡ - 2 Months – 1300 TK</button>
-    <button class="package-btn">Primary ⚡ - 3 Months – 1950 TK</button>
-    <button class="package-btn">Primary ⚡ - 6 Months – 3600 TK</button>
+      <button class="package-btn">Primary ⚡ - 1 Month – 650 TK</button>
+      <button class="package-btn">Primary ⚡ - 2 Months – 1300 TK</button>
+      <button class="package-btn">Primary ⚡ - 3 Months – 1950 TK</button>
+      <button class="package-btn">Primary ⚡ - 6 Months – 3600 TK</button>
+    </div>
 
     <button class="green-btn">🛒 Add to Cart</button>
+    <button class="green-btn back-btn" onclick="goBack()">🔙 পিছনে যান</button>
   </div>
 
   <script>
     function showPackagePage() {
-      document.querySelector(".package-page").style.display = "block";
+      document.getElementById("homePage").style.display = "none";
+      document.getElementById("packagePage").style.display = "block";
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBack() {
+      document.getElementById("packagePage").style.display = "none";
+      document.getElementById("homePage").style.display = "block";
     }
   </script>
 </body>
