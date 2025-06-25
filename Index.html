@@ -1,126 +1,163 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
+  <title>MEGA PACKAGES</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crunchyroll Premium BD Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #131c2b, #202f45);
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #131c2b;
       color: white;
-      margin: 0;
-      padding: 0;
+      padding-bottom: 50px;
     }
-    header {
-      background-color: #0a0f1c;
-      padding: 20px;
+
+    .banner {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 20px auto 10px;
+      border: 3px solid white;
+    }
+
+    h2 {
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      color: #ffcc00;
+      margin-bottom: 10px;
     }
-    header h1 {
-      margin: 0;
-      color: #ff9f1c;
-    }
-    .container {
+
+    .section {
       max-width: 600px;
       margin: 20px auto;
       background: #1c2a3a;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    .hidden {
-      display: none;
+
+    .package-group {
+      margin-bottom: 30px;
     }
-    button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      background-color: #28a745;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    .package-section {
-      margin-top: 30px;
-    }
-    .package-section h3 {
+
+    .package-group h3 {
+      margin-bottom: 10px;
+      color: #00ffd5;
       border-bottom: 1px solid #555;
       padding-bottom: 5px;
     }
-    .note {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #eee;
-      background-color: #0a0f1c;
-      padding: 10px;
-      border-radius: 6px;
-    }
-    .img-small {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
+
+    .package-group button {
       display: block;
-      margin: 0 auto;
+      width: 100%;
+      background-color: #0f7dc8;
+      color: white;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
     }
+
+    .package-group button:hover {
+      background-color: #095e9f;
+    }
+
+    .action-buttons {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .action-buttons button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .add-to-cart {
+      background-color: orange;
+      color: black;
+    }
+
+    .back-home {
+      background-color: green;
+      color: white;
+    }
+
+    .info-text {
+      text-align: center;
+      margin-top: 20px;
+      color: white;
+      font-size: 14px;
+      padding: 0 20px;
+    }
+
   </style>
 </head>
 <body>
-  <header>
-    <h1>Crunchyroll Premium BD Shop</h1>
-  </header>  <div class="container" id="homePage">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" style="width: 100%; border-radius: 10px;">
-    <br>
-    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="img-small">
-    <button onclick="openPackagesPage()">🌟 MEGA PACKAGES</button>
-  </div>  <div class="container hidden" id="packagesPage">
-    <div class="package-section">
-      <h3>Shared Profile</h3>
-      <button>📅 1 Month – Only 100 TK</button>
-      <button>📅 2 Months – Only 200 TK</button>
-      <button>📅 3 Months – Only 300 TK</button>
-      <button>📅 6 Months – Only 600 TK</button>
-      <button>📅 8 Months – Only 840 TK</button>
-    </div><div class="package-section">
-  <h3>Personal Profile</h3>
-  <button>📅 1 Month – Only 240 TK</button>
-  <button>📅 2 Months – Only 480 TK</button>
-  <button>📅 3 Months – Only 720 TK</button>
-  <button>📅 6 Months – Only 1440 TK</button>
-  <button>📅 8 Months – Only 1800 TK</button>
-  <button>📅 12 Months – Only 2760 TK</button>
-</div>
 
-<div class="package-section">
-  <h3>Primary Account</h3>
-  <button>📅 1 Month – Only 650 TK</button>
-  <button>📅 2 Months – Only 1300 TK</button>
-  <button>📅 3 Months – Only 1950 TK</button>
-  <button>📅 6 Months – Only 3600 TK</button>
-</div>
+  <!-- Banner Image -->
+  <img class="banner" src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Main Banner">
 
-<div class="note">
-  শেয়ার অ্যাকাউন্টে একটা প্রোফাইল ২-৪ জন ইউজ করে, পার্সোনাল প্রোফাইল আপনাকে ফুল একটা প্রোফাইল দেওয়া হবে যেখানে কেউ প্রবেশ করবে না আপনি ছাড়া, আর প্রাইমারি একাউন্ট আপনাকে ফুল একাউন্ট দেওয়া হবে। ⚠️
-</div>
+  <!-- Circular Avatar Image -->
+  <img class="avatar" src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" alt="Small Icon">
 
-<button style="background:#ffc107;color:black;" onclick="goBackHome()">⬅️ Back To Home</button>
-<button>✅ Add to Cart</button>
+  <!-- Section Starts -->
+  <div class="section">
+    <h2>💥 MEGA PACKAGES</h2>
 
-  </div><script>
-  function openPackagesPage() {
-    document.getElementById("homePage").classList.add("hidden");
-    document.getElementById("packagesPage").classList.remove("hidden");
-  }
-  function goBackHome() {
-    document.getElementById("packagesPage").classList.add("hidden");
-    document.getElementById("homePage").classList.remove("hidden");
-  }
-</script></body>
+    <div class="package-group">
+      <h3>📤 Shared Profile</h3>
+      <button>1 Month – 100 TK</button>
+      <button>2 Months – 200 TK</button>
+      <button>3 Months – 300 TK</button>
+      <button>6 Months – 600 TK</button>
+      <button>8 Months – 840 TK</button>
+    </div>
+
+    <div class="package-group">
+      <h3>👤 Personal Profile</h3>
+      <button>1 Month – 240 TK</button>
+      <button>2 Months – 480 TK</button>
+      <button>3 Months – 720 TK</button>
+      <button>6 Months – 1440 TK</button>
+      <button>8 Months – 1800 TK</button>
+      <button>12 Months – 2760 TK</button>
+    </div>
+
+    <div class="package-group">
+      <h3>👑 Primary Account</h3>
+      <button>1 Month – 650 TK</button>
+      <button>2 Months – 1300 TK</button>
+      <button>3 Months – 1950 TK</button>
+      <button>6 Months – 3600 TK</button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="add-to-cart">🛒 Add To Cart</button>
+      <button class="back-home">🏠 Back To Home</button>
+    </div>
+
+    <!-- Info Text -->
+    <div class="info-text">
+      শেয়ার অ্যাকাউন্টে একটা প্রোফাইল ২-৪ জন ইউজ করে। <br>
+      পার্সোনাল প্রোফাইল আপনাকে ফুল একটা প্রোফাইল দেওয়া হবে যেখানে কেউ প্রবেশ করবে না আপনি ছাড়া।<br>
+      আর প্রাইমারি একাউন্ট আপনাকে ফুল একাউন্ট দেওয়া হবে, শুধুমাত্র আপনার ⚠️
+    </div>
+  </div>
+
+</body>
 </html>
