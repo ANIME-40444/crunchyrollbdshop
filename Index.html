@@ -1,110 +1,154 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crunchyroll Premium BD Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
       background: linear-gradient(to bottom, #131c2b, #202f45);
       color: white;
+      margin: 0;
+      padding: 0;
     }
     header {
       background-color: #0a0f1c;
-      padding: 30px;
+      padding: 20px;
       text-align: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
     header h1 {
-      color: #ff9f1c;
       margin: 0;
-      font-size: 34px;
-    }
-    .banner img {
-      width: 100%;
-      max-height: 520px;
-      object-fit: cover;
-      display: block;
+      color: #ff9f1c;
     }
     .container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 40px 30px;
-      background-color: #1c2a3a;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      text-align: center;
+      max-width: 700px;
+      margin: 30px auto;
+      background: #1c2a3a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    .circle-image {
-      width: 160px;
-      height: 160px;
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e23370;
+    }
+    .image-banner {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    .round-image {
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       overflow: hidden;
-      margin: 0 auto 30px;
-      border: 4px solid #ff9f1c;
+      border: 3px solid #ff9f1c;
+      margin: 20px auto;
     }
-    .circle-image img {
+    .round-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    .mega-title {
-      font-size: 36px;
+    .section-title {
+      text-align: center;
+      font-size: 22px;
       color: #ffcc00;
-      margin-bottom: 15px;
-      font-weight: bold;
+      margin: 20px 0 10px;
     }
     .stars {
-      font-size: 40px;
+      text-align: center;
+      font-size: 24px;
       color: gold;
-    }
-    @media(max-width: 768px) {
-      header h1 {
-        font-size: 26px;
-      }
-      .container {
-        padding: 20px;
-      }
-      .mega-title {
-        font-size: 24px;
-      }
-      .stars {
-        font-size: 28px;
-      }
-      .circle-image {
-        width: 100px;
-        height: 100px;
-      }
     }
   </style>
 </head>
 <body>
+  <header><h1>Crunchyroll Premium BD Shop</h1></header>  <div class="container">
+    <img src="https://i.ibb.co/HYJvSvK/mega-banner.jpg" class="image-banner" alt="Main Banner"><div class="round-image">
+  <img src="https://i.ibb.co/Xybd6b5/small-round.jpg" alt="Round">
+</div>
 
-  <header>
-    <h1>Crunchyroll Premium BD Shop</h1>
-  </header>
+<div class="section-title">📦 MEGA PACKAGES</div>
+<div class="stars">⭐️⭐️⭐️⭐️⭐️</div>
 
-  <!-- Full Banner Image -->
-  <div class="banner">
-    <img src="https://i.ibb.co/HYJvSvK/mega-banner.jpg" alt="Banner">
-  </div>
+<input type="number" id="amount" placeholder="যে এমাউন্ট দিতে চান লিখুন (যেমনঃ 100)">
+<button onclick="startOrder()">🛒 Add to Cart</button>
 
-  <div class="container">
-    <!-- Small Round Image -->
-    <div class="circle-image">
-      <img src="https://i.ibb.co/Xybd6b5/small-round.jpg" alt="Round">
-    </div>
+<form id="orderForm" style="display:none;">
+  <input type="text" name="name" placeholder="Full Name" required>
+  <input type="email" name="email" placeholder="Email" required>
+  <input type="text" name="address" placeholder="Address" required>
+  <input type="text" name="mobile" placeholder="Mobile" required>
+  <select name="package">
+    <option value="1 Month">1 Month</option>
+    <option value="3 Months">3 Months</option>
+  </select>
+  <input type="text" name="payment_number" placeholder="Payment Number" required>
+  <input type="text" name="trans_id" placeholder="Transaction ID" required>
+  <select name="payment_method">
+    <option value="Bkash">Bkash</option>
+    <option value="Nagad">Nagad</option>
+  </select>
+  <button type="submit">✅ অর্ডার কনফার্ম করুন</button>
+</form>
 
-    <!-- Mega Package Title -->
-    <div class="mega-title">🎁 MEGA PACKAGES</div>
+  </div>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    <!-- 5 Stars -->
-    <div class="stars">⭐️⭐️⭐️⭐️⭐️</div>
-  </div>
+    emailjs.init("SsUmUorUm-BZG8LBY");
 
-</body>
+    function startOrder(){
+      const amt = Number(document.getElementById("amount").value);
+      if(!amt || amt < 1){
+        alert("⚠️ সঠিক এমাউন্ট লিখুন");
+        return;
+      }
+      alert(`✅ ৳${amt} প্যাকেজ সিলেক্ট হয়েছে। নিচের ফর্ম পূরণ করুন।`);
+      document.getElementById("orderForm").style.display = "block";
+    }
+
+    document.getElementById("orderForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      data.amount = document.getElementById("amount").value;
+      data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+      db.collection("orders").add(data).then(()=>{
+        alert("✅ অর্ডার কনফার্ম হয়েছে!");
+        emailjs.send("service_z1714kq", "template_hp66tqp", data);
+        emailjs.send("service_z1714kq", "template_1z1lhlf", data);
+        this.reset();
+        document.getElementById("amount").value = "";
+        document.getElementById("orderForm").style.display = "none";
+      }).catch(err=>{
+        alert("❌ অর্ডার ব্যর্থ হয়েছে: "+err);
+      });
+    });
+  </script></body>
 </html>
