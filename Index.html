@@ -1,129 +1,111 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Crunchyroll Premium BD Shop</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <style>
     body {
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif;
       background: linear-gradient(to bottom, #131c2b, #202f45);
       color: white;
     }
-
     header {
       background-color: #0a0f1c;
       padding: 20px;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
-
     header h1 {
       color: #ff9f1c;
       margin: 0;
     }
-
-    .image-section {
-      text-align: center;
-      margin-top: 20px;
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: #1c2a3a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
-
-    .image-section img {
-      width: 95%;
-      max-width: 700px;
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .section-title {
+    h2 {
       text-align: center;
-      margin-top: 20px;
-      font-size: 24px;
-      font-weight: bold;
       color: #ffcc00;
     }
-
-    .stars {
-      text-align: center;
-      font-size: 26px;
-      margin-top: 10px;
-      color: #ffd700;
-    }
-
-    .mini-image-section {
-      text-align: center;
-      margin: 40px auto 10px;
-    }
-
-    .mini-image-section img {
-      width: 160px;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-    }
-
-    .green-button {
-      margin-top: 15px;
-      background-color: #28a745;
+    button, input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
       border: none;
-      color: white;
-      padding: 12px 25px;
       font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
     }
-
-    .green-button:hover {
+    button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
       background-color: #218838;
     }
-
-    .three-stars {
-      text-align: center;
-      font-size: 24px;
-      margin-top: 10px;
-      color: #ffd700;
-    }
-
-    @media screen and (max-width: 600px) {
-      .section-title {
-        font-size: 20px;
-      }
-      .stars, .three-stars {
-        font-size: 22px;
-      }
-      .green-button {
-        width: 80%;
-      }
-    }
+    .section { display: none; }
+    .visible { display: block; }
   </style>
 </head>
-<body>
-
-  <header>
-    <h1>Crunchyroll Premium BD Shop</h1>
-  </header>
-
-  <!-- Main Image -->
-  <div class="image-section">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Mega Package Banner">
+<body><header>
+  <h1>Crunchyroll Premium BD Shop</h1>
+</header><!-- Home Section --><div id="home" class="container section visible">
+  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Banner" style="width:100%; border-radius:10px;">
+  <br><br>
+  <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" alt="Small Pic" style="width:120px; border-radius:50%; display:block; margin: 0 auto;">
+  <br>
+  <button onclick="showPackages()">🌟 MEGA PACKAGES</button>
+  <div style="text-align:center; font-size:20px; color:gold;">
+    ★★★★★
   </div>
+</div><!-- Package Section --><div id="packages" class="container section">
+  <h2>📦 Crunchyroll Subscription Packages</h2>  <h3>Crunchyroll Share Account ⚡</h3>
+  <p>📅 1 Month – Only 100 TK</p>
+  <p>📅 2 Months – Only 200 TK</p>
+  <p>📅 3 Months – Only 300 TK</p>
+  <p>📅 6 Months – Only 600 TK</p>
+  <p>📅 8 Months – Only 840 TK</p>
+  <button onclick="selectPackage('Crunchyroll Share Account')">Add to Cart</button>  <h3>Crunchyroll Personal Profile ⚡</h3>
+  <p>📅 1 Month – Only 240 TK</p>
+  <p>📅 2 Months – Only 480 TK</p>
+  <p>📅 3 Months – Only 720 TK</p>
+  <p>📅 6 Months – Only 1440 TK</p>
+  <p>📅 8 Months – Only 1800 TK</p>
+  <p>📅 12 Months – Only 2760 TK</p>
+  <button onclick="selectPackage('Crunchyroll Personal Profile')">Add to Cart</button>  <h3>Crunchyroll Primary Account ⚡</h3>
+  <p>📅 1 Month – Only 650 TK</p>
+  <p>📅 2 Months – Only 1300 TK</p>
+  <p>📅 3 Months – Only 1950 TK</p>
+  <p>📅 6 Months – Only 3600 TK</p>
+  <button onclick="selectPackage('Crunchyroll Primary Account')">Add to Cart</button>  <br>
+  <button onclick="goHome()">⬅️ Back to Home</button>
+</div><script>
+  function showPackages() {
+    document.getElementById("home").classList.remove("visible");
+    document.getElementById("home").classList.add("section");
+    document.getElementById("packages").classList.add("visible");
+    document.getElementById("packages").classList.remove("section");
+  }
 
-  <div class="section-title">🌟 MEGA PACKAGES 🌟</div>
-  <div class="stars">★ ★ ★ ★ ★</div>
+  function goHome() {
+    document.getElementById("packages").classList.remove("visible");
+    document.getElementById("packages").classList.add("section");
+    document.getElementById("home").classList.add("visible");
+    document.getElementById("home").classList.remove("section");
+  }
 
-  <!-- Second Image & Button -->
-  <div class="mini-image-section">
-    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" alt="Small Mega Image">
-    <div>
-      <button class="green-button">MEGA PACKAGES</button>
-    </div>
-    <div class="three-stars">★ ★ ★</div>
-  </div>
-
-</body>
+  function selectPackage(pkg) {
+    alert(`✅ ${pkg} প্যাকেজটি কার্টে যোগ হয়েছে!`);
+    // You can add Firebase or EmailJS logic here to process the selection
+  }
+</script></body>
 </html>
