@@ -1,55 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - Screenshot Viewer</title>
+  <meta charset="UTF-8">
+  <title>Admin Screenshot Panel</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #fafafa;
-      padding: 30px;
-    }
-    h1 {
-      text-align: center;
-      color: #FF6600;
+      padding: 20px;
+      background: #f2f2f2;
     }
     .card {
       background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-    .card img {
-      width: 100%;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 500px;
       border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    .email {
-      font-weight: bold;
-      margin-bottom: 10px;
+    img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    h2 {
+      text-align: center;
+      color: #ff6600;
     }
   </style>
 </head>
 <body>
-  <h1>🖼 Submitted Screenshots</h1>
-  <div id="screenshots"></div>
+
+  <h2>📥 Customer Submitted Screenshots</h2>
+  <div id="screenshotsContainer">
+    <!-- Screenshots will appear here -->
+  </div>
 
   <script>
-    fetch("https://your-uploadcare-endpoint.netlify.app/screenshots.json")
-      .then((res) => res.json())
-      .then((data) => {
-        const container = document.getElementById("screenshots");
-        data.forEach(item => {
-          container.innerHTML += `
-            <div class="card">
-              <div class="email">📧 ${item.email}</div>
-              <img src="${item.imageUrl}" alt="screenshot"/>
-            </div>
-          `;
-        });
+    fetch("https://ucarecdn.com/api/json/dqtts30hb/screenshots/")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('screenshotsContainer');
+      data.files.forEach(file => {
+        container.innerHTML += `
+          <div class="card">
+            <img src="${file.original_url}" alt="Screenshot" />
+            <p><strong>Filename:</strong> ${file.original_filename}</p>
+            <p><strong>Uploaded:</strong> ${new Date(file.datetime_uploaded).toLocaleString()}</p>
+          </div>
+        `;
       });
+    });
   </script>
+
 </body>
 </html>
