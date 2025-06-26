@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crunchyroll Admin Email Sender</title>
+  <style>
+    body {
+      background: #fff8f0;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #ff6600;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      background: #ff6600;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e65c00;
+    }
+    .success, .error {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Crunchyroll Premium BD - Admin Panel</h2>
+    <form id="emailForm">
+      <label>কাস্টমারের Email</label>
+      <input type="email" name="to_email" required />
+
+      <label>প্রোফাইল টাইপ</label>
+      <input type="text" name="profile_type" placeholder="Personal Profile 🌷" required />
+
+      <label>মেয়াদ</label>
+      <input type="text" name="validity" placeholder="1 Month" required />
+
+      <label>Account Email</label>
+      <input type="text" name="email" required />
+
+      <label>Password</label>
+      <input type="text" name="password" required />
+
+      <label>Profile Number</label>
+      <input type="text" name="profile_number" required />
+
+      <label>Account Name</label>
+      <input type="text" name="account_name" required />
+
+      <button type="submit">📨 Send Email</button>
+      <div class="success" id="successMessage" style="display:none;">✅ Email Sent Successfully!</div>
+      <div class="error" id="errorMessage" style="display:none;">❌ Failed to send email. Check console.</div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("q1Zd_Oa10czeY2fUP");
+
+    document.getElementById("emailForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      emailjs.sendForm("service_x3rxhqm", "template_rjwasen", this)
+        .then(function () {
+          document.getElementById("successMessage").style.display = "block";
+          document.getElementById("errorMessage").style.display = "none";
+        }, function (error) {
+          console.log(error);
+          document.getElementById("successMessage").style.display = "none";
+          document.getElementById("errorMessage").style.display = "block";
+        });
+    });
+  </script>
+</body>
+</html>
