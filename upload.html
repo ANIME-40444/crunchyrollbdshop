@@ -1,87 +1,64 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>স্ক্রিনশট আপলোড করুন</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Screenshot - Crunchyroll Premium BD</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #fff6e5, #ffffff);
+      background: #f9f9f9;
       margin: 0;
       padding: 0;
     }
-
     .container {
       max-width: 500px;
-      margin: 50px auto;
+      margin: 40px auto;
       background: #fff;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.08);
     }
-
     h2 {
       text-align: center;
       color: #ff6600;
+      margin-bottom: 25px;
     }
-
-    label {
-      display: block;
-      margin: 20px 0 10px;
-      font-weight: bold;
-    }
-
-    input[type="file"] {
+    input, button {
       width: 100%;
-      padding: 10px;
-      border: 2px dashed #ccc;
-      border-radius: 10px;
-      text-align: center;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
     }
-
     button {
       background: #00c853;
       color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
-      width: 100%;
-      margin-top: 20px;
+      border: none;
     }
-
     button:hover {
-      background: #00a845;
+      background: #00b347;
     }
-
-    .status {
-      margin-top: 15px;
+    .success {
+      color: green;
       text-align: center;
-      color: #444;
+      margin-top: 15px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>📤 স্ক্রিনশট আপলোড করুন</h2>
+    <h2>📤 Upload Your Screenshot</h2>
     <form id="uploadForm">
-      <label>আপনার স্ক্রিনশট নির্বাচন করুন:</label>
-      <input type="file" id="screenshot" accept="image/*" required />
-
-      <button type="submit">✅ আপলোড করুন</button>
-      <div class="status" id="statusText"></div>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <input type="file" id="file" accept="image/*" required>
+      <button type="submit">Submit Screenshot</button>
     </form>
-  </div>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
-  <script>
+    <div class="success" id="successMsg"></div>
+  </div>  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
       authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
@@ -91,42 +68,37 @@
       appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
       measurementId: "G-PSSPTLC6MJ"
     };
-
     firebase.initializeApp(firebaseConfig);
     const storage = firebase.storage();
     const db = firebase.firestore();
 
-    const uploadForm = document.getElementById("uploadForm");
-    const screenshotInput = document.getElementById("screenshot");
-    const statusText = document.getElementById("statusText");
-
-    uploadForm.addEventListener("submit", async (e) => {
+    document.getElementById("uploadForm").addEventListener("submit", async function(e) {
       e.preventDefault();
-      const file = screenshotInput.files[0];
-      if (!file) {
-        statusText.textContent = "⚠️ একটি ফাইল নির্বাচন করুন।";
-        return;
-      }
+      const email = document.getElementById("email").value;
+      const file = document.getElementById("file").files[0];
+      const timestamp = new Date();
+      const filePath = `screenshots/${Date.now()}_${file.name}`;
 
-      const fileName = `screenshot_${Date.now()}`;
-      const storageRef = storage.ref().child("screenshots/" + fileName);
-
-      try {
-        await storageRef.put(file);
-        const downloadURL = await storageRef.getDownloadURL();
-
-        await db.collection("screenshots").add({
-          imageUrl: downloadURL,
-          timestamp: new Date()
-        });
-
-        statusText.textContent = "✅ স্ক্রিনশট সফলভাবে আপলোড হয়েছে!";
-        screenshotInput.value = "";
-      } catch (error) {
-        console.error("Error uploading:", error);
-        statusText.textContent = "❌ আপলোডে সমস্যা হয়েছে। আবার চেষ্টা করুন।";
-      }
+      const uploadTask = storage.ref(filePath).put(file);
+      uploadTask.on("state_changed",
+        null,
+        (error) => alert("❌ Upload Failed: " + error.message),
+        async () => {
+          const url = await uploadTask.snapshot.ref.getDownloadURL();
+          await db.collection("screenshots").add({
+            email,
+            url,
+            time: timestamp
+          });
+          document.getElementById("successMsg").textContent = "✅ Screenshot submitted successfully!";
+          document.getElementById("uploadForm").reset();
+        }
+      );
     });
-  </script>
-</body>
+
+    // Autofill email from query param
+    const params = new URLSearchParams(window.location.search);
+    const userEmail = params.get("email");
+    if(userEmail) document.getElementById("email").value = userEmail;
+  </script></body>
 </html>
