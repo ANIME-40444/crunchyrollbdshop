@@ -1,34 +1,63 @@
-<script>
-  const cloudName = "dqtts30hb"; // তোমার Cloud name
-  const folderName = "screenshots";
-
-  async function loadCloudinaryScreenshots() {
-    const url = `https://res.cloudinary.com/${cloudName}/image/list/${folderName}.json`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const container = document.getElementById("screenshotList");
-      container.innerHTML = "";
-
-      data.resources.reverse().forEach(item => {
-        const img = document.createElement("img");
-        img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.jpg`;
-        img.style.maxWidth = "100%";
-        img.style.borderRadius = "8px";
-        img.style.marginBottom = "15px";
-
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<p><strong>Image:</strong> ${item.public_id}</p>`;
-        card.appendChild(img);
-
-        container.appendChild(card);
-      });
-    } catch (error) {
-      console.error("Cloudinary screenshot fetch failed:", error);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Screenshot</title>
+  <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fefefe;
+      padding: 30px;
+      text-align: center;
     }
-  }
+    h1 {
+      color: #FF6600;
+    }
+    .uploadcare--widget {
+      margin: 20px 0;
+    }
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>📸 Send Your Account Screenshot</h1>
+  <form id="uploadForm">
+    <input type="hidden"
+           role="uploadcare-uploader"
+           name="screenshot"
+           data-public-key="ca826a6b112bc7a74fa2"
+           data-images-only="true"
+           data-crop="free"
+           data-multiple="false" />
+    <input type="email" name="email" placeholder="Your Email" required style="padding: 10px; width: 80%; max-width: 300px; margin-top: 10px;" />
+    <br><br>
+    <button type="submit" style="padding: 10px 25px; background: #FF6600; border: none; color: white; border-radius: 6px; cursor: pointer;">Submit Screenshot</button>
+  </form>
+  <p class="note">Please upload a screenshot after login for confirmation ✅</p>
 
-  window.onload = loadCloudinaryScreenshots;
-</script>
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = this.email.value;
+      const widget = uploadcare.Widget("[role=uploadcare-uploader]");
+      widget.onUploadComplete(function(info) {
+        const imageUrl = info.cdnUrl;
+
+        fetch("https://your-admin-site.netlify.app/uploadcare-receiver.json", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, imageUrl })
+        })
+        .then(() => alert("✅ Screenshot submitted successfully!"))
+        .catch(() => alert("❌ Failed to submit. Please try again."));
+      });
+    });
+  </script>
+</body>
+</html>
