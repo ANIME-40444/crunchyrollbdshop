@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>স্ক্রিনশট আপলোড করুন</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fff6e5, #ffffff);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #ff6600;
+    }
+
+    label {
+      display: block;
+      margin: 20px 0 10px;
+      font-weight: bold;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    button {
+      background: #00c853;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #00a845;
+    }
+
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      color: #444;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📤 স্ক্রিনশট আপলোড করুন</h2>
+    <form id="uploadForm">
+      <label>আপনার স্ক্রিনশট নির্বাচন করুন:</label>
+      <input type="file" id="screenshot" accept="image/*" required />
+
+      <button type="submit">✅ আপলোড করুন</button>
+      <div class="status" id="statusText"></div>
+    </form>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop",
+      storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+      messagingSenderId: "790961397898",
+      appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
+      measurementId: "G-PSSPTLC6MJ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+    const db = firebase.firestore();
+
+    const uploadForm = document.getElementById("uploadForm");
+    const screenshotInput = document.getElementById("screenshot");
+    const statusText = document.getElementById("statusText");
+
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const file = screenshotInput.files[0];
+      if (!file) {
+        statusText.textContent = "⚠️ একটি ফাইল নির্বাচন করুন।";
+        return;
+      }
+
+      const fileName = `screenshot_${Date.now()}`;
+      const storageRef = storage.ref().child("screenshots/" + fileName);
+
+      try {
+        await storageRef.put(file);
+        const downloadURL = await storageRef.getDownloadURL();
+
+        await db.collection("screenshots").add({
+          imageUrl: downloadURL,
+          timestamp: new Date()
+        });
+
+        statusText.textContent = "✅ স্ক্রিনশট সফলভাবে আপলোড হয়েছে!";
+        screenshotInput.value = "";
+      } catch (error) {
+        console.error("Error uploading:", error);
+        statusText.textContent = "❌ আপলোডে সমস্যা হয়েছে। আবার চেষ্টা করুন।";
+      }
+    });
+  </script>
+</body>
+</html>
