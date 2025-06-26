@@ -1,63 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Upload Screenshot</title>
+  <meta charset="UTF-8">
+  <title>Send Screenshot</title>
+  <script>
+    UPLOADCARE_PUBLIC_KEY = "ca826a6b112bc7a74fa2";
+  </script>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #fefefe;
-      padding: 30px;
       text-align: center;
+      padding: 30px;
+      background: #fefefe;
     }
-    h1 {
-      color: #FF6600;
+    h2 {
+      color: #ff6600;
     }
-    .uploadcare--widget {
-      margin: 20px 0;
+    .uploadcare--widget__button {
+      background: #ff6600 !important;
+      border-radius: 8px !important;
     }
-    .note {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
+    input[type="email"] {
+      padding: 10px;
+      width: 90%;
+      max-width: 300px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>📸 Send Your Account Screenshot</h1>
-  <form id="uploadForm">
-    <input type="hidden"
-           role="uploadcare-uploader"
-           name="screenshot"
-           data-public-key="ca826a6b112bc7a74fa2"
-           data-images-only="true"
-           data-crop="free"
-           data-multiple="false" />
-    <input type="email" name="email" placeholder="Your Email" required style="padding: 10px; width: 80%; max-width: 300px; margin-top: 10px;" />
-    <br><br>
-    <button type="submit" style="padding: 10px 25px; background: #FF6600; border: none; color: white; border-radius: 6px; cursor: pointer;">Submit Screenshot</button>
+
+  <h2>📤 Send Account Screenshot</h2>
+  <p>একটি স্ক্রিনশট দিন কনফার্মেশনের জন্য</p>
+  
+  <form id="screenshotForm">
+    <input type="email" id="email" placeholder="আপনার Email দিন" required><br>
+    <input
+      type="hidden"
+      role="uploadcare-uploader"
+      data-public-key="ca826a6b112bc7a74fa2"
+      data-images-only
+      data-clearable
+      id="fileInput"
+    />
+    <button type="submit">📨 Submit Screenshot</button>
   </form>
-  <p class="note">Please upload a screenshot after login for confirmation ✅</p>
 
   <script>
-    document.getElementById("uploadForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const email = this.email.value;
-      const widget = uploadcare.Widget("[role=uploadcare-uploader]");
-      widget.onUploadComplete(function(info) {
-        const imageUrl = info.cdnUrl;
+    const form = document.getElementById('screenshotForm');
 
-        fetch("https://your-admin-site.netlify.app/uploadcare-receiver.json", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, imageUrl })
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const widget = uploadcare.Widget('[role=uploadcare-uploader]');
+      const file = widget.value();
+
+      if (!file) {
+        alert("⚠️ দয়া করে একটি স্ক্রিনশট আপলোড করুন");
+        return;
+      }
+
+      const fileInfo = await uploadcare.fileFrom('uploaded', file).done(info => {
+        fetch('https://formspree.io/f/yourFormID', { // 🔁 এইটা আপনার Formspree বা নিজের সার্ভার API লিংকে পরিবর্তন করুন
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            screenshot_url: info.cdnUrl
+          })
         })
-        .then(() => alert("✅ Screenshot submitted successfully!"))
-        .catch(() => alert("❌ Failed to submit. Please try again."));
+        .then(() => alert("✅ স্ক্রিনশট সফলভাবে পাঠানো হয়েছে!"))
+        .catch(() => alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে"));
       });
     });
   </script>
+
 </body>
 </html>
