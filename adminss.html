@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Screenshot Viewer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fafafa;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #FF6600;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .email {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🖼 Submitted Screenshots</h1>
+  <div id="screenshots"></div>
+
+  <script>
+    fetch("https://your-uploadcare-endpoint.netlify.app/screenshots.json")
+      .then((res) => res.json())
+      .then((data) => {
+        const container = document.getElementById("screenshots");
+        data.forEach(item => {
+          container.innerHTML += `
+            <div class="card">
+              <div class="email">📧 ${item.email}</div>
+              <img src="${item.imageUrl}" alt="screenshot"/>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>
