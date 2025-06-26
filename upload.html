@@ -1,91 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Send Screenshot</title>
-  <script>
-    UPLOADCARE_PUBLIC_KEY = "ca826a6b112bc7a74fa2";
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Screenshot</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 30px;
+      margin: 0;
       background: #fefefe;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
     }
-    h2 {
+    h1 {
       color: #ff6600;
     }
-    .uploadcare--widget__button {
-      background: #ff6600 !important;
-      border-radius: 8px !important;
+    form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
     }
-    input[type="email"] {
-      padding: 10px;
-      width: 90%;
-      max-width: 300px;
-      margin-bottom: 15px;
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 15px;
     }
     button {
-      padding: 10px 20px;
-      background: #28a745;
+      background: #ff6600;
       color: white;
+      font-weight: bold;
       border: none;
-      border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
+    }
+    button:hover {
+      background: #e65c00;
     }
   </style>
 </head>
 <body>
+  <h1>📸 Send Your Account Screenshot</h1>
 
-  <h2>📤 Send Account Screenshot</h2>
-  <p>একটি স্ক্রিনশট দিন কনফার্মেশনের জন্য</p>
-  
-  <form id="screenshotForm">
-    <input type="email" id="email" placeholder="আপনার Email দিন" required><br>
-    <input
-      type="hidden"
-      role="uploadcare-uploader"
+  <form id="uploadForm">
+    <input type="email" name="email" placeholder="Your Email" required />
+    <input type="hidden" name="image_url" id="image_url" />
+    
+    <!-- Uploadcare widget -->
+    <input type="hidden" role="uploadcare-uploader"
       data-public-key="ca826a6b112bc7a74fa2"
-      data-images-only
-      data-clearable
-      id="fileInput"
-    />
-    <button type="submit">📨 Submit Screenshot</button>
+      data-images-only="true"
+      data-multiple="false"
+      data-crop="free"
+      data-clearable="true"
+      data-tabs="file camera url"
+      data-path-value="screenshots/"
+      />
+
+    <button type="submit">✅ Submit Screenshot</button>
   </form>
 
   <script>
-    const form = document.getElementById('screenshotForm');
+    emailjs.init("q1Zd_Oa10czeY2fUP");
 
-    form.addEventListener('submit', async function (e) {
+    const widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+    document.getElementById("uploadForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const email = document.getElementById('email').value;
-      const widget = uploadcare.Widget('[role=uploadcare-uploader]');
-      const file = widget.value();
 
-      if (!file) {
-        alert("⚠️ দয়া করে একটি স্ক্রিনশট আপলোড করুন");
-        return;
-      }
+      const email = this.email.value;
 
-      const fileInfo = await uploadcare.fileFrom('uploaded', file).done(info => {
-        fetch('https://formspree.io/f/yourFormID', { // 🔁 এইটা আপনার Formspree বা নিজের সার্ভার API লিংকে পরিবর্তন করুন
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email,
-            screenshot_url: info.cdnUrl
-          })
-        })
-        .then(() => alert("✅ স্ক্রিনশট সফলভাবে পাঠানো হয়েছে!"))
-        .catch(() => alert("❌ স্ক্রিনশট পাঠাতে সমস্যা হয়েছে"));
+      widget.value().promise().then(fileInfo => {
+        const imageUrl = fileInfo.cdnUrl;
+
+        // Send to EmailJS
+        emailjs.send("service_x3rxhqm", "template_rjwasen", {
+          email: email,
+          image_url: imageUrl
+        }).then(() => {
+          alert("✅ Screenshot uploaded and sent successfully!");
+          this.reset();
+          widget.value(null);
+        }).catch(error => {
+          alert("❌ Error: " + error.text);
+        });
       });
     });
   </script>
-
 </body>
 </html>
