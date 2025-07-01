@@ -170,27 +170,7 @@ async function handleSignup(){
 }
 
 // --- Login ---
-async function handleLogin(){
-  const e = document.getElementById('liEmail').value.trim();
-  const pw = document.getElementById('liPass').value;
-  const err = document.getElementById('liError'); err.textContent="";
-  try{
-    const res = await auth.signInWithEmailAndPassword(e, pw);
-    if (!res.user.emailVerified){
-      err.textContent = "⚠️ ইমেইল ভেরিফাই করুন";
-      return;
-    }
-    alert("✅ লগইন সফল হয়েছে");
-    showPage('mainPage');
-    startListeners();
-  } catch(error){
-    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-      err.textContent = "❌ ইমেইল বা পাসওয়ার্ড ভুল";
-    } else {
-      err.textContent = error.message;
-    }
-  }
-}
+
 
 // --- Counts ---
 function startListeners(){
@@ -243,7 +223,39 @@ async function confirmOrder(){
     // Emails
     emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
     emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
-    alert("✅ অর্ডার সফল হয়েছে। কাস্টমার ও অ্যাডমিনে ইমেইল পাঠানো হয়েছে।");
+    alert("✅ অর্ডার সফল হয়েছে। কাস্টমার ও অ্যাডমিনে ইমেইল async function handleLogin(){
+  const e = document.getElementById('liEmail').value.trim();
+  const pw = document.getElementById('liPass').value;
+  const err = document.getElementById('liError'); 
+  err.textContent="";
+
+  if (!e || !pw) {
+    err.textContent = "⚠️ ইমেইল ও পাসওয়ার্ড লিখুন";
+    return;
+  }
+
+  try {
+    const res = await auth.signInWithEmailAndPassword(e, pw);
+    if (!res.user.emailVerified) {
+      err.textContent = "⚠️ ইমেইল ভেরিফাই করুন";
+      return;
+    }
+    alert("✅ আপনার লগইন সফল হয়েছে");
+    showPage('mainPage');
+    startListeners();
+  } catch(error) {
+    // Specific error messages
+    if (error.code === 'auth/user-not-found') {
+      err.textContent = "❌ এই ইমেইল দিয়ে কোনো একাউন্ট খুঁজে পাওয়া যায়নি";
+    } else if (error.code === 'auth/wrong-password') {
+      err.textContent = "❌ পাসওয়ার্ড ভুল হয়েছে";
+    } else if (error.code === 'auth/invalid-email') {
+      err.textContent = "❌ ইমেইল এর ফরম্যাট ভুল";
+    } else {
+      err.textContent = "❌ লগইনে সমস্যা: " + error.message;
+    }
+  }
+  }পাঠানো হয়েছে।");
     showPage('mainPage');
   } catch(err){
     alert("❌ অর্ডার ব্যর্থ: "+err.message);
