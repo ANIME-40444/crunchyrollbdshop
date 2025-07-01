@@ -1,250 +1,225 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crunchyroll Premium BD Shop</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
   <style>
-    body {margin:0;font-family:'Segoe UI',sans-serif;background:#131c2b;color:white;}
-    .page {display:none;padding:20px;max-width:600px;margin:auto;}
-    .active {display:block;}
-    img.banner {width:100%;border-radius:8px;}
-    img.avatar {width:100px;height:100px;border-radius:50%;border:3px solid white;display:block;margin:20px auto;}
-    input, select, button {width:100%;padding:10px;margin:8px 0;border-radius:6px;border:none;font-size:16px;}
-    button {cursor:pointer;}
-    .mega-btn {background:green;color:white;}
-    .package-btn {background:#0f7dc8;color:white;margin-top:6px;border-radius:8px;}
-    .package-btn:hover {background:#095e9f;}
-    .action-btns {display:flex;justify-content:space-between;margin-top:16px;}
-    .orange {background:orange;color:black;}
-    .green {background:green;color:white;}
-    .error {color:#ff4d4d;}
-    .copy-box {background:#2d3a4a;padding:10px;border-radius:8px;margin-top:10px;}
+    body { margin:0; font-family:'Segoe UI', sans-serif; background:#0f172a; color:#fff; }
+    .page { display:none; padding:20px; max-width:600px; margin:auto; }
+    .active { display:block; }
+    input, select, button { width:100%; padding:10px; margin:8px 0; border-radius:6px; font-size:16px; border:none; }
+    button { background:#1d4ed8; color:white; cursor:pointer; }
+    h2 { text-align:center; }
+    .error { color:#f87171; text-align:center; }
+    .success { color:#4ade80; text-align:center; }
+    .btn-orange { background:orange; color:black; }
+    .btn-green { background:green; }
+    .package-btn { background:#2563eb; border-radius:8px; margin-top:6px; color:#fff; }
+    .package-btn:hover { background:#1e40af; }
   </style>
 </head>
 <body>
 
-<!-- Sign Up -->
+<!-- 🔐 Sign Up -->
 <div id="signupPage" class="page active">
   <h2>🔐 সাইন আপ</h2>
   <input id="suEmail" type="email" placeholder="📧 ইমেইল">
   <input id="suPhone" type="text" placeholder="📱 মোবাইল নম্বর">
-  <input id="suPass" type="password" placeholder="🔑 পাসওয়ার্ড (৬ সংখ্যার)">
-  <input id="suConfirm" type="password" placeholder="🔑 কনফার্ম পাসওয়ার্ড">
+  <input id="suPass" type="password" placeholder="🔑 ৬ সংখ্যার পাসওয়ার্ড">
+  <input id="suConfirm" type="password" placeholder="🔑 পাসওয়ার্ড কনফার্ম">
   <input id="suCity" type="text" placeholder="🏙️ শহর">
   <button onclick="handleSignup()">✅ সাইন আপ</button>
-  <p>ইতিমধ্যে একাউন্ট আছে? <a href="#" onclick="showPage('loginPage')">সাইন ইন করুন</a></p>
+  <p>একাউন্ট আছে? <a href="#" onclick="showPage('loginPage')">সাইন ইন করুন</a></p>
   <p id="suError" class="error"></p>
 </div>
 
-<!-- Sign In -->
+<!-- 🔓 Sign In -->
 <div id="loginPage" class="page">
   <h2>🔓 সাইন ইন</h2>
   <input id="liEmail" type="email" placeholder="📧 ইমেইল">
   <input id="liPass" type="password" placeholder="🔑 পাসওয়ার্ড">
-  <button onclick="handleLogin()">➡️ সাইন ইন করুন</button>
+  <button onclick="handleLogin()">➡️ লগইন করুন</button>
   <p>নতুন? <a href="#" onclick="showPage('signupPage')">সাইন আপ করুন</a></p>
   <p id="liError" class="error"></p>
 </div>
 
-<!-- Main Page -->
+<!-- 🏠 Home Page -->
 <div id="mainPage" class="page">
-  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner">
-  <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar">
-  <h2 style="text-align:center;">Welcome to Crunchyroll Premium BD Shop</h2>
-  <button class="mega-btn" onclick="showPage('packagePage')">💥 MEGA PACKAGES</button>
-  <p style="margin-top:20px;"><strong>Total Users:</strong> <span id="userCount">0</span> |
-     <strong>Total Orders:</strong> <span id="orderCount">0</span></p>
+  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" style="width:100%; border-radius:8px;">
+  <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" style="width:100px; height:100px; border-radius:50%; margin:20px auto; display:block;">
+  <h2>Crunchyroll Premium BD Shop</h2>
+  <button onclick="showPage('packagePage')">💥 MEGA PACKAGES</button>
+  <p style="text-align:center; margin-top:20px;">
+    Total Users: <span id="userCount">0</span> |
+    Total Orders: <span id="orderCount">0</span>
+  </p>
 </div>
 
-<!-- Package Page -->
+<!-- 📦 Package Page -->
 <div id="packagePage" class="page">
   <h2>📦 প্যাকেজ সিলেকশন</h2>
-  <!-- Shared -->
-  <h3>📤 Shared Profile</h3>
-  <button class="package-btn" onclick="selectPackage('Shared Profile','1 Month',100)">1 Month – 100 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile','2 Months',200)">2 Months – 200 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile','3 Months',300)">3 Months – 300 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile','6 Months',600)">6 Months – 600 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile','8 Months',840)">8 Months – 840 TK</button>
-  <!-- Personal -->
-  <h3>👤 Personal Profile</h3>
-  <button class="package-btn" onclick="selectPackage('Personal Profile','1 Month',240)">1 Month – 240 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile','2 Months',480)">2 Months – 480 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile','3 Months',720)">3 Months – 720 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile','6 Months',1440)">6 Months – 1440 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile','8 Months',1800)">8 Months – 1800 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile','12 Months',2760)">12 Months – 2760 TK</button>
-  <!-- Primary -->
-  <h3>👑 Primary Account</h3>
-  <button class="package-btn" onclick="selectPackage('Primary Account','1 Month',650)">1 Month – 650 TK</button>
-  <button class="package-btn" onclick="selectPackage('Primary Account','2 Months',1300)">2 Months – 1300 TK</button>
-  <button class="package-btn" onclick="selectPackage('Primary Account','3 Months',1950)">3 Months – 1950 TK</button>
-  <button class="package-btn" onclick="selectPackage('Primary Account','6 Months',3600)">6 Months – 3600 TK</button>
-
-  <div class="action-btns">
-    <button class="orange" onclick="showPage('checkoutPage')">🛒 Add To Cart</button>
-    <button class="green" onclick="showPage('mainPage')">⬅️ Back To Home</button>
-  </div>
+  <button class="package-btn" onclick="selectPackage('Shared','1 Month',100)">Shared - 1 Month - 100TK</button>
+  <button class="package-btn" onclick="selectPackage('Personal','1 Month',240)">Personal - 1 Month - 240TK</button>
+  <button class="package-btn" onclick="selectPackage('Primary','1 Month',650)">Primary - 1 Month - 650TK</button>
+  <button class="btn-orange" onclick="goToCheckout()">🛒 Add To Cart</button>
+  <button onclick="showPage('mainPage')">⬅️ Back</button>
   <p id="pkgError" class="error"></p>
 </div>
 
-<!-- Checkout Page -->
+<!-- ✅ Checkout Page -->
 <div id="checkoutPage" class="page">
   <h2>✅ Checkout</h2>
   <div id="selectedInfo"></div>
-  <div style="margin-top:20px;">
-    <input id="coName" type="text" placeholder="Full Name">
-    <input id="coEmail" type="email" placeholder="Email">
-    <input id="coAddress" type="text" placeholder="Street Address">
-    <input id="coMobile" type="text" placeholder="Mobile Number">
-    <input id="coPaymentNumber" type="text" placeholder="Payment Number">
-    <input id="coTransID" type="text" placeholder="Transaction ID">
-    <select id="paymentMethod" onchange="updatePayNumber()">
-      <option value="">-- পেমেন্ট মেথড সিলেক্ট করুন --</option>
-      <option value="Bkash">Bkash</option>
-      <option value="Nagad">Nagad</option>
-      <option value="Rocket">Rocket</option>
-    </select>
-    <div id="payNumber" class="copy-box"></div>
-    <p>অবশ্যই সেন্ড মানি করতে হবে এবং নির্দিষ্ট পরিমাণ পাঠাবেন। কম পাঠালে রিফান্ড হবে না।</p>
-    <button class="green" onclick="confirmOrder()">✅ Order Confirm</button>
-    <button class="orange" onclick="showPage('packagePage')">⬅️ Back To Packages</button>
-  </div>
+  <input id="coName" type="text" placeholder="👤 Full Name">
+  <input id="coEmail" type="email" placeholder="📧 Email">
+  <input id="coAddress" type="text" placeholder="🏠 Address">
+  <input id="coMobile" type="text" placeholder="📱 Mobile Number">
+  <input id="coTransID" type="text" placeholder="💳 Transaction ID">
+  <select id="paymentMethod" onchange="updatePaymentNumber()">
+    <option value="">-- পেমেন্ট মেথড --</option>
+    <option value="Bkash">Bkash</option>
+    <option value="Nagad">Nagad</option>
+    <option value="Rocket">Rocket</option>
+  </select>
+  <div id="payNumber" style="margin-top:10px;"></div>
+  <button class="btn-green" onclick="confirmOrder()">📨 Order Confirm</button>
+  <button onclick="showPage('packagePage')">⬅️ Back</button>
   <p id="coError" class="error"></p>
 </div>
 
+<!-- 🔐 Firebase & EmailJS Config -->
 <script>
-// --- Configurations ---
 const firebaseConfig = {
-  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4", authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com", projectId: "crunchyrollpremiumbd-shop",
-};
-const emailjsConfig = {
-  service: "service_z1714kq",
-  adminTpl: "template_hp66tqp",
-  custTpl: "template_1z1lhlf",
-  publicKey: "SsUmUorUm-BZG8LBY"
+  apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+  authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+  projectId: "crunchyrollpremiumbd-shop",
+  storageBucket: "crunchyrollpremiumbd-shop.appspot.com",
+  messagingSenderId: "790961397898",
+  appId: "1:790961397898:web:1c5fceb8b5d3340c3bcd73",
+  measurementId: "G-PSSPTLC6MJ"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-emailjs.init(emailjsConfig.publicKey);
 
-// --- Helpers ---
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+emailjs.init("SsUmUorUm-BZG8LBY");
+const emailService = "service_z1714kq";
+const adminTpl = "template_hp66tqp";
+const custTpl = "template_1z1lhlf";
+</script>
+
+<!-- 🌐 Logic -->
+<script>
+let selectedPkg = null;
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-function validPhone(p){ return /^\d{11}$/.test(p) }
-function validPass(p){ return /^\d{6}$/.test(p) }
 
-// --- SignUp ---
-async function handleSignup(){
-  const e = document.getElementById('suEmail').value.trim();
-  const p = document.getElementById('suPhone').value.trim();
-  const pw = document.getElementById('suPass').value;
-  const cp = document.getElementById('suConfirm').value;
-  const c = document.getElementById('suCity').value.trim();
-  const err = document.getElementById('suError'); err.textContent="";
-  if (!validPhone(p)){err.textContent="⚠️ মোবাইল ১১ সংখ্যার হতে হবে"; return;}
-  if (!validPass(pw)){err.textContent="⚠️ পাসওয়ার্ড ৬ সংখ্যার সংখ্যা হতে হবে"; return;}
-  if (pw!==cp){err.textContent="⚠️ পাসওয়ার্ড মিলছে না";return;}
-  if (!c){err.textContent="⚠️ শহর লিখুন";return;}
+function validPhone(p) { return /^\d{11}$/.test(p) }
+function validPass(p) { return /^\d{6}$/.test(p) }
+
+async function handleSignup() {
+  const e = suEmail.value.trim();
+  const p = suPhone.value.trim();
+  const pw = suPass.value;
+  const cp = suConfirm.value;
+  const c = suCity.value.trim();
+  suError.textContent = "";
+  if (!validPhone(p)) return suError.textContent = "⚠️ মোবাইল ১১ সংখ্যার হতে হবে";
+  if (!validPass(pw)) return suError.textContent = "⚠️ পাসওয়ার্ড ৬ সংখ্যার সংখ্যা হতে হবে";
+  if (pw !== cp) return suError.textContent = "⚠️ পাসওয়ার্ড মিলছে না";
+  if (!c) return suError.textContent = "⚠️ শহর লিখুন";
+
   try {
     const snap1 = await db.collection('users').where('email','==',e).get();
-    if (!snap1.empty){err.textContent="⚠️ পূর্বে সাইন আপ করা হয়েছে";return;}
+    if (!snap1.empty) return suError.textContent = "⚠️ পূর্বে সাইন আপ করা হয়েছে";
     const snap2 = await db.collection('users').where('phone','==',p).get();
-    if (!snap2.empty){err.textContent="⚠️ মোবাইল নম্বর আগেই ব্যবহৃত হয়েছে";return;}
+    if (!snap2.empty) return suError.textContent = "⚠️ মোবাইল নম্বর আগেই ব্যবহৃত হয়েছে";
+
     await auth.createUserWithEmailAndPassword(e, pw);
     await auth.currentUser.sendEmailVerification();
     await db.collection('users').add({email:e,phone:p,city:c,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
     alert("✅ সাইন আপ সফল! ইমেইলে ভেরিফিকেশন পাঠানো হয়েছে।");
     showPage('loginPage');
-  } catch(err){err.textContent = err.message;}
-}
-
-// --- Login ---
-async function handleLogin(){
-  const e = document.getElementById('liEmail').value.trim();
-  const pw = document.getElementById('liPass').value;
-  const err = document.getElementById('liError'); err.textContent="";
-  try{
-    const res = await auth.signInWithEmailAndPassword(e, pw);
-    if (!res.user.emailVerified){err.textContent="⚠️ ইমেইল ভেরিফাই করুন"; return;}
-    showPage('mainPage');
-    startListeners();
-  } catch(err){err.textContent = err.message;}
-}
-
-// --- Counts ---
-function startListeners(){
-  db.collection('users').onSnapshot(s=>document.getElementById('userCount').textContent = s.size);
-  db.collection('orders').onSnapshot(s=>document.getElementById('orderCount').textContent = s.size);
-}
-
-// --- Package Selection ---
-let selectedPkg = null;
-function selectPackage(profile,duration,price){
-  selectedPkg = {profile,duration,price};
-  document.getElementById('pkgError').textContent = "";
-  alert(`✅ '${profile}' (${duration}) – ${price} TK সিলেক্ট হয়েছে`);
-}
-
-// --- Update Payment Number ---
-function updatePayNumber(){
-  const m = document.getElementById('paymentMethod').value;
-  let num="";
-  if (m==="Bkash") num="01740433733";
-  if (m==="Nagad"||m==="Rocket") num="01603599843";
-  document.getElementById('payNumber').innerHTML = num ?
-    `${m} নম্বর: <strong>${num}</strong> <button onclick="navigator.clipboard.writeText('${num}')">📋 কপি</button>` : "";
-}
-
-// --- Show Checkout Info ---
-function goToCheckout(){
-  if (!selectedPkg){ document.getElementById('pkgError').textContent="⚠️ প্যাকেজ সিলেক্ট করুন"; return; }
-  document.getElementById('selectedInfo').innerHTML =
-    `<p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
-     <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
-     <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>`;
-  showPage('checkoutPage');
-}
-
-// --- Confirm Order ---
-async function confirmOrder(){
-  const name = document.getElementById('coName').value.trim();
-  const email = document.getElementById('coEmail').value.trim();
-  const addr = document.getElementById('coAddress').value.trim();
-  const mobile = document.getElementById('coMobile').value.trim();
-  const payNo = document.getElementById('coPaymentNumber').value.trim();
-  const trans = document.getElementById('coTransID').value.trim();
-  const pm = document.getElementById('paymentMethod').value;
-  const coErr = document.getElementById('coError'); coErr.textContent="";
-  if (!name||!email||!addr||!mobile||!payNo||!trans||!pm){coErr.textContent="⚠️ সব তথ্য ভরুন"; return;}
-  try {
-    const data = {...selectedPkg,name,email,addr,mobile,payNo,trans,pm, timestamp: firebase.firestore.FieldValue.serverTimestamp()};
-    await db.collection('orders').add(data);
-    // Emails
-    emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
-    emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
-    alert("✅ অর্ডার সফল হয়েছে। কাস্টমার ও অ্যাডমিনে ইমেইল পাঠানো হয়েছে।");
-    showPage('mainPage');
-  } catch(err){
-    alert("❌ অর্ডার ব্যর্থ: "+err.message);
+  } catch (err) {
+    suError.textContent = err.message;
   }
 }
 
-// handle Add to Cart button
-document.querySelector('#packagePage .orange').addEventListener('click', function(){
-  goToCheckout();
-});
-</script>
+async function handleLogin() {
+  const e = liEmail.value.trim();
+  const pw = liPass.value;
+  liError.textContent = "";
+  try {
+    const res = await auth.signInWithEmailAndPassword(e, pw);
+    if (!res.user.emailVerified) return liError.textContent = "⚠️ ইমেইল ভেরিফাই করুন";
+    showPage('mainPage');
+    db.collection('users').onSnapshot(s => userCount.textContent = s.size);
+    db.collection('orders').onSnapshot(s => orderCount.textContent = s.size);
+  } catch (err) {
+    liError.textContent = err.message;
+  }
+}
 
+function selectPackage(type, duration, price) {
+  selectedPkg = { type, duration, price };
+  alert(`${type} প্যাকেজ সিলেক্ট হয়েছে`);
+}
+
+function goToCheckout() {
+  if (!selectedPkg) return pkgError.textContent = "⚠️ প্যাকেজ সিলেক্ট করুন";
+  selectedInfo.innerHTML = `
+    <p>📦 ${selectedPkg.type}</p>
+    <p>🕒 ${selectedPkg.duration}</p>
+    <p>💰 ${selectedPkg.price} TK</p>`;
+  showPage('checkoutPage');
+}
+
+function updatePaymentNumber() {
+  const m = paymentMethod.value;
+  let num = "";
+  if (m === "Bkash") num = "01740433733";
+  if (m === "Nagad" || m === "Rocket") num = "01603599843";
+  payNumber.innerHTML = num ? `${m} নম্বর: <b>${num}</b> <button onclick="navigator.clipboard.writeText('${num}')">📋 কপি</button>` : "";
+}
+
+async function confirmOrder() {
+  const name = coName.value.trim();
+  const email = coEmail.value.trim();
+  const addr = coAddress.value.trim();
+  const mobile = coMobile.value.trim();
+  const trans = coTransID.value.trim();
+  const pm = paymentMethod.value;
+  coError.textContent = "";
+  if (!name || !email || !addr || !mobile || !trans || !pm) return coError.textContent = "⚠️ সব তথ্য পূরণ করুন";
+
+  const data = {
+    ...selectedPkg,
+    name, email, addr, mobile, trans, pm,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  try {
+    await db.collection('orders').add(data);
+    await emailjs.send(emailService, custTpl, data);
+    await emailjs.send(emailService, adminTpl, data);
+    alert("✅ অর্ডার সফল! ইমেইল পাঠানো হয়েছে।");
+    showPage('mainPage');
+  } catch (err) {
+    alert("❌ অর্ডার ব্যর্থ: " + err.message);
+  }
+}
+</script>
 </body>
 </html>
