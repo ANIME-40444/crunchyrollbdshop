@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crunchyroll Premium BD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: white;
+      color: #000;
+    }
+    .page {
+      display: none;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .active {
+      display: block;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .buy-now-btn {
+      background: linear-gradient(to right, #ff6a00, #ee0979);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .buy-now-btn:hover {
+      background: linear-gradient(to right, #ee0979, #ff6a00);
+    }
+    .error {
+      color: red;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sign Up Page -->
+<div id="signupPage" class="page active">
+  <h2>Sign Up</h2>
+  <input id="suEmail" type="email" placeholder="Email">
+  <input id="suPhone" type="text" placeholder="Mobile Number">
+  <input id="suPass" type="password" placeholder="Password (min 8 chars)">
+  <input id="suConfirm" type="password" placeholder="Confirm Password">
+  <input id="suCity" type="text" placeholder="City">
+  <button onclick="handleSignup()">Sign Up</button>
+  <p>Already have an account? <a href="#" onclick="showPage('loginPage')">Sign In</a></p>
+  <p id="suError" class="error"></p>
+</div>
+
+<!-- Sign In Page -->
+<div id="loginPage" class="page">
+  <h2>Sign In</h2>
+  <input id="liEmail" type="email" placeholder="Email">
+  <input id="liPass" type="password" placeholder="Password">
+  <button onclick="handleLogin()">Sign In</button>
+  <p>New? <a href="#" onclick="showPage('signupPage')">Sign Up</a></p>
+  <p id="liError" class="error"></p>
+</div>
+
+<!-- Main Page -->
+<div id="mainPage" class="page">
+  <h2>Welcome to Crunchyroll Premium BD</h2>
+  <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
+</div>
+
+<!-- JS Section -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+    projectId: "crunchyrollpremiumbd-shop",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function validPhone(p) {
+    return /^\d{11}$/.test(p);
+  }
+
+  function validPass(p) {
+    return p.length >= 8 && !/^\d+$/.test(p); // not only digits
+  }
+
+  async function handleSignup() {
+    const e = document.getElementById('suEmail').value.trim();
+    const p = document.getElementById('suPhone').value.trim();
+    const pw = document.getElementById('suPass').value;
+    const cp = document.getElementById('suConfirm').value;
+    const c = document.getElementById('suCity').value.trim();
+    const err = document.getElementById('suError'); err.textContent = "";
+    if (!validPhone(p)) { err.textContent = "⚠️ মোবাইল ১১ সংখ্যার হতে হবে"; return; }
+    if (!validPass(pw)) { err.textContent = "⚠️ পাসওয়ার্ড ৮ অক্ষরের এবং শুধু সংখ্যা নয় এমন হতে হবে"; return; }
+    if (pw !== cp) { err.textContent = "⚠️ পাসওয়ার্ড মিলছে না"; return; }
+    if (!c) { err.textContent = "⚠️ শহর লিখুন"; return; }
+    try {
+      const snap1 = await db.collection('users').where('email','==',e).get();
+      if (!snap1.empty) { err.textContent = "⚠️ পূর্বে সাইন আপ করা হয়েছে"; return; }
+      const snap2 = await db.collection('users').where('phone','==',p).get();
+      if (!snap2.empty) { err.textContent = "⚠️ মোবাইল নম্বর আগেই ব্যবহৃত হয়েছে"; return; }
+      await auth.createUserWithEmailAndPassword(e, pw);
+      await auth.currentUser.sendEmailVerification();
+      await db.collection('users').add({ email: e, phone: p, city: c });
+      alert("✅ সাইন আপ সফল! ইমেইলে ভেরিফিকেশন পাঠানো হয়েছে।");
+      showPage('loginPage');
+    } catch (error) {
+      err.textContent = error.message;
+    }
+  }
+
+  async function handleLogin() {
+    const e = document.getElementById('liEmail').value.trim();
+    const pw = document.getElementById('liPass').value;
+    const err = document.getElementById('liError'); err.textContent = "";
+    if (!e.includes('@') || !e.includes('.')) {
+      err.textContent = "আপনার লেখা ইমেইলটি ভুল";
+      return;
+    }
+    try {
+      const res = await auth.signInWithEmailAndPassword(e, pw);
+      if (!res.user.emailVerified) {
+        err.textContent = "দয়া করে আপনার ইমেইল ভেরিফাই করুন";
+        return;
+      }
+      showPage('mainPage');
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        err.textContent = "এই ইমেইলে কোন একাউন্ট নেই, দয়া করে সাইন আপ করুন";
+      } else if (error.code === 'auth/wrong-password') {
+        err.textContent = "আপনার লেখা পাসওয়ার্ডটি ভুল";
+      } else {
+        err.textContent = "আপনার তথ্য ভুল";
+      }
+    }
+  }
+
+  auth.onAuthStateChanged(user => {
+    if (user && user.emailVerified) {
+      showPage('mainPage');
+    } else {
+      showPage('loginPage');
+    }
+  });
+</script>
+</body>
+</html>
