@@ -1,409 +1,465 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <title>Crunchyroll Premium BD Shop</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #fff;
-      color: #000;
-    }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 15px;
-    }
-    .page {
-      display: none;
-      padding: 20px;
-      background: #fff;
-    }
-    .active {
-      display: block;
-    }
-    img.banner {
-      width: 100%;
-      border-radius: 8px;
-    }
-    img.avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #000;
-      display: block;
-      margin: 20px auto;
-    }
-    input, select, button, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    button {
-      cursor: pointer;
-    }
-    .buy-now-btn {
-      background: #007bff;
-      color: white;
-      padding: 12px 20px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      display: block;
-      width: 200px;
-      margin: 20px auto;
-      transition: background-color 0.3s ease;
-    }
-    .buy-now-btn:hover {
-      background: #0056b3;
-    }
-    .package-btn {
-      background: #0f7dc8;
-      color: white;
-      margin-top: 6px;
-      border-radius: 8px;
-    }
-    .package-btn:hover {
-      background: #095e9f;
-    }
-    .action-btns {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-      gap: 10px;
-    }
-    .orange {
-      background: orange;
-      color: black;
-      flex: 1;
-      border-radius: 8px;
-      padding: 12px 0;
-      font-weight: bold;
-    }
-    .green {
-      background: green;
-      color: white;
-      flex: 1;
-      border-radius: 8px;
-      padding: 12px 0;
-      font-weight: bold;
-    }
-    .error {
-      color: #ff4d4d;
-    }
-    .copy-box {
-      background: #f2f2f2;
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 10px;
-      color: black;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-    th {
-      background: #007bff;
-      color: white;
-    }
-    .status-pending {
-      color: orange;
-      font-weight: bold;
-    }
-    .status-confirmed {
-      color: green;
-      font-weight: bold;
-    }
-    .status-rejected {
-      color: red;
-      font-weight: bold;
-    }
-    .admin-btn {
-      margin: 2px;
-      padding: 6px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .btn-confirm {
-      background-color: #28a745;
-      color: white;
-    }
-    .btn-reject {
-      background-color: #dc3545;
-      color: white;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Crunchyroll Premium BD Shop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0; padding: 0;
+    background: #fff;
+    color: #000;
+  }
+  .container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    position: relative;
+  }
+  .page { display: none; }
+  .active { display: block; }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  .error { color: red; margin-top: 10px; }
+  /* থ্রি ডট আইকন */
+  #menuToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    background: #007bff;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #menuToggle:hover {
+    background: #0056b3;
+  }
+  #menuToggle div {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 2px 0;
+  }
+  /* Dropdown menu */
+  #dropdownMenu {
+    display: none;
+    position: fixed;
+    top: 55px;
+    right: 15px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 140px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 1000;
+  }
+  #dropdownMenu.active {
+    display: block;
+  }
+  #dropdownMenu button {
+    width: 100%;
+    background: none;
+    color: #007bff;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  #dropdownMenu button:hover {
+    background: #f0f0f0;
+  }
+  /* Order list table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+  }
+  th {
+    background: #007bff;
+    color: white;
+  }
+  /* Status buttons */
+  .status-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 5px;
+  }
+  .confirm-btn {
+    background-color: green;
+    color: white;
+  }
+  .reject-btn {
+    background-color: red;
+    color: white;
+  }
+  /* Status text colors */
+  .status-pending { color: orange; font-weight: bold; }
+  .status-confirmed { color: green; font-weight: bold; }
+  .status-rejected { color: red; font-weight: bold; }
+</style>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
+
+<div id="menuToggle" title="Menu">
+  <div></div><div></div><div></div>
+</div>
+<div id="dropdownMenu">
+  <button id="orderListBtn">Orders</button>
+</div>
+
 <div class="container">
 
-<!-- Main Page -->
-<div id="mainPage" class="page active">
-  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" />
-  <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" />
-  <h2 style="text-align:center;">Welcome to Crunchyroll Premium BD Shop</h2>
-  <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
-  <p style="margin-top:20px; text-align:center;">
-    <strong>Total Users:</strong> <span id="userCount">0</span> |
-    <strong>Total Orders:</strong> <span id="orderCount">0</span>
-  </p>
-  <p style="text-align:center; margin-top:20px;">
-    <button onclick="showPage('orderStatusPage')" style="padding:10px 20px; font-weight:bold;">আমার অর্ডারের স্ট্যাটাস দেখুন</button>
-    <button onclick="showPage('adminPanelPage')" style="padding:10px 20px; font-weight:bold; background:#444; color:#fff; margin-left:10px;">Admin Panel (Admin Only)</button>
-  </p>
-</div>
-
-<!-- Package Page -->
-<div id="packagePage" class="page">
-  <h2>📦 প্যাকেজ সিলেকশন</h2>
-  <!-- Shared -->
-  <h3>📤 Shared Profile</h3>
-  <button class="package-btn" onclick="selectPackage('Shared Profile', '1 Month', 100)">1 Month – 100 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile', '2 Months', 200)">2 Months – 200 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile', '3 Months', 300)">3 Months – 300 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile', '6 Months', 600)">6 Months – 600 TK</button>
-  <button class="package-btn" onclick="selectPackage('Shared Profile', '8 Months', 840)">8 Months – 840 TK</button>
-  <!-- Personal -->
-  <h3>👤 Personal Profile</h3>
-  <button class="package-btn" onclick="selectPackage('Personal Profile', '1 Month', 240)">1 Month – 240 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile', '2 Months', 480)">2 Months – 480 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile', '3 Months', 720)">3 Months – 720 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile', '6 Months', 1440)">6 Months – 1440 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile', '8 Months', 1800)">8 Months – 1800 TK</button>
-  <button class="package-btn" onclick="selectPackage('Personal Profile', '12 Months', 2760)">12 Months – 2760 TK</button>
-  <!-- Primary -->
-  <h3>👑 Primary Account</h3>
-  <button class="package-btn" onclick="selectPackage('Primary Account', '1 Month', 650)">1 Month – 650 TK</button>
-  <button class="package-btn" onclick="selectPackage('Primary Account', '2 Months', 1300)">2 Months – 1300 TK</button>
-  <button class="package-btn" onclick="selectPackage('Primary Account', '3 Months', 1950)">3 Months – 1950 TK</button>
-  <button class="package-btn" onclick="selectPackage('Primary Account', '6 Months', 3600)">6 Months – 3600 TK</button>
-
-  <div class="action-btns">
-    <button class="orange" onclick="goToCheckout()">🛒 Add To Cart</button>
-    <button class="green" onclick="showPage('mainPage')">⬅️ Back To Home</button>
+  <!-- Main Page -->
+  <div id="mainPage" class="page active">
+    <h1>Crunchyroll Premium BD Shop</h1>
+    <button onclick="showPage('packagePage')">BUY NOW</button>
+    <p>
+      <strong>Total Users:</strong> <span id="userCount">0</span> |
+      <strong>Total Orders:</strong> <span id="orderCount">0</span>
+    </p>
   </div>
-  <p id="pkgError" class="error"></p>
-</div>
 
-<!-- Checkout Page -->
-<div id="checkoutPage" class="page">
-  <h2>✅ Checkout</h2>
-  <div id="selectedInfo"></div>
-  <div style="margin-top: 20px">
-    <input id="coName" type="text" placeholder="Full Name" />
-    <input id="coEmail" type="email" placeholder="Email" />
-    <input id="coAddress" type="text" placeholder="Street Address" />
-    <input id="coMobile" type="text" placeholder="Mobile Number" />
-    <input id="coPaymentNumber" type="text" placeholder="Payment Number" />
-    <input id="coTransID" type="text" placeholder="Transaction ID" />
-    <select id="paymentMethod" onchange="updatePayNumber()">
+  <!-- Package Page -->
+  <div id="packagePage" class="page">
+    <h2>প্যাকেজ সিলেক্ট করুন</h2>
+    <button onclick="selectPackage('Shared Profile', '1 Month', 100)">Shared Profile - 1 Month - 100 TK</button>
+    <button onclick="selectPackage('Shared Profile', '3 Months', 300)">Shared Profile - 3 Months - 300 TK</button>
+    <button onclick="selectPackage('Personal Profile', '1 Month', 240)">Personal Profile - 1 Month - 240 TK</button>
+    <button onclick="selectPackage('Primary Account', '1 Month', 650)">Primary Account - 1 Month - 650 TK</button>
+    <button onclick="showPage('mainPage')">Back to Home</button>
+    <p id="pkgError" class="error"></p>
+  </div>
+
+  <!-- Checkout Page -->
+  <div id="checkoutPage" class="page">
+    <h2>Checkout</h2>
+    <div id="selectedPackageInfo"></div>
+
+    <input type="text" id="coName" placeholder="পুরো নাম" />
+    <input type="email" id="coEmail" placeholder="ইমেইল" />
+    <input type="text" id="coAddress" placeholder="ঠিকানা" />
+    <input type="text" id="coMobile" placeholder="মোবাইল নম্বর" />
+    <select id="paymentMethod" onchange="updatePaymentNumber()">
       <option value="">-- পেমেন্ট মেথড সিলেক্ট করুন --</option>
       <option value="Bkash">Bkash</option>
       <option value="Nagad">Nagad</option>
       <option value="Rocket">Rocket</option>
     </select>
-    <div id="payNumber" class="copy-box"></div>
-    <p>অবশ্যই সেন্ড মানি করতে হবে এবং নির্দিষ্ট পরিমাণ পাঠাবেন। কম পাঠালে রিফান্ড হবে না।</p>
-    <button class="green" onclick="confirmOrder()">✅ Order Confirm</button>
-    <button class="orange" onclick="showPage('packagePage')">⬅️ Back To Packages</button>
+    <input type="text" id="coPaymentNumber" placeholder="পেমেন্ট নম্বর" readonly />
+    <input type="text" id="coTransID" placeholder="ট্রানজেকশন আইডি" />
+
+    <p>অবশ্যই নির্দিষ্ট পরিমাণ পাঠাবেন। কম পাঠালে রিফান্ড হবে না।</p>
+
+    <button onclick="confirmOrder()">Order Confirm</button>
+    <button onclick="showPage('packagePage')">Back to Packages</button>
+
+    <p id="coError" class="error"></p>
   </div>
-  <p id="coError" class="error"></p>
-</div>
 
-<!-- Order Status Page (Customer) -->
-<div id="orderStatusPage" class="page">
-  <h2>📋 আমার অর্ডারের স্ট্যাটাস</h2>
-  <p>অর্ডার দেখতে আপনার ইমেইল লিখুন:</p>
-  <input id="statusEmail" type="email" placeholder="আপনার ইমেইল দিন" />
-  <button class="green" onclick="fetchCustomerOrders()">দেখুন</button>
-  <button class="orange" onclick="showPage('mainPage')">⬅️ Back To Home</button>
-  <p id="statusError" class="error"></p>
-  <table id="customerOrdersTable" style="display:none;">
-    <thead>
-      <tr>
-        <th>প্যাকেজ</th>
-        <th>মেয়াদ</th>
-        <th>মূল্য</th>
-        <th>স্ট্যাটাস</th>
-      </tr>
-    </thead>
-    <tbody id="customerOrdersBody"></tbody>
-  </table>
-</div>
+  <!-- Orders Status Page -->
+  <div id="ordersPage" class="page">
+    <h2>তোমার অর্ডারসমূহ</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>প্যাকেজ</th>
+          <th>মেয়াদ</th>
+          <th>মূল্য</th>
+          <th>স্ট্যাটাস</th>
+          <th>অ্যাকশন</th>
+        </tr>
+      </thead>
+      <tbody id="orderListBody">
+        <!-- অর্ডার লিস্ট এখানে যাবে -->
+      </tbody>
+    </table>
+    <button onclick="showPage('mainPage')">Back to Home</button>
+  </div>
 
-<!-- Admin Panel Page -->
-<div id="adminPanelPage" class="page">
-  <h2>🛠️ Admin Panel</h2>
-  <button class="orange" onclick="showPage('mainPage')">⬅️ Back To Home</button>
-  <table id="adminOrdersTable">
-    <thead>
-      <tr>
-        <th>নাম</th>
-        <th>ইমেইল</th>
-        <th>মোবাইল</th>
-        <th>প্যাকেজ</th>
-        <th>মেয়াদ</th>
-        <th>মূল্য</th>
-        <th>পেমেন্ট মেথড</th>
-        <th>ট্রানজেকশন আইডি</th>
-        <th>স্ট্যাটাস</th>
-        <th>কর্ম</th>
-      </tr>
-    </thead>
-    <tbody id="adminOrdersBody"></tbody>
-  </table>
-  <p id="adminError" class="error"></p>
-</div>
+  <!-- Admin Panel Page -->
+  <div id="adminPage" class="page">
+    <h2>Admin Panel - Orders</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>নাম</th>
+          <th>ইমেইল</th>
+          <th>মোবাইল</th>
+          <th>প্যাকেজ</th>
+          <th>মেয়াদ</th>
+          <th>মূল্য</th>
+          <th>স্ট্যাটাস</th>
+          <th>Confirm</th>
+          <th>Reject</th>
+        </tr>
+      </thead>
+      <tbody id="adminOrderListBody">
+      </tbody>
+    </table>
+    <button onclick="showPage('mainPage')">Back to Home</button>
+  </div>
 
 </div>
 
 <script>
-  // Firebase configuration
+  // তোমার Firebase config এখানে বসাও
   const firebaseConfig = {
-    apiKey: 'AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4',
-    authDomain: 'crunchyrollpremiumbd-shop.firebaseapp.com',
-    projectId: 'crunchyrollpremiumbd-shop',
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
   };
+
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // EmailJS configuration
+  // EmailJS config বসাও
   const emailjsConfig = {
-    service: 'service_z1714kq',
-    adminTpl: 'template_hp66tqp',
-    custTpl: 'template_1z1lhlf',
-    publicKey: 'SsUmUorUm-BZG8LBY',
+    service: 'YOUR_SERVICE_ID',
+    adminTpl: 'YOUR_ADMIN_TEMPLATE_ID',
+    custTpl: 'YOUR_CUSTOMER_TEMPLATE_ID',
+    publicKey: 'YOUR_PUBLIC_KEY',
   };
   emailjs.init(emailjsConfig.publicKey);
 
-  // Current page key for localStorage
-  const PAGE_KEY = 'currentPage';
-  // Store selected package globally
-  let selectedPkg = null;
-
-  // Show page and save state
+  // পেজ শো করার ফাংশন
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    localStorage.setItem(PAGE_KEY, id);
+    if(id === 'ordersPage') loadUserOrders();
+    if(id === 'adminPage') loadAdminOrders();
   }
 
-  // Load page from localStorage on load
-  window.onload = function() {
-    let savedPage = localStorage.getItem(PAGE_KEY);
-    if (savedPage && document.getElementById(savedPage)) {
-      showPage(savedPage);
-    } else {
-      showPage('mainPage');
-    }
-    startListeners();
-  };
+  // থ্রি ডট মেনু টগল
+  const menuToggle = document.getElementById('menuToggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
 
-  // Update user and order counts realtime
+  menuToggle.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('active');
+  });
+
+  // ড্রপডাউন থেকে অর্ডার পেজে যাওয়ার বাটন
+  document.getElementById('orderListBtn').addEventListener('click', () => {
+    dropdownMenu.classList.remove('active');
+    showPage('ordersPage');
+  });
+
+  // ইউজার এবং অর্ডার সংখ্যা আপডেট
   function startListeners() {
     db.collection('users').onSnapshot(snap => {
       document.getElementById('userCount').textContent = snap.size;
     });
     db.collection('orders').onSnapshot(snap => {
       document.getElementById('orderCount').textContent = snap.size;
-      if (document.getElementById('adminPanelPage').classList.contains('active')) {
-        loadAdminOrders();
-      }
     });
   }
+  startListeners();
 
-  // Select package
+  // প্যাকেজ সিলেক্ট ও চেকআউট পেজ দেখানো
+  let selectedPkg = null;
   function selectPackage(profile, duration, price) {
     selectedPkg = { profile, duration, price };
     document.getElementById('pkgError').textContent = '';
-    alert(`✅ '${profile}' (${duration}) – ${price} TK সিলেক্ট হয়েছে`);
-  }
-
-  // Go to checkout
-  function goToCheckout() {
-    if (!selectedPkg) {
-      document.getElementById('pkgError').textContent = '⚠️ প্যাকেজ সিলেক্ট করুন';
-      return;
-    }
-    document.getElementById('selectedInfo').innerHTML = `
-      <p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
-      <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
-      <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>
+    showPage('checkoutPage');
+    document.getElementById('selectedPackageInfo').innerHTML = `
+      <p>প্যাকেজ: <strong>${profile}</strong></p>
+      <p>মেয়াদ: <strong>${duration}</strong></p>
+      <p>মূল্য: <strong>${price} TK</strong></p>
     `;
-    // Clear checkout inputs
-    document.getElementById('coName').value = '';
-    document.getElementById('coEmail').value = '';
-    document.getElementById('coAddress').value = '';
-    document.getElementById('coMobile').value = '';
+    updatePaymentNumber();
     document.getElementById('coPaymentNumber').value = '';
     document.getElementById('coTransID').value = '';
-    document.getElementById('paymentMethod').value = '';
-    document.getElementById('payNumber').innerHTML = '';
-    document.getElementById('coError').textContent = '';
-    showPage('checkoutPage');
   }
 
-  // Show payment number based on payment method
-  function updatePayNumber() {
-    const m = document.getElementById('paymentMethod').value;
-    let num = '';
-    if (m === 'Bkash') num = '01740433733';
-    else if (m === 'Nagad' || m === 'Rocket') num = '01603599843';
-    else num = '';
-    document.getElementById('payNumber').innerHTML = num
-      ? `${m} নম্বর: <strong>${num}</strong> <button onclick="copyToClipboard('${num}')">📋 কপি</button>`
-      : '';
+  // পেমেন্ট মেথড অনুযায়ী নম্বর
+  function updatePaymentNumber() {
+    const method = document.getElementById('paymentMethod').value;
+    let number = '';
+    if(method === 'Bkash') number = '01740433733';
+    else if(method === 'Nagad' || method === 'Rocket') number = '01603599843';
+    document.getElementById('coPaymentNumber').value = number;
   }
 
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('কপি করা হয়েছে: ' + text);
-    });
-  }
-
-  // Confirm order (save to Firestore + send emails)
+  // অর্ডার কনফার্মেশন
   async function confirmOrder() {
     const name = document.getElementById('coName').value.trim();
     const email = document.getElementById('coEmail').value.trim();
-    const addr = document.getElementById('coAddress').value.trim();
+    const address = document.getElementById('coAddress').value.trim();
     const mobile = document.getElementById('coMobile').value.trim();
-    const payNo = document.getElementById('coPaymentNumber').value.trim();
-    const trans = document.getElementById('coTransID').value.trim();
-    const pm = document.getElementById('paymentMethod').value;
-    const coErr = document.getElementById('coError');
-    coErr.textContent = '';
+    const paymentNumber = document.getElementById('coPaymentNumber').value.trim();
+    const transId = document.getElementById('coTransID').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
 
-    if (!name || !email || !addr || !mobile || !payNo || !trans || !pm) {
-      coErr.textContent = '⚠️ সব তথ্য ঠিকমত পূরণ করুন';
+    const errorP = document.getElementById('coError');
+    errorP.textContent = '';
+
+    if(!name || !email || !address || !mobile || !paymentNumber || !transId || !paymentMethod) {
+      errorP.textContent = 'সব তথ্য সঠিকভাবে পূরণ করুন।';
+      return;
+    }
+    if(!selectedPkg) {
+      errorP.textContent = 'প্যাকেজ নির্বাচন করুন।';
       return;
     }
 
+    const orderData = {
+      ...selectedPkg,
+      name,
+      email,
+      address,
+      mobile,
+      paymentNumber,
+      transId,
+      paymentMethod,
+      status: 'Pending',  // প্রথমে পেন্ডিং থাকবে
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
     try {
-      const data = {
-        ...selectedPkg,
-        name,
-        email,
-        addr,
-        mobile,
-        payNo,
-        trans
+      // অর্ডার ডাটাবেজে যোগ করা
+      await db.collection('orders').add(orderData);
+
+      // ইউজার হিসেবে যোগ করা (যদি নতুন হয়)
+      const userDoc = await db.collection('users').doc(email).get();
+      if(!userDoc.exists) {
+        await db.collection('users').doc(email).set({email, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      }
+
+      // ইমেইল পাঠানো (দুটি টেমপ্লেট)
+      await emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, orderData);
+      await emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, orderData);
+
+      alert('অর্ডার সফলভাবে জমা হয়েছে!');
+
+      // অর্ডার লিস্ট পেজে নিয়ে যাওয়া
+      showPage('ordersPage');
+
+    } catch (error) {
+      alert('অর্ডার জমা দিতে সমস্যা হয়েছে: ' + error.message);
+    }
+  }
+
+  // ইউজারের অর্ডারগুলো লোড করব
+  async function loadUserOrders() {
+    const tbody = document.getElementById('orderListBody');
+    tbody.innerHTML = '<tr><td colspan="5">লোড হচ্ছে...</td></tr>';
+    // ইউজার ইমেইল চাইবো (সিম্পল: এখনো কোন লগিন নেই, তাই তুমি কাস্টমার ইমেইল ইনপুট নাও)
+    let userEmail = prompt("অনুগ্রহ করে তোমার ইমেইল লিখুন (অর্ডার দেখতে):");
+    if(!userEmail) {
+      tbody.innerHTML = '<tr><td colspan="5">ইমেইল প্রয়োজন।</td></tr>';
+      return;
+    }
+
+    // ফিল্টার করে দেখাও ওই ইমেইলের অর্ডার
+    try {
+      const snapshot = await db.collection('orders')
+        .where('email', '==', userEmail.trim())
+        .orderBy('createdAt', 'desc')
+        .get();
+
+      if(snapshot.empty) {
+        tbody.innerHTML = '<tr><td colspan="5">কোন অর্ডার পাওয়া যায়নি।</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        let statusClass = 'status-pending';
+        if(data.status === 'Confirmed') statusClass = 'status-confirmed';
+        else if(data.status === 'Rejected') statusClass = 'status-rejected';
+
+        tbody.innerHTML += `<tr>
+          <td>${data.profile}</td>
+          <td>${data.duration}</td>
+          <td>${data.price} TK</td>
+          <td class="${statusClass}">${data.status}</td>
+          <td>--</td>
+        </tr>`;
+      });
+
+    } catch (error) {
+      tbody.innerHTML = '<tr><td colspan="5">লোড করতে সমস্যা: ' + error.message + '</td></tr>';
+    }
+  }
+
+  // এডমিন প্যানেলে অর্ডার লোড করা
+  async function loadAdminOrders() {
+    const tbody = document.getElementById('adminOrderListBody');
+    tbody.innerHTML = '<tr><td colspan="9">লোড হচ্ছে...</td></tr>';
+
+    try {
+      const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
+
+      if(snapshot.empty) {
+        tbody.innerHTML = '<tr><td colspan="9">কোন অর্ডার পাওয়া যায়নি।</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const id = doc.id;
+
+        let statusClass = 'status-pending';
+        if(data.status === 'Confirmed') statusClass = 'status-confirmed';
+        else if(data.status === 'Rejected') statusClass = 'status-rejected';
+
+        tbody.innerHTML += `<tr>
+          <td>${data.name}</td>
+          <td>${data.email}</td>
+          <td>${data.mobile}</td>
+          <td>${data.profile}</td>
+          <td>${data.duration}</td>
+          <td>${data.price} TK</td>
+          <td class="${statusClass}">${data.status}</td>
+          <td><button class="status-btn confirm-btn" onclick="updateOrderStatus('${id}','Confirmed')">Confirm</button></td>
+          <td><button class="status-btn reject-btn" onclick="updateOrderStatus('${id}','Rejected')">Reject</button></td>
+        </tr>`;
+      });
+
+    } catch (error) {
+      tbody.innerHTML = '<tr><td colspan="9">লোড করতে সমস্যা: ' + error
