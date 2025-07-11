@@ -8,8 +8,8 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #ffffff;
-      color: #000000;
+      background: #fff;
+      color: #000;
     }
     .container {
       max-width: 1200px;
@@ -19,7 +19,7 @@
     .page {
       display: none;
       padding: 20px;
-      background: #ffffff;
+      background: #fff;
     }
     .active {
       display: block;
@@ -36,7 +36,7 @@
       display: block;
       margin: 20px auto;
     }
-    input, select, button {
+    input, select, button, textarea {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
@@ -104,6 +104,48 @@
       margin-top: 10px;
       color: black;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+    .status-pending {
+      color: orange;
+      font-weight: bold;
+    }
+    .status-confirmed {
+      color: green;
+      font-weight: bold;
+    }
+    .status-rejected {
+      color: red;
+      font-weight: bold;
+    }
+    .admin-btn {
+      margin: 2px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-confirm {
+      background-color: #28a745;
+      color: white;
+    }
+    .btn-reject {
+      background-color: #dc3545;
+      color: white;
+    }
   </style>
 
   <!-- Firebase -->
@@ -116,7 +158,7 @@
 <div class="container">
 
 <!-- Main Page -->
-<div id="mainPage" class="page">
+<div id="mainPage" class="page active">
   <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" />
   <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" />
   <h2 style="text-align:center;">Welcome to Crunchyroll Premium BD Shop</h2>
@@ -124,6 +166,10 @@
   <p style="margin-top:20px; text-align:center;">
     <strong>Total Users:</strong> <span id="userCount">0</span> |
     <strong>Total Orders:</strong> <span id="orderCount">0</span>
+  </p>
+  <p style="text-align:center; margin-top:20px;">
+    <button onclick="showPage('orderStatusPage')" style="padding:10px 20px; font-weight:bold;">আমার অর্ডারের স্ট্যাটাস দেখুন</button>
+    <button onclick="showPage('adminPanelPage')" style="padding:10px 20px; font-weight:bold; background:#444; color:#fff; margin-left:10px;">Admin Panel (Admin Only)</button>
   </p>
 </div>
 
@@ -184,6 +230,51 @@
   <p id="coError" class="error"></p>
 </div>
 
+<!-- Order Status Page (Customer) -->
+<div id="orderStatusPage" class="page">
+  <h2>📋 আমার অর্ডারের স্ট্যাটাস</h2>
+  <p>অর্ডার দেখতে আপনার ইমেইল লিখুন:</p>
+  <input id="statusEmail" type="email" placeholder="আপনার ইমেইল দিন" />
+  <button class="green" onclick="fetchCustomerOrders()">দেখুন</button>
+  <button class="orange" onclick="showPage('mainPage')">⬅️ Back To Home</button>
+  <p id="statusError" class="error"></p>
+  <table id="customerOrdersTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>প্যাকেজ</th>
+        <th>মেয়াদ</th>
+        <th>মূল্য</th>
+        <th>স্ট্যাটাস</th>
+      </tr>
+    </thead>
+    <tbody id="customerOrdersBody"></tbody>
+  </table>
+</div>
+
+<!-- Admin Panel Page -->
+<div id="adminPanelPage" class="page">
+  <h2>🛠️ Admin Panel</h2>
+  <button class="orange" onclick="showPage('mainPage')">⬅️ Back To Home</button>
+  <table id="adminOrdersTable">
+    <thead>
+      <tr>
+        <th>নাম</th>
+        <th>ইমেইল</th>
+        <th>মোবাইল</th>
+        <th>প্যাকেজ</th>
+        <th>মেয়াদ</th>
+        <th>মূল্য</th>
+        <th>পেমেন্ট মেথড</th>
+        <th>ট্রানজেকশন আইডি</th>
+        <th>স্ট্যাটাস</th>
+        <th>কর্ম</th>
+      </tr>
+    </thead>
+    <tbody id="adminOrdersBody"></tbody>
+  </table>
+  <p id="adminError" class="error"></p>
+</div>
+
 </div>
 
 <script>
@@ -205,23 +296,28 @@
   };
   emailjs.init(emailjsConfig.publicKey);
 
-  // Show page function with localStorage to retain page on refresh
+  // Current page key for localStorage
+  const PAGE_KEY = 'currentPage';
+  // Store selected package globally
+  let selectedPkg = null;
+
+  // Show page and save state
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    // Save current page to localStorage
-    localStorage.setItem('currentPage', id);
+    localStorage.setItem(PAGE_KEY, id);
   }
 
-  // On load, show saved page or default mainPage
-  window.addEventListener('load', () => {
-    const savedPage = localStorage.getItem('currentPage');
+  // Load page from localStorage on load
+  window.onload = function() {
+    let savedPage = localStorage.getItem(PAGE_KEY);
     if (savedPage && document.getElementById(savedPage)) {
       showPage(savedPage);
     } else {
       showPage('mainPage');
     }
-  });
+    startListeners();
+  };
 
   // Update user and order counts realtime
   function startListeners() {
@@ -230,16 +326,41 @@
     });
     db.collection('orders').onSnapshot(snap => {
       document.getElementById('orderCount').textContent = snap.size;
+      if (document.getElementById('adminPanelPage').classList.contains('active')) {
+        loadAdminOrders();
+      }
     });
   }
-  startListeners();
 
-  // Package selection
-  let selectedPkg = null;
+  // Select package
   function selectPackage(profile, duration, price) {
     selectedPkg = { profile, duration, price };
     document.getElementById('pkgError').textContent = '';
     alert(`✅ '${profile}' (${duration}) – ${price} TK সিলেক্ট হয়েছে`);
+  }
+
+  // Go to checkout
+  function goToCheckout() {
+    if (!selectedPkg) {
+      document.getElementById('pkgError').textContent = '⚠️ প্যাকেজ সিলেক্ট করুন';
+      return;
+    }
+    document.getElementById('selectedInfo').innerHTML = `
+      <p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
+      <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
+      <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>
+    `;
+    // Clear checkout inputs
+    document.getElementById('coName').value = '';
+    document.getElementById('coEmail').value = '';
+    document.getElementById('coAddress').value = '';
+    document.getElementById('coMobile').value = '';
+    document.getElementById('coPaymentNumber').value = '';
+    document.getElementById('coTransID').value = '';
+    document.getElementById('paymentMethod').value = '';
+    document.getElementById('payNumber').innerHTML = '';
+    document.getElementById('coError').textContent = '';
+    showPage('checkoutPage');
   }
 
   // Show payment number based on payment method
@@ -260,21 +381,7 @@
     });
   }
 
-  // Go to checkout page
-  function goToCheckout() {
-    if (!selectedPkg) {
-      document.getElementById('pkgError').textContent = '⚠️ প্যাকেজ সিলেক্ট করুন';
-      return;
-    }
-    document.getElementById('selectedInfo').innerHTML = `
-      <p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
-      <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
-      <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>
-    `;
-    showPage('checkoutPage');
-  }
-
-  // Confirm order and save to Firestore + send emails via EmailJS
+  // Confirm order (save to Firestore + send emails)
   async function confirmOrder() {
     const name = document.getElementById('coName').value.trim();
     const email = document.getElementById('coEmail').value.trim();
@@ -287,7 +394,7 @@
     coErr.textContent = '';
 
     if (!name || !email || !addr || !mobile || !payNo || !trans || !pm) {
-      coErr.textContent = '⚠️ সব তথ্য ভরুন';
+      coErr.textContent = '⚠️ সব তথ্য ঠিকমত পূরণ করুন';
       return;
     }
 
@@ -299,40 +406,4 @@
         addr,
         mobile,
         payNo,
-        trans,
-        pm,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      await db.collection('orders').add(data);
-
-      // Send emails
-      emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
-      emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
-
-      alert('✅ অর্ডার সফল হয়েছে। কাস্টমার ও অ্যাডমিনে ইমেইল পাঠানো হয়েছে।');
-
-      // Clear selected package & inputs
-      selectedPkg = null;
-      clearCheckoutForm();
-
-      showPage('mainPage');
-    } catch (err) {
-      alert('❌ অর্ডার ব্যর্থ: ' + err.message);
-    }
-  }
-
-  // Clear checkout inputs
-  function clearCheckoutForm() {
-    document.getElementById('coName').value = '';
-    document.getElementById('coEmail').value = '';
-    document.getElementById('coAddress').value = '';
-    document.getElementById('coMobile').value = '';
-    document.getElementById('coPaymentNumber').value = '';
-    document.getElementById('coTransID').value = '';
-    document.getElementById('paymentMethod').value = '';
-    document.getElementById('payNumber').innerHTML = '';
-    document.getElementById('coError').textContent = '';
-  }
-</script>
-</body>
-</html>
+        trans
