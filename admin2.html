@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel – Crunchyroll BD</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+    select {
+      padding: 6px;
+      font-size: 14px;
+    }
+    .status-pending { color: orange; font-weight: bold; }
+    .status-confirmed { color: green; font-weight: bold; }
+    .status-rejected { color: red; font-weight: bold; }
+  </style>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<h1>📋 Crunchyroll BD - Admin Panel</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Package</th>
+      <th>Duration</th>
+      <th>Price</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Method</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody id="orderList">
+    <!-- Orders will load here -->
+  </tbody>
+</table>
+
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: 'AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4',
+    authDomain: 'crunchyrollpremiumbd-shop.firebaseapp.com',
+    projectId: 'crunchyrollpremiumbd-shop',
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const orderList = document.getElementById('orderList');
+
+  // Load orders
+  db.collection('orders').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+    orderList.innerHTML = '';
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${d.name}</td>
+        <td>${d.profile}</td>
+        <td>${d.duration}</td>
+        <td>${d.price} TK</td>
+        <td>${d.email}</td>
+        <td>${d.mobile}</td>
+        <td>${d.pm}</td>
+        <td>
+          <select onchange="updateStatus('${doc.id}', this.value)">
+            <option value="Pending" ${d.status === 'Pending' ? 'selected' : ''}>⏳ Pending</option>
+            <option value="Confirmed" ${d.status === 'Confirmed' ? 'selected' : ''}>✅ Confirmed</option>
+            <option value="Rejected" ${d.status === 'Rejected' ? 'selected' : ''}>❌ Rejected</option>
+          </select>
+        </td>
+      `;
+      orderList.appendChild(tr);
+    });
+  });
+
+  // Update status
+  function updateStatus(id, newStatus) {
+    db.collection('orders').doc(id).update({ status: newStatus })
+      .then(() => alert("✅ Status updated!"))
+      .catch(err => alert("❌ Error: " + err.message));
+  }
+</script>
+
+</body>
+</html>
