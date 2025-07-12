@@ -1,75 +1,153 @@
-<!-- index.html --><!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crunchyroll Premium BD</title>
+  <meta charset="UTF-8" />
+  <title>Crunchyroll Premium BD Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: var(--primary, #ffffff);
-      color: var(--secondary, #000000);
+      background: #fff;
+      color: #000;
     }
-    .container { padding: 20px; max-width: 1200px; margin: auto; }
-    .banner { width: 100%; border-radius: 8px; }
-    .section { margin-top: 30px; padding: 15px; background: #f9f9f9; border-radius: 10px; }
-    h2, h3 { text-align: center; }
-    .feature-box { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
-  </style>  <!-- Firebase -->  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script></head>
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 15px;
+    }
+    .page {
+      display: none;
+      padding: 20px;
+    }
+    .active {
+      display: block;
+    }
+    img.banner {
+      width: 100%;
+      border-radius: 10px;
+    }
+    img.avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid black;
+      display: block;
+      margin: 20px auto;
+    }
+    .buy-now-btn {
+      background: #007bff;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      font-size: 18px;
+      border-radius: 10px;
+      display: block;
+      margin: 20px auto;
+      cursor: pointer;
+    }
+    .buy-now-btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
 <body>
 <div class="container">
-  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Banner" class="banner">  <div class="section">
-    <h2>🔥 Crunchyroll Premium BD</h2>
-    <p id="descriptionText">Loading description...</p>
-  </div>  <div class="section">
-    <h3>📦 Our Packages</h3>
-    <p>👉 প্যাকেজ সেকশন এখানে থাকবে (আগে যেটা বানিয়েছি)</p>
-  </div>  <div class="section">
-    <h3>✅ Checkout Page</h3>
-    <p>👉 চেকআউট ফর্ম এবং অর্ডার সাবমিশন এখানে থাকবে</p>
-  </div>  <div class="section">
-    <h3>📝 Custom Features</h3>
-    <div id="features"></div>
+
+  <div id="mainPage" class="page active">
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner">
+    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" alt="Logo">
+    <h2 style="text-align: center;">Welcome to Crunchyroll Premium BD Shop</h2>
+    <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
+    <p style="text-align:center;">
+      <strong>Total Users:</strong> <span id="userCount">0</span> |
+      <strong>Total Orders:</strong> <span id="orderCount">0</span>
+    </p>
   </div>
-</div><script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-    projectId: "crunchyrollpremiumbd-shop"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
 
-  // Load Description
-  db.collection("siteContent").doc("main").get().then(doc => {
-    if (doc.exists && doc.data().description) {
-      document.getElementById("descriptionText").innerText = doc.data().description;
-    }
+  <div id="packagePage" class="page">
+    <h2>📦 প্যাকেজ সিলেকশন</h2>
+
+    <h3>📤 Shared Profile</h3>
+    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '1 Month', 100)">1 Month – 100 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '2 Months', 200)">2 Months – 200 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '3 Months', 300)">3 Months – 300 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '6 Months', 600)">6 Months – 600 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '8 Months', 840)">8 Months – 840 TK</button>
+
+    <h3>👤 Personal Profile</h3>
+    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '1 Month', 240)">1 Month – 240 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '2 Months', 480)">2 Months – 480 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '3 Months', 720)">3 Months – 720 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '6 Months', 1440)">6 Months – 1440 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '8 Months', 1800)">8 Months – 1800 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '12 Months', 2760)">12 Months – 2760 TK</button>
+
+    <h3>👑 Primary Account</h3>
+    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '1 Month', 650)">1 Month – 650 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '2 Months', 1300)">2 Months – 1300 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '3 Months', 1950)">3 Months – 1950 TK</button>
+    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '6 Months', 3600)">6 Months – 3600 TK</button>
+
+    <div style="margin-top: 20px;">
+      <button class="buy-now-btn" style="background-color: green;" onclick="goToCheckout()">🛒 Add to Cart</button>
+      <button class="buy-now-btn" style="background-color: orange;" onclick="showPage('mainPage')">⬅️ Back</button>
+    </div>
+    <p id="pkgError" style="color:red; text-align:center;"></p>
+  </div>
+
+</div>
+
+<script>
+  let selectedPackage = null;
+
+  // Initial user and order counts (can be fetched from a database later)
+  let userCount = 1234;
+  let orderCount = 5678;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateCounts();
   });
 
-  // Load Style Colors
-  db.collection("siteContent").doc("style").get().then(doc => {
-    if (doc.exists) {
-      const d = doc.data();
-      if (d.primary) document.documentElement.style.setProperty('--primary', d.primary);
-      if (d.secondary) document.documentElement.style.setProperty('--secondary', d.secondary);
-    }
-  });
-
-  // Load Features
-  db.collection("features").orderBy("createdAt", "desc").get().then(snapshot => {
-    const container = document.getElementById("features");
-    if (snapshot.empty) {
-      container.innerHTML = '<p>🚫 No features found.</p>';
-      return;
-    }
-    snapshot.forEach(doc => {
-      const d = doc.data();
-      const box = document.createElement('div');
-      box.className = 'feature-box';
-      box.innerHTML = `<h4>${d.title}</h4>${d.content}`;
-      container.appendChild(box);
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
     });
-  });
-</script></body>
+    document.getElementById(pageId).classList.add('active');
+    document.getElementById('pkgError').innerText = ''; // Clear error on page change
+    selectedPackage = null; // Clear selected package on page change
+  }
+
+  function selectPackage(type, duration, price) {
+    selectedPackage = { type, duration, price };
+    document.getElementById('pkgError').innerText = `Selected: ${type} - ${duration} (${price} TK)`;
+    console.log('Package selected:', selectedPackage);
+  }
+
+  function goToCheckout() {
+    if (selectedPackage) {
+      // In a real application, you'd send selectedPackage data to a backend
+      // for processing and then redirect to a checkout page.
+      // For this example, we'll just log and simulate an order.
+      console.log('Proceeding to checkout with:', selectedPackage);
+      alert(`Proceeding to checkout for ${selectedPackage.type} - ${selectedPackage.duration} for ${selectedPackage.price} TK.`);
+
+      // Simulate an order and update counts
+      orderCount++;
+      userCount++; // Assuming each order adds a new user for simplicity
+      updateCounts();
+
+      // Optionally, go back to the main page or a confirmation page
+      showPage('mainPage');
+    } else {
+      document.getElementById('pkgError').innerText = 'Please select a package before proceeding.';
+    }
+  }
+
+  function updateCounts() {
+    document.getElementById('userCount').innerText = userCount;
+    document.getElementById('orderCount').innerText = orderCount;
+  }
+</script>
+</body>
 </html>
