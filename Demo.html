@@ -1,160 +1,75 @@
-<!DOCTYPE html><html lang="bn">
+<!-- index.html --><!DOCTYPE html><html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crunchyroll Premium BD</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #fff; color: #000; }
-    .container { max-width: 1200px; margin: auto; padding: 20px; }
-    .banner, .avatar { width: 100%; border-radius: 8px; margin-bottom: 20px; }
-    .section { margin-bottom: 40px; }
-    .package-btn, .btn, button { padding: 10px 20px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; }
-    .buy-now-btn { background: #007bff; color: #fff; display: block; margin: 20px auto; }
-    .green { background: green; color: #fff; }
-    .orange { background: orange; color: #000; }
-    .input, input, select { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
-    .hidden { display: none; }
-    .page { display: none; }
-    .active { display: block; }
-    .top-right { position: fixed; top: 10px; right: 20px; font-size: 24px; cursor: pointer; }
-  </style>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-</head>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--primary, #ffffff);
+      color: var(--secondary, #000000);
+    }
+    .container { padding: 20px; max-width: 1200px; margin: auto; }
+    .banner { width: 100%; border-radius: 8px; }
+    .section { margin-top: 30px; padding: 15px; background: #f9f9f9; border-radius: 10px; }
+    h2, h3 { text-align: center; }
+    .feature-box { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+  </style>  <!-- Firebase -->  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script></head>
 <body>
 <div class="container">
-  <div class="top-right" onclick="showPage('reviewPage')">⋮</div>  <!-- Main Page -->  <div id="mainPage" class="page active">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" />
-    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" />
-    <h2 id="descriptionText">Loading Description...</h2>
-    <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
-    <p style="text-align:center;">
-      <strong>Total Users:</strong> <span id="userCount">0</span> |
-      <strong>Total Orders:</strong> <span id="orderCount">0</span>
-    </p>
-  </div>  <!-- Package Page -->  <div id="packagePage" class="page">
-    <h2>📦 প্যাকেজ সিলেকশন</h2>
-    <div id="packagesContainer">Loading Packages...</div>
-    <div>
-      <button class="orange" onclick="goToCheckout()">🛒 Add to Cart</button>
-      <button class="green" onclick="showPage('mainPage')">⬅️ Back</button>
-    </div>
-  </div>  <!-- Checkout Page -->  <div id="checkoutPage" class="page">
-    <h2>Checkout</h2>
-    <div id="selectedPackageInfo"></div>
-    <input id="coName" type="text" placeholder="Full Name" />
-    <input id="coEmail" type="email" placeholder="Email" />
-    <input id="coAddress" type="text" placeholder="Address" />
-    <input id="coMobile" type="text" placeholder="Mobile Number" />
-    <input id="coPaymentNumber" type="text" placeholder="Payment Number" />
-    <input id="coTransID" type="text" placeholder="Transaction ID" />
-    <select id="paymentMethod">
-      <option value="">Select Payment Method</option>
-      <option value="Bkash">Bkash</option>
-      <option value="Nagad">Nagad</option>
-      <option value="Rocket">Rocket</option>
-    </select>
-    <button class="green" onclick="confirmOrder()">Confirm Order</button>
-    <button class="orange" onclick="showPage('packagePage')">⬅️ Back</button>
-    <p id="checkoutError" style="color:red;"></p>
-  </div>  <!-- Order Tracking Page -->  <div id="reviewPage" class="page">
-    <h2>📝 কাস্টমার রিভিউ/অর্ডার ট্র্যাকিং</h2>
-    <div id="userOrders">Loading...</div>
-    <button class="orange" onclick="showPage('mainPage')">⬅️ Back</button>
+  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" alt="Banner" class="banner">  <div class="section">
+    <h2>🔥 Crunchyroll Premium BD</h2>
+    <p id="descriptionText">Loading description...</p>
+  </div>  <div class="section">
+    <h3>📦 Our Packages</h3>
+    <p>👉 প্যাকেজ সেকশন এখানে থাকবে (আগে যেটা বানিয়েছি)</p>
+  </div>  <div class="section">
+    <h3>✅ Checkout Page</h3>
+    <p>👉 চেকআউট ফর্ম এবং অর্ডার সাবমিশন এখানে থাকবে</p>
+  </div>  <div class="section">
+    <h3>📝 Custom Features</h3>
+    <div id="features"></div>
   </div>
 </div><script>
   const firebaseConfig = {
-    apiKey: 'AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4',
-    authDomain: 'crunchyrollpremiumbd-shop.firebaseapp.com',
-    projectId: 'crunchyrollpremiumbd-shop'
+    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+    projectId: "crunchyrollpremiumbd-shop"
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  const emailjsConfig = {
-    service: 'service_z1714kq',
-    adminTpl: 'template_hp66tqp',
-    custTpl: 'template_1z1lhlf',
-    publicKey: 'SsUmUorUm-BZG8LBY'
-  };
-  emailjs.init(emailjsConfig.publicKey);
-
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    if (id === 'reviewPage') loadOrders();
-  }
-
-  let selectedPackage = null;
-  function goToCheckout() {
-    if (!selectedPackage) return alert('প্যাকেজ সিলেক্ট করুন');
-    document.getElementById('selectedPackageInfo').innerText = `${selectedPackage.name} – ${selectedPackage.duration} (${selectedPackage.price} TK)`;
-    showPage('checkoutPage');
-  }
-
-  async function confirmOrder() {
-    const name = document.getElementById('coName').value.trim();
-    const email = document.getElementById('coEmail').value.trim();
-    const addr = document.getElementById('coAddress').value.trim();
-    const mobile = document.getElementById('coMobile').value.trim();
-    const payNo = document.getElementById('coPaymentNumber').value.trim();
-    const trans = document.getElementById('coTransID').value.trim();
-    const pm = document.getElementById('paymentMethod').value;
-    const err = document.getElementById('checkoutError');
-
-    if (!name || !email || !addr || !mobile || !payNo || !trans || !pm) {
-      err.textContent = '⚠️ সব তথ্য দিন'; return;
+  // Load Description
+  db.collection("siteContent").doc("main").get().then(doc => {
+    if (doc.exists && doc.data().description) {
+      document.getElementById("descriptionText").innerText = doc.data().description;
     }
-    const data = {
-      ...selectedPackage, name, email, addr, mobile, payNo, trans, pm,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    };
-    await db.collection('orders').add(data);
-    emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
-    emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
-    alert('✅ অর্ডার সফল হয়েছে');
-    showPage('mainPage');
-  }
+  });
 
-  function loadOrders() {
-    const userEmail = prompt('ইমেইল দিন:');
-    db.collection('orders').where('email', '==', userEmail).get().then(snap => {
-      if (snap.empty) return document.getElementById('userOrders').innerText = 'কোন অর্ডার নেই';
-      let html = '<ul>';
-      snap.forEach(doc => {
-        const d = doc.data();
-        html += `<li>${d.name} | ${d.profile} | ${d.duration} | ${d.trans}</li>`;
-      });
-      html += '</ul>';
-      document.getElementById('userOrders').innerHTML = html;
-    });
-  }
-
-  async function loadDescriptionAndPackages() {
-    const dSnap = await db.collection('website').doc('main').get();
-    document.getElementById('descriptionText').innerText = dSnap.exists ? dSnap.data().description : 'Welcome!';
-
-    const pSnap = await db.collection('packages').get();
-    const container = document.getElementById('packagesContainer');
-    container.innerHTML = '';
-    pSnap.forEach(doc => {
+  // Load Style Colors
+  db.collection("siteContent").doc("style").get().then(doc => {
+    if (doc.exists) {
       const d = doc.data();
-      const btn = document.createElement('button');
-      btn.className = 'package-btn';
-      btn.innerText = `${d.name} – ${d.duration} (${d.price} TK)`;
-      btn.onclick = () => { selectedPackage = d; alert('✅ প্যাকেজ সিলেক্ট হয়েছে'); };
-      container.appendChild(btn);
+      if (d.primary) document.documentElement.style.setProperty('--primary', d.primary);
+      if (d.secondary) document.documentElement.style.setProperty('--secondary', d.secondary);
+    }
+  });
+
+  // Load Features
+  db.collection("features").orderBy("createdAt", "desc").get().then(snapshot => {
+    const container = document.getElementById("features");
+    if (snapshot.empty) {
+      container.innerHTML = '<p>🚫 No features found.</p>';
+      return;
+    }
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      const box = document.createElement('div');
+      box.className = 'feature-box';
+      box.innerHTML = `<h4>${d.title}</h4>${d.content}`;
+      container.appendChild(box);
     });
-  }
-
-  db.collection('users').onSnapshot(snap => {
-    document.getElementById('userCount').textContent = snap.size;
   });
-  db.collection('orders').onSnapshot(snap => {
-    document.getElementById('orderCount').textContent = snap.size;
-  });
-
-  window.onload = loadDescriptionAndPackages;
 </script></body>
 </html>
