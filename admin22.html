@@ -1,133 +1,115 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel – Crunchyroll Premium BD</title>
+  <title>Admin Panel - Crunchyroll BD</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f2f2f2;
-      margin: 0;
+      background: #f0f0f0;
       padding: 20px;
       color: #333;
     }
-    .container {
+    .panel {
       max-width: 700px;
       margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: orange;
-      text-align: center;
     }
     textarea, input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin: 10px 0;
       font-size: 16px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       box-sizing: border-box;
     }
+    label {
+      font-weight: bold;
+    }
     button {
-      padding: 12px 20px;
-      font-size: 16px;
       background: green;
       color: white;
+      padding: 12px;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .stats {
-      margin: 20px 0;
-      font-size: 18px;
-      background: #ffe6cc;
-      padding: 10px;
       border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
     }
-    .logout {
-      background: red;
-      margin-top: 20px;
+    button:hover {
+      background: darkgreen;
+    }
+    .status {
+      margin-top: 10px;
+      color: green;
     }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Admin Panel</h1>
-    <p id="adminEmail">Checking Login...</p>
-    <div class="stats">
-      👥 Total Users: <span id="userCount">0</span><br>
-      📦 Total Orders: <span id="orderCount">0</span>
-    </div>
+  <div class="panel">
+    <h2>🛠️ Admin Panel</h2>
+    <label>🌐 Description</label>
+    <textarea id="description" rows="5"></textarea><label>📜 Features</label>
+<textarea id="features" rows="5"></textarea>
 
-    <h3>📝 ওয়েবসাইট Description Edit করুন:</h3>
-    <textarea id="descriptionBox" rows="10"></textarea>
-    <button onclick="saveDescription()">💾 Save Description</button>
+<label>🔘 Button Text (Buy Now)</label>
+<input id="buyNow" type="text" placeholder="Buy Now text" />
 
-    <button class="logout" onclick="logout()">🔓 Logout</button>
-  </div>
+<label>🎨 Background Color</label>
+<input id="background" type="color" />
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
-    authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-    projectId: "crunchyrollpremiumbd-shop"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+<button onclick="saveData()">💾 Save Updates</button>
+<div class="status" id="status"></div>
 
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      if (user.email !== 'crunchyrollpremiumbd@gmail.com') {
-        alert('❌ আপনি অ্যাডমিন নন!');
-        logout();
-      } else {
-        document.getElementById('adminEmail').textContent = `✅ Logged in as: ${user.email}`;
-        listenCounts();
-        loadDescription();
-      }
-    } else {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch(e => alert(e.message));
+  </div>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function saveData() {
+      const description = document.getElementById("description").value;
+      const features = document.getElementById("features").value;
+      const buyNow = document.getElementById("buyNow").value;
+      const background = document.getElementById("background").value;
+
+      Promise.all([
+        db.collection("siteinfo").doc("description").set({ text: description }),
+        db.collection("siteinfo").doc("features").set({ text: features }),
+        db.collection("siteinfo").doc("buttonText").set({ buyNow }),
+        db.collection("siteinfo").doc("colors").set({ background })
+      ])
+      .then(() => {
+        document.getElementById("status").textContent = "✅ Successfully updated!";
+      })
+      .catch((error) => {
+        document.getElementById("status").textContent = "❌ Error: " + error.message;
+      });
     }
-  });
 
-  function logout() {
-    auth.signOut().then(() => location.reload());
-  }
+    function loadData() {
+      db.collection("siteinfo").doc("description").get().then(doc => {
+        if (doc.exists) document.getElementById("description").value = doc.data().text || '';
+      });
+      db.collection("siteinfo").doc("features").get().then(doc => {
+        if (doc.exists) document.getElementById("features").value = doc.data().text || '';
+      });
+      db.collection("siteinfo").doc("buttonText").get().then(doc => {
+        if (doc.exists) document.getElementById("buyNow").value = doc.data().buyNow || '';
+      });
+      db.collection("siteinfo").doc("colors").get().then(doc => {
+        if (doc.exists) document.getElementById("background").value = doc.data().background || '#ffffff';
+      });
+    }
 
-  function listenCounts() {
-    db.collection('users').onSnapshot(snap => {
-      document.getElementById('userCount').textContent = snap.size;
-    });
-    db.collection('orders').onSnapshot(snap => {
-      document.getElementById('orderCount').textContent = snap.size;
-    });
-  }
-
-  function loadDescription() {
-    db.collection('siteinfo').doc('description').get().then(doc => {
-      if (doc.exists) {
-        document.getElementById('descriptionBox').value = doc.data().text;
-      }
-    });
-  }
-
-  function saveDescription() {
-    const newText = document.getElementById('descriptionBox').value.trim();
-    if (!newText) return alert('⚠️ কিছু লিখুন!');
-    db.collection('siteinfo').doc('description').set({ text: newText })
-    .then(() => alert('✅ Description Updated!'))
-    .catch(err => alert('❌ Error: ' + err.message));
-  }
-</script>
-</body>
+    window.onload = loadData;
+  </script></body>
 </html>
