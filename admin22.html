@@ -1,76 +1,47 @@
-<!-- Dynamic Admin Panel Template -->
+<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Panel - Crunchyroll Premium BD</title>
+  <title>Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-      padding: 20px;
-    }
-    h2 {
-      color: #333;
-    }
-    .section {
-      background: #fff;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
+    body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
+    h2 { color: #333; }
+    .box { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 0 10px #ccc; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
     input, textarea, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-      box-sizing: border-box;
+      width: 100%; padding: 10px; margin-top: 5px;
+      border: 1px solid #ccc; border-radius: 6px;
     }
-    button {
-      background: #007bff;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
+    button { background: #007bff; color: #fff; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h2>📋 Admin Panel - Dynamic Features Control</h2>
+  <h2>🔧 Admin Panel - Crunchyroll Premium BD</h2>
 
-  <div class="section">
-    <h3>📝 Website Description</h3>
+  <div class="box">
+    <h3>📝 Update Website Description</h3>
     <textarea id="description" rows="4"></textarea>
-    <button onclick="saveDescription()">Save Description</button>
+    <button onclick="saveDescription()">Save</button>
   </div>
 
-  <div class="section">
-    <h3>🎨 Site Styling</h3>
-    <label>Primary Color</label>
-    <input type="color" id="primaryColor">
-    <label>Secondary Color</label>
-    <input type="color" id="secondaryColor">
-    <button onclick="saveStyles()">Save Colors</button>
+  <div class="box">
+    <h3>🎨 Change Website Color</h3>
+    <label>Primary Color:</label>
+    <input type="color" id="primaryColor" />
+    <label>Secondary Color:</label>
+    <input type="color" id="secondaryColor" />
+    <button onclick="saveColors()">Save Colors</button>
   </div>
 
-  <div class="section">
-    <h3>🧩 Add Custom Feature / Section</h3>
-    <label>Section Title</label>
-    <input id="featureTitle" type="text">
-    <label>Section Content (HTML allowed)</label>
+  <div class="box">
+    <h3>➕ Add Feature (Button/Section)</h3>
+    <label>Title:</label>
+    <input id="featureTitle" type="text" />
+    <label>Content (HTML Allowed):</label>
     <textarea id="featureContent" rows="5"></textarea>
-    <label>Show in Page</label>
+    <label>Show on Page:</label>
     <select id="featurePage">
       <option value="mainPage">Home Page</option>
       <option value="packagePage">Package Page</option>
@@ -79,40 +50,40 @@
     <button onclick="addFeature()">Add Feature</button>
   </div>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
   <script>
     const firebaseConfig = {
-      apiKey: 'AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4',
-      authDomain: 'crunchyrollpremiumbd-shop.firebaseapp.com',
-      projectId: 'crunchyrollpremiumbd-shop',
+      apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
+      authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
+      projectId: "crunchyrollpremiumbd-shop"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     function saveDescription() {
-      const desc = document.getElementById('description').value;
-      db.collection('siteContent').doc('main').set({ description: desc }, { merge: true });
-      alert('✅ Description Updated');
+      const desc = document.getElementById("description").value;
+      db.collection("siteContent").doc("main").set({ description: desc }, { merge: true });
+      alert("✅ Description updated");
     }
 
-    function saveStyles() {
-      const primary = document.getElementById('primaryColor').value;
-      const secondary = document.getElementById('secondaryColor').value;
-      db.collection('siteContent').doc('style').set({ primary, secondary }, { merge: true });
-      alert('🎨 Colors Updated');
+    function saveColors() {
+      const primary = document.getElementById("primaryColor").value;
+      const secondary = document.getElementById("secondaryColor").value;
+      db.collection("siteContent").doc("style").set({ primary, secondary }, { merge: true });
+      alert("🎨 Colors updated");
     }
 
     function addFeature() {
-      const title = document.getElementById('featureTitle').value;
-      const content = document.getElementById('featureContent').value;
-      const page = document.getElementById('featurePage').value;
-      const feature = { title, content, page, createdAt: new Date() };
-      db.collection('features').add(feature);
-      alert('🧩 Feature Added');
-      document.getElementById('featureTitle').value = '';
-      document.getElementById('featureContent').value = '';
+      const title = document.getElementById("featureTitle").value;
+      const content = document.getElementById("featureContent").value;
+      const page = document.getElementById("featurePage").value;
+      db.collection("features").add({
+        title, content, page,
+        createdAt: new Date()
+      });
+      alert("🧩 Feature added");
     }
   </script>
 </body>
