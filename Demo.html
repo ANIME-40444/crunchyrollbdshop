@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Crunchyroll Premium BD Shop</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     body {
       margin: 0;
@@ -14,139 +14,392 @@
     .container {
       max-width: 1200px;
       margin: auto;
-      padding: 15px;
+      padding: 0 15px;
     }
     .page {
       display: none;
       padding: 20px;
+      background: #fff;
     }
     .active {
       display: block;
     }
     img.banner {
       width: 100%;
-      border-radius: 10px;
+      border-radius: 8px;
     }
     img.avatar {
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      border: 3px solid black;
+      border: 3px solid #000;
       display: block;
       margin: 20px auto;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      cursor: pointer;
     }
     .buy-now-btn {
       background: #007bff;
       color: white;
-      padding: 15px 25px;
-      border: none;
+      padding: 12px 20px;
       font-size: 18px;
-      border-radius: 10px;
+      border: none;
+      border-radius: 8px;
       display: block;
+      width: 200px;
       margin: 20px auto;
-      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
     .buy-now-btn:hover {
       background: #0056b3;
     }
+    .package-btn {
+      background: #0f7dc8;
+      color: white;
+      margin-top: 6px;
+      border-radius: 8px;
+    }
+    .package-btn:hover {
+      background: #095e9f;
+    }
+    .action-btns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+      gap: 10px;
+    }
+    .orange {
+      background: orange;
+      color: black;
+      flex: 1;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-weight: bold;
+    }
+    .green {
+      background: green;
+      color: white;
+      flex: 1;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-weight: bold;
+    }
+    .error {
+      color: #ff4d4d;
+    }
+    .copy-box {
+      background: #f2f2f2;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      color: black;
+    }
+    /* Top-right menu for order page icon */
+    .top-right-menu {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 24px;
+      user-select: none;
+      z-index: 1000;
+    }
+
+    /* WhatsApp Floating Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      color: white;
+      font-size: 28px;
+      text-align: center;
+      padding: 14px 18px;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 999;
+      transition: transform 0.3s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
   </style>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
 <div class="container">
 
-  <div id="mainPage" class="page active">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner">
-    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" alt="Logo">
-    <h2 style="text-align: center;">Welcome to Crunchyroll Premium BD Shop</h2>
-    <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
-    <p style="text-align:center;">
-      <strong>Total Users:</strong> <span id="userCount">0</span> |
-      <strong>Total Orders:</strong> <span id="orderCount">0</span>
-    </p>
+<div class="top-right-menu" onclick="showPage('odarPage')" title="আপনার অর্ডার দেখুন">⋮</div>
+
+<div id="mainPage" class="page active">
+  <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner" />
+  <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" alt="Avatar" />
+  <h2 style="text-align:center;">Welcome to Crunchyroll Premium BD Shop</h2>
+  <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
+  <p style="margin-top:20px; text-align:center;">
+    <strong>Total Users:</strong> <span id="userCount">0</span> |
+    <strong>Total Orders:</strong> <span id="orderCount">0</span>
+  </p>
+</div>
+
+<div id="packagePage" class="page">
+  <h2>📦 প্যাকেজ সিলেকশন</h2>
+  <h3>📤 Shared Profile</h3>
+  <button class="package-btn" onclick="selectPackage('Shared Profile', '1 Month', 100)">1 Month – 100 TK</button>
+  <button class="package-btn" onclick="selectPackage('Shared Profile', '2 Months', 200)">2 Months – 200 TK</button>
+  <button class="package-btn" onclick="selectPackage('Shared Profile', '3 Months', 300)">3 Months – 300 TK</button>
+  <button class="package-btn" onclick="selectPackage('Shared Profile', '6 Months', 600)">6 Months – 600 TK</button>
+  <button class="package-btn" onclick="selectPackage('Shared Profile', '8 Months', 840)">8 Months – 840 TK</button>
+
+  <h3>👤 Personal Profile</h3>
+  <button class="package-btn" onclick="selectPackage('Personal Profile', '1 Month', 240)">1 Month – 240 TK</button>
+  <button class="package-btn" onclick="selectPackage('Personal Profile', '2 Months', 480)">2 Months – 480 TK</button>
+  <button class="package-btn" onclick="selectPackage('Personal Profile', '3 Months', 720)">3 Months – 720 TK</button>
+  <button class="package-btn" onclick="selectPackage('Personal Profile', '6 Months', 1440)">6 Months – 1440 TK</button>
+  <button class="package-btn" onclick="selectPackage('Personal Profile', '8 Months', 1800)">8 Months – 1800 TK</button>
+  <button class="package-btn" onclick="selectPackage('Personal Profile', '12 Months', 2760)">12 Months – 2760 TK</button>
+
+  <h3>👑 Primary Account</h3>
+  <button class="package-btn" onclick="selectPackage('Primary Account', '1 Month', 650)">1 Month – 650 TK</button>
+  <button class="package-btn" onclick="selectPackage('Primary Account', '2 Months', 1300)">2 Months – 1300 TK</button>
+  <button class="package-btn" onclick="selectPackage('Primary Account', '3 Months', 1950)">3 Months – 1950 TK</button>
+  <button class="package-btn" onclick="selectPackage('Primary Account', '6 Months', 3600)">6 Months – 3600 TK</button>
+
+  <div class="action-btns">
+    <button class="orange" onclick="goToCheckout()">🛒 Add To Cart</button>
+    <button class="green" onclick="showPage('mainPage')">⬅️ Back To Home</button>
   </div>
+  <p id="pkgError" class="error"></p>
+</div>
 
-  <div id="packagePage" class="page">
-    <h2>📦 প্যাকেজ সিলেকশন</h2>
-
-    <h3>📤 Shared Profile</h3>
-    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '1 Month', 100)">1 Month – 100 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '2 Months', 200)">2 Months – 200 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '3 Months', 300)">3 Months – 300 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '6 Months', 600)">6 Months – 600 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Shared Profile', '8 Months', 840)">8 Months – 840 TK</button>
-
-    <h3>👤 Personal Profile</h3>
-    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '1 Month', 240)">1 Month – 240 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '2 Months', 480)">2 Months – 480 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '3 Months', 720)">3 Months – 720 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '6 Months', 1440)">6 Months – 1440 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '8 Months', 1800)">8 Months – 1800 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Personal Profile', '12 Months', 2760)">12 Months – 2760 TK</button>
-
-    <h3>👑 Primary Account</h3>
-    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '1 Month', 650)">1 Month – 650 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '2 Months', 1300)">2 Months – 1300 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '3 Months', 1950)">3 Months – 1950 TK</button>
-    <button class="buy-now-btn" onclick="selectPackage('Primary Account', '6 Months', 3600)">6 Months – 3600 TK</button>
-
-    <div style="margin-top: 20px;">
-      <button class="buy-now-btn" style="background-color: green;" onclick="goToCheckout()">🛒 Add to Cart</button>
-      <button class="buy-now-btn" style="background-color: orange;" onclick="showPage('mainPage')">⬅️ Back</button>
-    </div>
-    <p id="pkgError" style="color:red; text-align:center;"></p>
+<div id="checkoutPage" class="page">
+  <h2>✅ Checkout</h2>
+  <div id="selectedInfo"></div>
+  <div style="margin-top: 20px">
+    <input id="coName" type="text" placeholder="Full Name" />
+    <input id="coEmail" type="email" placeholder="Email" />
+    <input id="coAddress" type="text" placeholder="Street Address" />
+    <input id="coMobile" type="text" placeholder="Mobile Number" />
+    <input id="coPaymentNumber" type="text" placeholder="Payment Number" />
+    <input id="coTransID" type="text" placeholder="Transaction ID" />
+    <select id="paymentMethod" onchange="updatePayNumber()">
+      <option value="">-- পেমেন্ট মেথড সিলেক্ট করুন --</option>
+      <option value="Bkash">Bkash</option>
+      <option value="Nagad">Nagad</option>
+      <option value="Rocket">Rocket</option>
+    </select>
+    <div id="payNumber" class="copy-box"></div>
+    <p>অবশ্যই সেন্ড মানি করতে হবে এবং নির্দিষ্ট পরিমাণ পাঠাবেন। কম পাঠালে রিফান্ড হবে না।</p>
+    <button class="green" onclick="confirmOrder()">✅ Order Confirm</button>
+    <button class="orange" onclick="showPage('packagePage')">⬅️ Back To Packages</button>
   </div>
+  <p id="coError" class="error"></p>
+</div>
+
+<div id="odarPage" class="page">
+  <h2>📝 আপনার অর্ডার স্ট্যাটাস</h2>
+  <div id="userOrders"></div>
+  <button class="orange" onclick="showPage('mainPage')">⬅️ Back To Home</button>
+</div>
 
 </div>
 
+<a href="https://wa.me/8801700000000" class="whatsapp-float" target="_blank" title="WhatsApp এ মেসেজ করুন">
+  💬
+</a>
+
 <script>
-  let selectedPackage = null;
+  // Firebase config - তোমার Firebase config এখানে বসাও
+  const firebaseConfig = {
+    apiKey: 'AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4',
+    authDomain: 'crunchyrollpremiumbd-shop.firebaseapp.com',
+    projectId: 'crunchyrollpremiumbd-shop',
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-  // Initial user and order counts (can be fetched from a database later)
-  let userCount = 1234;
-  let orderCount = 5678;
+  // EmailJS config
+  const emailjsConfig = {
+    service: 'service_z1714kq',
+    adminTpl: 'template_hp66tqp',
+    custTpl: 'template_1z1lhlf',
+    publicKey: 'SsUmUorUm-BZG8LBY',
+  };
+  emailjs.init(emailjsConfig.publicKey);
 
-  document.addEventListener('DOMContentLoaded', () => {
-    updateCounts();
-  });
-
-  function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(page => {
-      page.classList.remove('active');
-    });
-    document.getElementById(pageId).classList.add('active');
-    document.getElementById('pkgError').innerText = ''; // Clear error on page change
-    selectedPackage = null; // Clear selected package on page change
-  }
-
-  function selectPackage(type, duration, price) {
-    selectedPackage = { type, duration, price };
-    document.getElementById('pkgError').innerText = `Selected: ${type} - ${duration} (${price} TK)`;
-    console.log('Package selected:', selectedPackage);
-  }
-
-  function goToCheckout() {
-    if (selectedPackage) {
-      // In a real application, you'd send selectedPackage data to a backend
-      // for processing and then redirect to a checkout page.
-      // For this example, we'll just log and simulate an order.
-      console.log('Proceeding to checkout with:', selectedPackage);
-      alert(`Proceeding to checkout for ${selectedPackage.type} - ${selectedPackage.duration} for ${selectedPackage.price} TK.`);
-
-      // Simulate an order and update counts
-      orderCount++;
-      userCount++; // Assuming each order adds a new user for simplicity
-      updateCounts();
-
-      // Optionally, go back to the main page or a confirmation page
-      showPage('mainPage');
-    } else {
-      document.getElementById('pkgError').innerText = 'Please select a package before proceeding.';
+  // Page show function with localStorage persistence
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    localStorage.setItem('lastPage', id);
+    if(id === 'odarPage') {
+      loadUserOrders();
     }
   }
 
-  function updateCounts() {
-    document.getElementById('userCount').innerText = userCount;
-    document.getElementById('orderCount').innerText = orderCount;
+  // Load last page on reload
+  window.onload = () => {
+    const lastPage = localStorage.getItem('lastPage') || 'mainPage';
+    showPage(lastPage);
+    startListeners();
+  };
+
+  // Update user and order counts realtime
+  function startListeners() {
+    db.collection('users').onSnapshot(snap => {
+      document.getElementById('userCount').textContent = snap.size;
+    });
+    db.collection('orders').onSnapshot(snap => {
+      document.getElementById('orderCount').textContent = snap.size;
+    });
+  }
+
+  // Package selection
+  let selectedPkg = null;
+  function selectPackage(profile, duration, price) {
+    selectedPkg = { profile, duration, price };
+    document.getElementById('pkgError').textContent = '';
+    alert(`✅ '${profile}' (${duration}) – ${price} TK সিলেক্ট হয়েছে`);
+  }
+
+  // Show payment number based on payment method
+  function updatePayNumber() {
+    const m = document.getElementById('paymentMethod').value;
+    let num = '';
+    if (m === 'Bkash') num = '01740433733';
+    else if (m === 'Nagad' || m === 'Rocket') num = '01603599843';
+    else num = '';
+    document.getElementById('payNumber').innerHTML = num
+      ? `${m} নম্বর: <strong>${num}</strong> <button onclick="copyToClipboard('${num}')">📋 কপি</button>`
+      : '';
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('কপি করা হয়েছে: ' + text);
+    });
+  }
+
+  // Go to checkout page
+  function goToCheckout() {
+    if (!selectedPkg) {
+      document.getElementById('pkgError').textContent = '⚠️ প্যাকেজ সিলেক্ট করুন';
+      return;
+    }
+    document.getElementById('selectedInfo').innerHTML = `
+      <p>📦 আপনি নিয়েছেন: <strong>${selectedPkg.profile}</strong></p>
+      <p>🕒 মেয়াদ: <strong>${selectedPkg.duration}</strong></p>
+      <p>💰 মূল্য: <strong>${selectedPkg.price} TK</strong></p>
+    `;
+    showPage('checkoutPage');
+  }
+
+  // Confirm order and save to Firestore + send emails via EmailJS
+  async function confirmOrder() {
+    const name = document.getElementById('coName').value.trim();
+    const email = document.getElementById('coEmail').value.trim();
+    const addr = document.getElementById('coAddress').value.trim();
+    const mobile = document.getElementById('coMobile').value.trim();
+    const payNo = document.getElementById('coPaymentNumber').value.trim();
+    const trans = document.getElementById('coTransID').value.trim();
+    const pm = document.getElementById('paymentMethod').value;
+    const coErr = document.getElementById('coError');
+    coErr.textContent = '';
+
+    if (!name || !email || !addr || !mobile || !payNo || !trans || !pm) {
+      coErr.textContent = '⚠️ সব তথ্য ভরুন';
+      return;
+    }
+
+    try {
+      const data = {
+        ...selectedPkg,
+        name,
+        email,
+        addr,
+        mobile,
+        payNo,
+        trans,
+        pm,
+        status: 'Pending', // অর্ডার পেন্ডিং স্ট্যাটাস দিয়ে শুরু হবে
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      await db.collection('orders').add(data);
+
+      // Send emails (তুমি চাইলে কাস্টমাইজ করো)
+      emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
+      emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
+
+      alert('✅ অর্ডার সফল হয়েছে। এখন অর্ডার পেন্ডিং অবস্থায় আছে।');
+      clearCheckoutForm();
+      showPage('odarPage'); // অর্ডার পেজে নিয়ে যাবে
+    } catch (err) {
+      alert('❌ অর্ডার ব্যর্থ: ' + err.message);
+    }
+  }
+
+  // Clear checkout form inputs
+  function clearCheckoutForm() {
+    document.getElementById('coName').value = '';
+    document.getElementById('coEmail').value = '';
+    document.getElementById('coAddress').value = '';
+    document.getElementById('coMobile').value = '';
+    document.getElementById('coPaymentNumber').value = '';
+    document.getElementById('coTransID').value = '';
+    document.getElementById('paymentMethod').value = '';
+    document.getElementById('payNumber').innerHTML = '';
+    selectedPkg = null;
+  }
+
+  // Load current user's orders from Firestore (email-based)
+  async function loadUserOrders() {
+    const userEmail = document.getElementById('coEmail').value.trim() || prompt("আপনার ইমেইল দিন আপনার অর্ডার দেখতে:");
+    if (!userEmail) {
+      document.getElementById('userOrders').innerHTML = '<p>দুঃখিত, অর্ডার দেখার জন্য ইমেইল দরকার।</p>';
+      return;
+    }
+    const userOrdersDiv = document.getElementById('userOrders');
+    userOrdersDiv.innerHTML = '<p>অর্ডার লোড হচ্ছে...</p>';
+
+    try {
+      const snapshot = await db.collection('orders').where('email', '==', userEmail).orderBy('timestamp', 'desc').get();
+      if (snapshot.empty) {
+        userOrdersDiv.innerHTML = '<p>আপনার কোন অর্ডার পাওয়া যায়নি।</p>';
+        return;
+      }
+      let html = '<table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse: collapse;">';
+      html += '<tr><th>প্যাকেজ</th><th>মেয়াদ</th><th>মূল্য</th><th>স্ট্যাটাস</th><th>ট্রানজেকশন আইডি</th></tr>';
+      snapshot.forEach(doc => {
+        const order = doc.data();
+        html += `<tr>
+          <td>${order.profile}</td>
+          <td>${order.duration}</td>
+          <td>${order.price} TK</td>
+          <td>${order.status}</td>
+          <td>${order.trans}</td>
+        </tr>`;
+      });
+      html += '</table>';
+      userOrdersDiv.innerHTML = html;
+    } catch (error) {
+      userOrdersDiv.innerHTML = `<p>অর্ডার লোড করতে সমস্যা: ${error.message}</p>`;
+    }
   }
 </script>
 </body>
