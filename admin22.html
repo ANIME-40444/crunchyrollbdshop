@@ -1,115 +1,106 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - Crunchyroll BD</title>
+  <title>Crunchyroll Premium BD - Admin Controlled</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f0f0;
-      padding: 20px;
-      color: #333;
+    :root {
+      --primary-color: #007bff;
+      --secondary-color: #f2f2f2;
     }
-    .panel {
-      max-width: 700px;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--secondary-color);
+      color: #000;
+    }
+    .container {
+      max-width: 1200px;
       margin: auto;
+      padding: 15px;
+    }
+    .banner {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .desc {
+      text-align: center;
+      font-size: 18px;
+      margin: 20px 0;
+    }
+    .buy-now-btn {
+      background: var(--primary-color);
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+    }
+    .custom-section {
       background: white;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 30px;
     }
-    textarea, input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    label {
-      font-weight: bold;
-    }
-    button {
-      background: green;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: darkgreen;
-    }
-    .status {
-      margin-top: 10px;
-      color: green;
+    .custom-section h3 {
+      margin-top: 0;
     }
   </style>
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="panel">
-    <h2>🛠️ Admin Panel</h2>
-    <label>🌐 Description</label>
-    <textarea id="description" rows="5"></textarea><label>📜 Features</label>
-<textarea id="features" rows="5"></textarea>
+  <div class="container">
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner">
+    <div class="desc" id="websiteDescription">লোড হচ্ছে...</div>
+    <button class="buy-now-btn" onclick="alert('Package Page Loading...')">BUY NOW</button>
 
-<label>🔘 Button Text (Buy Now)</label>
-<input id="buyNow" type="text" placeholder="Buy Now text" />
+    <!-- Optional Custom Feature Sections -->
+    <div id="customFeatures"></div>
+  </div>
 
-<label>🎨 Background Color</label>
-<input id="background" type="color" />
-
-<button onclick="saveData()">💾 Save Updates</button>
-<div class="status" id="status"></div>
-
-  </div>  <script>
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4",
       authDomain: "crunchyrollpremiumbd-shop.firebaseapp.com",
-      projectId: "crunchyrollpremiumbd-shop"
+      projectId: "crunchyrollpremiumbd-shop",
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function saveData() {
-      const description = document.getElementById("description").value;
-      const features = document.getElementById("features").value;
-      const buyNow = document.getElementById("buyNow").value;
-      const background = document.getElementById("background").value;
+    async function loadSettings() {
+      try {
+        const doc = await db.collection('settings').doc('main').get();
+        if (doc.exists) {
+          const data = doc.data();
+          document.getElementById('websiteDescription').innerText = data.description || 'ডেসক্রিপশন পাওয়া যায়নি';
+          document.documentElement.style.setProperty('--primary-color', data.primaryColor || '#007bff');
+          document.documentElement.style.setProperty('--secondary-color', data.secondaryColor || '#f2f2f2');
 
-      Promise.all([
-        db.collection("siteinfo").doc("description").set({ text: description }),
-        db.collection("siteinfo").doc("features").set({ text: features }),
-        db.collection("siteinfo").doc("buttonText").set({ buyNow }),
-        db.collection("siteinfo").doc("colors").set({ background })
-      ])
-      .then(() => {
-        document.getElementById("status").textContent = "✅ Successfully updated!";
-      })
-      .catch((error) => {
-        document.getElementById("status").textContent = "❌ Error: " + error.message;
-      });
+          // Load Custom Feature Sections
+          const features = data.features || [];
+          const featureDiv = document.getElementById('customFeatures');
+          features.forEach(feature => {
+            const section = document.createElement('div');
+            section.className = 'custom-section';
+            section.innerHTML = `<h3>${feature.title}</h3><p>${feature.content}</p>`;
+            featureDiv.appendChild(section);
+          });
+        } else {
+          document.getElementById('websiteDescription').innerText = 'কোন সেটিংস পাওয়া যায়নি';
+        }
+      } catch (err) {
+        console.error('লোড সমস্যা:', err);
+        document.getElementById('websiteDescription').innerText = 'সার্ভার সমস্যা হয়েছে';
+      }
     }
 
-    function loadData() {
-      db.collection("siteinfo").doc("description").get().then(doc => {
-        if (doc.exists) document.getElementById("description").value = doc.data().text || '';
-      });
-      db.collection("siteinfo").doc("features").get().then(doc => {
-        if (doc.exists) document.getElementById("features").value = doc.data().text || '';
-      });
-      db.collection("siteinfo").doc("buttonText").get().then(doc => {
-        if (doc.exists) document.getElementById("buyNow").value = doc.data().buyNow || '';
-      });
-      db.collection("siteinfo").doc("colors").get().then(doc => {
-        if (doc.exists) document.getElementById("background").value = doc.data().background || '#ffffff';
-      });
-    }
-
-    window.onload = loadData;
-  </script></body>
+    window.onload = loadSettings;
+  </script>
+</body>
 </html>
