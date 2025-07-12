@@ -1,145 +1,160 @@
 <!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <title>Crunchyroll Premium BD Shop</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crunchyroll Premium BD</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #ffffff;
-      color: #000000;
-    }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 15px;
-    }
-    .page {
-      display: none;
-      padding: 20px;
-    }
-    .active {
-      display: block;
-    }
-    img.banner {
-      width: 100%;
-      border-radius: 8px;
-    }
-    img.avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #000;
-      display: block;
-      margin: 20px auto;
-    }
-    .buy-now-btn {
-      background: #007bff;
-      color: white;
-      padding: 12px 20px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      display: block;
-      width: 200px;
-      margin: 20px auto;
-      transition: background-color 0.3s ease;
-    }
-    .buy-now-btn:hover {
-      background: #0056b3;
-    }
-    .description-box {
-      background: #f5f5f5;
-      border-left: 5px solid #007bff;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 8px;
-      line-height: 1.6;
-    }
-    .package-btn, .checkout-btn {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 6px;
-      width: 100%;
-      font-size: 16px;
-    }
-    .back-btn {
-      background: #6c757d;
-    }
-    .input-field {
-      margin: 10px 0;
-      display: block;
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    .summary-box {
-      background: #eaf6ff;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #fff; color: #000; }
+    .container { max-width: 1200px; margin: auto; padding: 20px; }
+    .banner, .avatar { width: 100%; border-radius: 8px; margin-bottom: 20px; }
+    .section { margin-bottom: 40px; }
+    .package-btn, .btn, button { padding: 10px 20px; font-size: 16px; border-radius: 8px; border: none; cursor: pointer; }
+    .buy-now-btn { background: #007bff; color: #fff; display: block; margin: 20px auto; }
+    .green { background: green; color: #fff; }
+    .orange { background: orange; color: #000; }
+    .input, input, select { width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
+    .hidden { display: none; }
+    .page { display: none; }
+    .active { display: block; }
+    .top-right { position: fixed; top: 10px; right: 20px; font-size: 24px; cursor: pointer; }
   </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
 <div class="container">
-  <!-- Main Page -->
-  <div id="mainPage" class="page active">
-    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner" />
-    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" alt="Avatar" />
-    <h2 style="text-align:center;">Welcome to Crunchyroll Premium BD Shop</h2><div class="description-box">
-  <p><strong>Crunchyroll</strong> হলো একটি জনপ্রিয় স্ট্রিমিং প্ল্যাটফর্ম যা মূলত জাপানি অ্যানিমে, ম্যানগা এবং কিছু এশিয়ান ড্রামা দেখার জন্য ব্যবহৃত হয়। এখানে আপনি হাজার হাজার অ্যানিমে সিরিজ, সিনেমা এবং কমিকস অনলাইনে দেখতে পারবেন। অনেক কনটেন্টে ইংরেজি সাবটাইটেলও থাকে, এবং কিছু কিছু ডাব করা ভার্সনও পাওয়া যায়। এটি অ্যানিমে প্রেমীদের জন্য একটি বিশ্বস্ত ও বৈধ মাধ্যম।</p>
-  <p><strong>Premium এ কি কি থাকছে?</strong><br>
-  ✔️ সিমুলকাস্টস: জাপানে প্রচারের এক ঘণ্টার মধ্যে নতুন অ্যানিমে পর্ব দেখার সুবিধা।<br>
-  ✔️ বিজ্ঞাপনমুক্ত দেখা: অ্যানিমে দেখার সময় কোনো বিজ্ঞাপনের ব্যাঘাত থাকবে না।<br>
-  ✔️ সম্পূর্ণ লাইব্রেরি অ্যাক্সেস: Crunchyroll লাইব্রেরির সকল অ্যানিমে ও মাঙ্গা শিরোনামে প্রবেশাধিকার।<br>
-  ✔️ অফলাইন দেখা: ইন্টারনেট ছাড়াই দেখার জন্য পর্ব ডাউনলোড করার সুযোগ।<br>
-  ✔️ মাল্টি-ডিভাইস স্ট্রিমিং: একাধিক ডিভাইসে একসাথে স্ট্রিম করার সুবিধা (প্ল্যানের উপর নির্ভর করে)।<br>
-  ✔️ Crunchyroll গেম ভল্ট: ফ্রি গেমসের একটি ক্যাটালগে প্রবেশাধিকার।<br>
-  ✔️ নির্বাচিত কনটেন্ট: প্রিমিয়াম সদস্যরা ব্যক্তিগত রেকমেন্ডেশন ও নির্বাচিত Crunchylists পান।</p>
-  <p><strong>Order কত দিনে মধ্যে পাবেন?</strong><br>
-  Crunchyroll Premium অর্ডার দেওয়ার পর আপনি সাধারণত ১ থেকে ২ ঘন্টা মধ্যেই অ্যাক্সেস পেয়ে যাবেন। অর্ডার দেওয়ার আগে অনুগ্রহ করে আপনার ইমেইল ঠিকানাটি ভালোভাবে যাচাই করে নিন, কারণ অ্যাকাউন্ট সংক্রান্ত তথ্য ও নির্দেশনা সরাসরি সেই ইমেইলেই পাঠানো হবে।</p>
-</div>
-
-<button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
-
+  <div class="top-right" onclick="showPage('reviewPage')">⋮</div>  <!-- Main Page -->  <div id="mainPage" class="page active">
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" />
+    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" />
+    <h2 id="descriptionText">Loading Description...</h2>
+    <button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
+    <p style="text-align:center;">
+      <strong>Total Users:</strong> <span id="userCount">0</span> |
+      <strong>Total Orders:</strong> <span id="orderCount">0</span>
+    </p>
   </div>  <!-- Package Page -->  <div id="packagePage" class="page">
-    <h2>📦 প্যাকেজ নির্বাচন করুন</h2>
-    <button class="package-btn" onclick="selectPackage('Shared', 1, 100)">1 মাস - 100 টাকা</button>
-    <button class="package-btn" onclick="selectPackage('Personal', 1, 240)">1 মাস (পার্সোনাল) - 240 টাকা</button>
-    <button class="package-btn" onclick="selectPackage('Primary', 1, 650)">1 মাস (প্রাইমারি) - 650 টাকা</button>
-    <button class="package-btn back-btn" onclick="showPage('mainPage')">⬅️ হোমে ফিরে যান</button>
+    <h2>📦 প্যাকেজ সিলেকশন</h2>
+    <div id="packagesContainer">Loading Packages...</div>
+    <div>
+      <button class="orange" onclick="goToCheckout()">🛒 Add to Cart</button>
+      <button class="green" onclick="showPage('mainPage')">⬅️ Back</button>
+    </div>
   </div>  <!-- Checkout Page -->  <div id="checkoutPage" class="page">
-    <h2>✅ অর্ডার কনফার্ম</h2>
-    <div id="summary" class="summary-box"></div>
-    <input type="text" class="input-field" placeholder="আপনার নাম" />
-    <input type="email" class="input-field" placeholder="আপনার ইমেইল" />
-    <input type="text" class="input-field" placeholder="মোবাইল নম্বর" />
-    <input type="text" class="input-field" placeholder="পেমেন্ট নাম্বার" />
-    <input type="text" class="input-field" placeholder="ট্রানজেকশন আইডি" />
-    <button class="checkout-btn">✅ অর্ডার সাবমিট</button>
-    <button class="package-btn back-btn" onclick="showPage('packagePage')">⬅️ প্যাকেজে ফিরে যান</button>
+    <h2>Checkout</h2>
+    <div id="selectedPackageInfo"></div>
+    <input id="coName" type="text" placeholder="Full Name" />
+    <input id="coEmail" type="email" placeholder="Email" />
+    <input id="coAddress" type="text" placeholder="Address" />
+    <input id="coMobile" type="text" placeholder="Mobile Number" />
+    <input id="coPaymentNumber" type="text" placeholder="Payment Number" />
+    <input id="coTransID" type="text" placeholder="Transaction ID" />
+    <select id="paymentMethod">
+      <option value="">Select Payment Method</option>
+      <option value="Bkash">Bkash</option>
+      <option value="Nagad">Nagad</option>
+      <option value="Rocket">Rocket</option>
+    </select>
+    <button class="green" onclick="confirmOrder()">Confirm Order</button>
+    <button class="orange" onclick="showPage('packagePage')">⬅️ Back</button>
+    <p id="checkoutError" style="color:red;"></p>
+  </div>  <!-- Order Tracking Page -->  <div id="reviewPage" class="page">
+    <h2>📝 কাস্টমার রিভিউ/অর্ডার ট্র্যাকিং</h2>
+    <div id="userOrders">Loading...</div>
+    <button class="orange" onclick="showPage('mainPage')">⬅️ Back</button>
   </div>
 </div><script>
-  let selected = {};
+  const firebaseConfig = {
+    apiKey: 'AIzaSyDDvKtm-Mu_12pDLo_9bPvLOusx6YyoYI4',
+    authDomain: 'crunchyrollpremiumbd-shop.firebaseapp.com',
+    projectId: 'crunchyrollpremiumbd-shop'
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const emailjsConfig = {
+    service: 'service_z1714kq',
+    adminTpl: 'template_hp66tqp',
+    custTpl: 'template_1z1lhlf',
+    publicKey: 'SsUmUorUm-BZG8LBY'
+  };
+  emailjs.init(emailjsConfig.publicKey);
+
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    if (id === 'reviewPage') loadOrders();
   }
-  function selectPackage(type, duration, price) {
-    selected = {type, duration, price};
-    document.getElementById('summary').innerHTML = `
-      <p>প্যাকেজ: <strong>${type}</strong></p>
-      <p>মেয়াদ: <strong>${duration} মাস</strong></p>
-      <p>মূল্য: <strong>${price} টাকা</strong></p>
-    `;
+
+  let selectedPackage = null;
+  function goToCheckout() {
+    if (!selectedPackage) return alert('প্যাকেজ সিলেক্ট করুন');
+    document.getElementById('selectedPackageInfo').innerText = `${selectedPackage.name} – ${selectedPackage.duration} (${selectedPackage.price} TK)`;
     showPage('checkoutPage');
   }
+
+  async function confirmOrder() {
+    const name = document.getElementById('coName').value.trim();
+    const email = document.getElementById('coEmail').value.trim();
+    const addr = document.getElementById('coAddress').value.trim();
+    const mobile = document.getElementById('coMobile').value.trim();
+    const payNo = document.getElementById('coPaymentNumber').value.trim();
+    const trans = document.getElementById('coTransID').value.trim();
+    const pm = document.getElementById('paymentMethod').value;
+    const err = document.getElementById('checkoutError');
+
+    if (!name || !email || !addr || !mobile || !payNo || !trans || !pm) {
+      err.textContent = '⚠️ সব তথ্য দিন'; return;
+    }
+    const data = {
+      ...selectedPackage, name, email, addr, mobile, payNo, trans, pm,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('orders').add(data);
+    emailjs.send(emailjsConfig.service, emailjsConfig.custTpl, data);
+    emailjs.send(emailjsConfig.service, emailjsConfig.adminTpl, data);
+    alert('✅ অর্ডার সফল হয়েছে');
+    showPage('mainPage');
+  }
+
+  function loadOrders() {
+    const userEmail = prompt('ইমেইল দিন:');
+    db.collection('orders').where('email', '==', userEmail).get().then(snap => {
+      if (snap.empty) return document.getElementById('userOrders').innerText = 'কোন অর্ডার নেই';
+      let html = '<ul>';
+      snap.forEach(doc => {
+        const d = doc.data();
+        html += `<li>${d.name} | ${d.profile} | ${d.duration} | ${d.trans}</li>`;
+      });
+      html += '</ul>';
+      document.getElementById('userOrders').innerHTML = html;
+    });
+  }
+
+  async function loadDescriptionAndPackages() {
+    const dSnap = await db.collection('website').doc('main').get();
+    document.getElementById('descriptionText').innerText = dSnap.exists ? dSnap.data().description : 'Welcome!';
+
+    const pSnap = await db.collection('packages').get();
+    const container = document.getElementById('packagesContainer');
+    container.innerHTML = '';
+    pSnap.forEach(doc => {
+      const d = doc.data();
+      const btn = document.createElement('button');
+      btn.className = 'package-btn';
+      btn.innerText = `${d.name} – ${d.duration} (${d.price} TK)`;
+      btn.onclick = () => { selectedPackage = d; alert('✅ প্যাকেজ সিলেক্ট হয়েছে'); };
+      container.appendChild(btn);
+    });
+  }
+
+  db.collection('users').onSnapshot(snap => {
+    document.getElementById('userCount').textContent = snap.size;
+  });
+  db.collection('orders').onSnapshot(snap => {
+    document.getElementById('orderCount').textContent = snap.size;
+  });
+
+  window.onload = loadDescriptionAndPackages;
 </script></body>
 </html>
