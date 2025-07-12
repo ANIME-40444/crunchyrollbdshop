@@ -1,3 +1,5 @@
+আপনার ওয়েবসাইটের উপরের ডানদিকের তিনটি ডট আইকন (⋮) সরিয়ে নতুন ন্যাভবার (Navbar) এবং ড্রপডাউন মেনু (Dropdown Menu) যুক্ত করে সম্পূর্ণ কোড নিচে দেওয়া হলো।
+আমি আপনার দেওয়া কোডটিকে প্রধান container ডিভের উপরে বসিয়েছি এবং পুরোনো top-right-menu কোডটি সরিয়ে দিয়েছি। নতুন কোডে navbar স্টাইল এবং জাভাস্ক্রিপ্ট ফাংশন (toggleMenu()) যুক্ত করা হয়েছে যাতে মেনু আইকনে ক্লিক করলে ড্রপডাউন মেনু দেখা যায় বা লুকানো যায়।
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -104,16 +106,6 @@
       margin-top: 10px;
       color: black;
     }
-    /* Top-right menu for order page icon */
-    .top-right-menu {
-      position: fixed;
-      top: 15px;
-      right: 20px;
-      cursor: pointer;
-      font-size: 24px;
-      user-select: none;
-      z-index: 1000;
-    }
 
     /* WhatsApp Floating Button */
     .whatsapp-float {
@@ -139,7 +131,7 @@
     /* Description Box Styling */
     .description-box {
       max-width: 800px;
-      margin: 40px auto 20px auto; /* Adjusted margin-top to separate from main content */
+      margin: 40px auto 20px auto;
       background-color: #ffffff;
       border-radius: 12px;
       padding: 30px 25px;
@@ -181,6 +173,68 @@
         padding: 20px 15px;
       }
     }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: #0e0e2c;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+      z-index: 999;
+    }
+
+    .menu-icon {
+      width: 30px;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .menu-icon div {
+      height: 4px;
+      background-color: white;
+      border-radius: 2px;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 60px; /* Adjust as needed based on your navbar height */
+      right: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      width: 200px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .dropdown-menu a {
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      font-weight: 500;
+      display: block; /* Make links take full width */
+    }
+
+    .dropdown-menu a:last-child {
+      border-bottom: none; /* No border for the last item */
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f3f3f3;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -189,9 +243,23 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
-<div class="container">
 
-<div class="top-right-menu" onclick="showPage('odarPage')" title="আপনার অর্ডার দেখুন">⋮</div>
+<div class="navbar">
+  <div class="menu-icon" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="dropdown-menu" id="dropdown">
+    <a href="javascript:void(0)" onclick="showPage('odarPage'); toggleMenu();">✅ অর্ডার</a>
+    <a href="#review">✏️ কাস্টমার রিভিউ</a>
+    <a href="#rules">📜 রুলস</a>
+    <a href="#support">📞 সাপোর্ট</a>
+  </div>
+</div>
+
+<div class="container">
 
 <div id="mainPage" class="page active">
   <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner" />
@@ -438,6 +506,7 @@
 
   // Load current user's orders from Firestore (email-based)
   async function loadUserOrders() {
+    // এইখানে 'coEmail' থেকে ইমেইল না পেলে প্রম্পট দেখাবে
     const userEmail = document.getElementById('coEmail').value.trim() || prompt("আপনার ইমেইল দিন আপনার অর্ডার দেখতে:");
     if (!userEmail) {
       document.getElementById('userOrders').innerHTML = '<p>দুঃখিত, অর্ডার দেখার জন্য ইমেইল দরকার।</p>';
@@ -470,6 +539,21 @@
       userOrdersDiv.innerHTML = `<p>অর্ডার লোড করতে সমস্যা: ${error.message}</p>`;
     }
   }
+
+  // Navbar Script: Close menu when clicking outside and handle "অর্ডার" link
+  function toggleMenu() {
+    var menu = document.getElementById("dropdown");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
+
+  document.addEventListener('click', function(event) {
+    var navbar = document.querySelector('.navbar');
+    var isClickInside = navbar.contains(event.target);
+    if (!isClickInside) {
+      document.getElementById("dropdown").style.display = "none";
+    }
+  });
 </script>
 </body>
 </html>
+
