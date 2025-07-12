@@ -1,140 +1,145 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crunchyroll Premium BD</title>
+  <title>Crunchyroll Premium BD Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
+      margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
-      color: #f0f0f0;
-      line-height: 1.8;
-      padding: 20px;
+      background: #ffffff;
+      color: #000000;
     }
     .container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: auto;
-      padding: 30px;
-      background: #1a1a1a;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
-      transition: all 0.3s ease-in-out;
+      padding: 0 15px;
     }
-    h1 {
-      font-size: 36px;
-      color: #FF6600;
-      text-align: center;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 5px #000;
-    }
-    .highlight {
-      background: linear-gradient(to right, #262626, #1a1a1a);
-      border-left: 5px solid #FF6600;
+    .page {
+      display: none;
       padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      animation: fadeIn 1.5s ease;
     }
-    .highlight h2 {
-      font-size: 24px;
-      color: #ffa64d;
-      margin-bottom: 15px;
+    .active {
+      display: block;
     }
-    .highlight p, .highlight li {
-      font-size: 16.5px;
-      color: #ddd;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    li::before {
-      content: "✔️ ";
-      color: #FF6600;
-      margin-right: 5px;
-    }
-    .btn {
-      display: inline-block;
-      background: #FF6600;
-      color: white;
-      font-weight: bold;
-      padding: 12px 25px;
-      margin-top: 10px;
-      text-align: center;
+    img.banner {
+      width: 100%;
       border-radius: 8px;
-      text-decoration: none;
-      transition: 0.3s ease;
-      box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
     }
-    .btn:hover {
-      background: #e65c00;
-      transform: scale(1.05);
+    img.avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #000;
+      display: block;
+      margin: 20px auto;
     }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
+    .buy-now-btn {
+      background: #007bff;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      display: block;
+      width: 200px;
+      margin: 20px auto;
+      transition: background-color 0.3s ease;
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-      h1 {
-        font-size: 28px;
-      }
-      .highlight h2 {
-        font-size: 20px;
-      }
+    .buy-now-btn:hover {
+      background: #0056b3;
+    }
+    .description-box {
+      background: #f5f5f5;
+      border-left: 5px solid #007bff;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      line-height: 1.6;
+    }
+    .package-btn, .checkout-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+      width: 100%;
+      font-size: 16px;
+    }
+    .back-btn {
+      background: #6c757d;
+    }
+    .input-field {
+      margin: 10px 0;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .summary-box {
+      background: #eaf6ff;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
+<div class="container">
+  <!-- Main Page -->
+  <div id="mainPage" class="page active">
+    <img src="https://i.postimg.cc/KvBrVgmR/20250625-061716.jpg" class="banner" alt="Banner" />
+    <img src="https://i.postimg.cc/PxJQF3qj/89fcdebedfdcf2bf3a00a49d75833c3a-1.jpg" class="avatar" alt="Avatar" />
+    <h2 style="text-align:center;">Welcome to Crunchyroll Premium BD Shop</h2><div class="description-box">
+  <p><strong>Crunchyroll</strong> হলো একটি জনপ্রিয় স্ট্রিমিং প্ল্যাটফর্ম যা মূলত জাপানি অ্যানিমে, ম্যানগা এবং কিছু এশিয়ান ড্রামা দেখার জন্য ব্যবহৃত হয়। এখানে আপনি হাজার হাজার অ্যানিমে সিরিজ, সিনেমা এবং কমিকস অনলাইনে দেখতে পারবেন। অনেক কনটেন্টে ইংরেজি সাবটাইটেলও থাকে, এবং কিছু কিছু ডাব করা ভার্সনও পাওয়া যায়। এটি অ্যানিমে প্রেমীদের জন্য একটি বিশ্বস্ত ও বৈধ মাধ্যম।</p>
+  <p><strong>Premium এ কি কি থাকছে?</strong><br>
+  ✔️ সিমুলকাস্টস: জাপানে প্রচারের এক ঘণ্টার মধ্যে নতুন অ্যানিমে পর্ব দেখার সুবিধা।<br>
+  ✔️ বিজ্ঞাপনমুক্ত দেখা: অ্যানিমে দেখার সময় কোনো বিজ্ঞাপনের ব্যাঘাত থাকবে না।<br>
+  ✔️ সম্পূর্ণ লাইব্রেরি অ্যাক্সেস: Crunchyroll লাইব্রেরির সকল অ্যানিমে ও মাঙ্গা শিরোনামে প্রবেশাধিকার।<br>
+  ✔️ অফলাইন দেখা: ইন্টারনেট ছাড়াই দেখার জন্য পর্ব ডাউনলোড করার সুযোগ।<br>
+  ✔️ মাল্টি-ডিভাইস স্ট্রিমিং: একাধিক ডিভাইসে একসাথে স্ট্রিম করার সুবিধা (প্ল্যানের উপর নির্ভর করে)।<br>
+  ✔️ Crunchyroll গেম ভল্ট: ফ্রি গেমসের একটি ক্যাটালগে প্রবেশাধিকার।<br>
+  ✔️ নির্বাচিত কনটেন্ট: প্রিমিয়াম সদস্যরা ব্যক্তিগত রেকমেন্ডেশন ও নির্বাচিত Crunchylists পান।</p>
+  <p><strong>Order কত দিনে মধ্যে পাবেন?</strong><br>
+  Crunchyroll Premium অর্ডার দেওয়ার পর আপনি সাধারণত ১ থেকে ২ ঘন্টা মধ্যেই অ্যাক্সেস পেয়ে যাবেন। অর্ডার দেওয়ার আগে অনুগ্রহ করে আপনার ইমেইল ঠিকানাটি ভালোভাবে যাচাই করে নিন, কারণ অ্যাকাউন্ট সংক্রান্ত তথ্য ও নির্দেশনা সরাসরি সেই ইমেইলেই পাঠানো হবে।</p>
+</div>
 
-  <div class="container">
-    <h1>🔥 Crunchyroll Premium BD</h1>
+<button class="buy-now-btn" onclick="showPage('packagePage')">BUY NOW</button>
 
-    <!-- 🔸 Box 1: Description -->
-    <div class="highlight">
-      <h2>📢 Crunchyroll কী?</h2>
-      <p>
-        Crunchyroll হলো একটি জনপ্রিয় স্ট্রিমিং প্ল্যাটফর্ম যা মূলত জাপানি অ্যানিমে, ম্যানগা এবং কিছু এশিয়ান ড্রামা দেখার জন্য ব্যবহৃত হয়।
-        এখানে আপনি হাজার হাজার অ্যানিমে সিরিজ, সিনেমা এবং কমিকস অনলাইনে দেখতে পারবেন।
-        অনেক কনটেন্টে ইংরেজি সাবটাইটেলও থাকে, এবং কিছু কিছু ডাব করা ভার্সনও পাওয়া যায়।
-        এটি অ্যানিমে প্রেমীদের জন্য একটি বিশ্বস্ত ও বৈধ মাধ্যম।
-      </p>
-    </div>
-
-    <!-- 🔸 Box 2: Premium Features -->
-    <div class="highlight">
-      <h2>🥇 Premium এ কি কি থাকছে:</h2>
-      <ul>
-        <li>সিমুলকাস্টস: জাপানে প্রচারের এক ঘণ্টার মধ্যে নতুন অ্যানিমে পর্ব দেখার সুবিধা।</li>
-        <li>বিজ্ঞাপনমুক্ত দেখা: অ্যানিমে দেখার সময় কোনো বিজ্ঞাপনের ব্যাঘাত থাকবে না।</li>
-        <li>সম্পূর্ণ লাইব্রেরি অ্যাক্সেস: Crunchyroll লাইব্রেরির সকল অ্যানিমে ও মাঙ্গা শিরোনামে প্রবেশাধিকার।</li>
-        <li>অফলাইন দেখা: ইন্টারনেট ছাড়াই দেখার জন্য পর্ব ডাউনলোড করার সুযোগ।</li>
-        <li>মাল্টি-ডিভাইস স্ট্রিমিং: একাধিক ডিভাইসে একসাথে স্ট্রিম করার সুবিধা (প্ল্যানের উপর নির্ভর করে)।</li>
-        <li>Crunchyroll গেম ভল্ট: ফ্রি গেমসের একটি ক্যাটালগে প্রবেশাধিকার।</li>
-        <li>নির্বাচিত কনটেন্ট: প্রিমিয়াম সদস্যরা ব্যক্তিগত রেকমেন্ডেশন ও নির্বাচিত Crunchylists পান।</li>
-        <li>এছাড়া আরও সুবিধা রয়েছে...</li>
-      </ul>
-    </div>
-
-    <!-- 🔸 Box 3: Delivery Info -->
-    <div class="highlight">
-      <h2>🚚 Order কত দিনে মধ্যে পাবেন?</h2>
-      <p>
-        Crunchyroll Premium অর্ডার দেওয়ার পর আপনি সাধারণত ১ থেকে ২ ঘন্টা মধ্যেই অ্যাক্সেস পেয়ে যাবেন।
-        অর্ডার দেওয়ার আগে অনুগ্রহ করে আপনার ইমেইল ঠিকানাটি ভালোভাবে যাচাই করে নিন,
-        কারণ অ্যাকাউন্ট সংক্রান্ত তথ্য ও নির্দেশনা সরাসরি সেই ইমেইলেই পাঠানো হবে।
-      </p>
-      <a href="#buy" class="btn">BUY NOW</a>
-    </div>
+  </div>  <!-- Package Page -->  <div id="packagePage" class="page">
+    <h2>📦 প্যাকেজ নির্বাচন করুন</h2>
+    <button class="package-btn" onclick="selectPackage('Shared', 1, 100)">1 মাস - 100 টাকা</button>
+    <button class="package-btn" onclick="selectPackage('Personal', 1, 240)">1 মাস (পার্সোনাল) - 240 টাকা</button>
+    <button class="package-btn" onclick="selectPackage('Primary', 1, 650)">1 মাস (প্রাইমারি) - 650 টাকা</button>
+    <button class="package-btn back-btn" onclick="showPage('mainPage')">⬅️ হোমে ফিরে যান</button>
+  </div>  <!-- Checkout Page -->  <div id="checkoutPage" class="page">
+    <h2>✅ অর্ডার কনফার্ম</h2>
+    <div id="summary" class="summary-box"></div>
+    <input type="text" class="input-field" placeholder="আপনার নাম" />
+    <input type="email" class="input-field" placeholder="আপনার ইমেইল" />
+    <input type="text" class="input-field" placeholder="মোবাইল নম্বর" />
+    <input type="text" class="input-field" placeholder="পেমেন্ট নাম্বার" />
+    <input type="text" class="input-field" placeholder="ট্রানজেকশন আইডি" />
+    <button class="checkout-btn">✅ অর্ডার সাবমিট</button>
+    <button class="package-btn back-btn" onclick="showPage('packagePage')">⬅️ প্যাকেজে ফিরে যান</button>
   </div>
-
-</body>
+</div><script>
+  let selected = {};
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+  function selectPackage(type, duration, price) {
+    selected = {type, duration, price};
+    document.getElementById('summary').innerHTML = `
+      <p>প্যাকেজ: <strong>${type}</strong></p>
+      <p>মেয়াদ: <strong>${duration} মাস</strong></p>
+      <p>মূল্য: <strong>${price} টাকা</strong></p>
+    `;
+    showPage('checkoutPage');
+  }
+</script></body>
 </html>
